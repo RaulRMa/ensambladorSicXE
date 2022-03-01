@@ -1,0 +1,7 @@
+/out
+/iconos
+/.idea
+/ejemplos
+*.iml
+*.err
+*.patch
