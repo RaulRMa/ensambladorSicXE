@@ -1,11 +1,15 @@
 package Gui;
 
+import App.Intermedio;
 import sintaxis.Analizador;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Map;
 import java.util.Objects;
 
 public class Principal extends JFrame{
@@ -14,8 +18,12 @@ public class Principal extends JFrame{
     private JLabel lbl_resultado;
     private JButton btnAbrirArchvoErr;
     private JButton btnArbrirUbArch;
+    private JButton btnArchivoInt;
+    private JButton btnAbrirUbInt;
+    private JButton btnAbrirAInt;
     private File archivoFuente;
     private File archivoSalida;
+    private File archivoIntermedio;
     private Analizador analizador;
     private boolean errores;
 
@@ -23,31 +31,34 @@ public class Principal extends JFrame{
         errores = false;
         setContentPane(panelPrincipal);
         setTitle("Analizador léxico sintáctico");
-        setSize(450,300);
+        setSize(500,400);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
         accionesBoton();
+        setLocation(200,300);
+        setMaximumSize(new Dimension(500,300));
+        setMinimumSize(new Dimension(500,300));
     }
 
     private void accionesBoton(){
         abrirArchivoButton.addActionListener(actionEvent -> {
+            btnArchivoInt.setVisible(false);
             lbl_resultado.setVisible(false);
+            btnArbrirUbArch.setVisible(false);
+            btnAbrirArchvoErr.setVisible(false);
+            btnAbrirAInt.setVisible(false);
+            btnAbrirUbInt.setVisible(false);
             JFileChooser explorador = abrirExplorador();
             archivoFuente = explorador.getSelectedFile();
             if(archivoFuente == null || archivoFuente.getName().equals("")){
                 throw new Error("Hubo un error al abrir el archivo");
             }
             analiza();
+            btnArchivoInt.setVisible(true);
         });
         btnAbrirArchvoErr.addActionListener( actionEvent -> {
             try {
-                String os = System.getProperty("os.name");
-                String[] parametros = new String[2];
-                parametros[0] = Objects.equals(os, "Linux") ? "gedit" : "notepad.exe";
-                parametros[1] = analizador.obtenArchivoSalida().getAbsolutePath();
-
-                Process proceso = Runtime.getRuntime().exec(parametros,null);
-                proceso.waitFor();
+                abreArchivo(archivoSalida);
             }catch (Exception e){
                 muestraError("Falló al intentar abrir el archivo","Error");
                 e.printStackTrace();
@@ -55,16 +66,30 @@ public class Principal extends JFrame{
         });
         btnArbrirUbArch.addActionListener(actionEvent -> {
             try{
-                String os = System.getProperty("os.name");
-                String[] parametros = new String[2];
-                parametros[0]
-                        = Objects.equals(os, "Linux") ? "nautilus" : "notepad.exe";
-                parametros[1] = archivoSalida.getCanonicalPath();
-
-                Process proceso = Runtime.getRuntime().exec(parametros, null);
-                proceso.waitFor();
+               expArchivos(archivoSalida);
             }catch (Exception e){
                 muestraError("Falló al intentar abrir la ubicación del archivo","Error");
+                e.printStackTrace();
+            }
+        });
+        btnArchivoInt.addActionListener(actionEvent -> {
+            generaIntermedio();
+        });
+        btnAbrirUbInt.addActionListener(actionEvent -> {
+            try {
+                expArchivos(archivoIntermedio);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        });
+        btnAbrirAInt.addActionListener(actionEvent -> {
+            try {
+                abreArchivo(archivoIntermedio);
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         });
@@ -74,6 +99,38 @@ public class Principal extends JFrame{
         errores = analizador.hayErrores();
         archivoSalida = analizador.obtenArchivoSalida();
         elementosErrores();
+    }
+
+    private void expArchivos(File archivo) throws IOException, InterruptedException {
+        String os = System.getProperty("os.name");
+        String[] parametros = new String[2];
+        parametros[0]
+                = Objects.equals(os, "Linux") ? "nautilus" : "notepad.exe";
+        parametros[1] = archivo.getCanonicalPath();
+
+        Process proceso = Runtime.getRuntime().exec(parametros, null);
+        proceso.waitFor();
+    }
+
+    private void abreArchivo(File archivo) throws IOException, InterruptedException {
+        String os = System.getProperty("os.name");
+        String[] parametros = new String[2];
+        parametros[0] = Objects.equals(os, "Linux") ? "gedit" : "notepad.exe";
+        parametros[1] = archivo.getAbsolutePath();
+
+        Process proceso = Runtime.getRuntime().exec(parametros,null);
+        proceso.waitFor();
+    }
+
+    private void generaIntermedio() {
+        Map<Integer, Object> mapa = analizador.regresaMapa();
+        ArrayList lineas = analizador.lineasErr();
+        Intermedio archInt = new Intermedio(mapa, archivoFuente, lineas);
+        archivoIntermedio = archInt.archivoIntermedio();
+        if(archivoIntermedio != null){
+            btnAbrirAInt.setVisible(true);
+            btnAbrirUbInt.setVisible(true);
+        }
     }
 
     private void elementosErrores(){
