@@ -47,7 +47,7 @@ public class Instruccion {
         if(matcher.find()) return "SIC";
         matcher = patronDirectivas.matcher(key.toString());
         if(matcher.find()) return  "DIRECTIVA";
-        if(key.toString().contains("Byte")) return "Byte";
+        if(key.toString().contains("BYTE")) return "Byte";
         if(key.toString().contains("Base")) return "Base";
         if(key.toString().contains("Start")) return "Start";
         return "End";

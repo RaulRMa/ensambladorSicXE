@@ -13,15 +13,16 @@ public class Intermedio {
     private File aFuente, tabsimbolos;
     private final ArrayList<Instruccion> instrucciones;
     private final ArrayList<Integer> lineasErrores;
-    private final ArrayList<String> lineasArchivo;
+    private final ArrayList<String> lineasArchivo, tipoErrores;
     private int primerDir, ultimaDir;
 
-    public Intermedio(ArrayList<Instruccion> mapa, File archivo, ArrayList<Integer> lineasErrores){
+    public Intermedio(ArrayList<Instruccion> mapa, File archivo, ArrayList<Integer> lineasErrores, ArrayList<String> errores){
         lineasArchivo = new ArrayList<>();
         String nombre = archivo.getName().replace(".xe", ".int");
         aFuente = archivo;
         this.instrucciones = mapa;
         this.lineasErrores = lineasErrores;
+        this.tipoErrores = errores;
         aIntermedio = new File(nombre);
         primerDir = ultimaDir = 0;
         generaTabla();
@@ -38,42 +39,54 @@ public class Intermedio {
         int cp = 0x0;
         int contador = 1;
         int contInst = 1;
+        int contErrores = 0;
+        boolean error = false;
         try {
             sc = new Scanner(aFuente);
             cp += instrucciones.get(0).getBytes();
             while (sc.hasNext()){
                 linea = sc.nextLine();
-                if(linea.contains("END")) {
+                String[] elementos = linea.split("[\t\r]");
+                if(elementos[1].equals("END")) {
                     lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
                     lineasArchivo.add(lineaAEscribir);
                     ultimaDir = cp;
                     break;
                 }
+                if(elementos[1].equals("START")){
+                    lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
+                    lineasArchivo.add(lineaAEscribir);
+                    contador++;
+                    primerDir = cp;
+                    continue;
+                }
                 if(!lineasErrores.contains(contador)){
-                    if(linea.contains("START")){
-                        lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
-                        lineasArchivo.add(lineaAEscribir);
-                        contador++;
-                        primerDir = cp;
-                        continue;
-                    }
                     Instruccion instruccion = instrucciones.get(contInst++);
                     if( instruccion.getSimbolo() != null && !instruccion.getSimbolo().isBlank()){
-                        if(tabsim.containsKey(instruccion.getSimbolo())){
+                        if(tabsim.containsKey(instruccion.getSimbolo()) && error){
+                            int ultimo = lineasArchivo.size() -1;
+                            String ultimaInst = lineasArchivo.get(ultimo).replace("----","Error: Símbolo duplicado");
+                            lineasArchivo.remove(ultimo);
+                            lineasArchivo.add(ultimaInst);
+                            error = false;
+                        }else if(tabsim.containsKey(instruccion.getSimbolo()) && !error){
                             lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\tError: Símbolo duplicado";
-                            lineasArchivo.add(lineaAEscribir);
                             cp += instruccion.getBytes();
                             contador++;
+                            lineasArchivo.add(lineaAEscribir);
                             continue;
                         }
-                        tabsim.put(instruccion.getSimbolo(),Integer.toHexString(cp));
+                        else{
+                            tabsim.put(instruccion.getSimbolo(),Integer.toHexString(cp));
+                        }
                     }
                     lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
                     cp += instruccion.getBytes();
                     contador++;
                 }else{
-                    lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\tError: sintaxis";
+                    lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t" + tipoErrores.get(contErrores++);
                     contador++;
+                    error = true;
                 }
                 lineasArchivo.add(lineaAEscribir);
             }

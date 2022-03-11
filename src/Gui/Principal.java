@@ -122,7 +122,8 @@ public class Principal extends JFrame{
     private void generaIntermedio() {
         ArrayList<Integer> lineas = analizador.lineasErr();
         ArrayList<Instruccion> instrucciones = analizador.listaInstrucciones();
-        Intermedio archInt = new Intermedio(instrucciones, archivoFuente, lineas);
+        ArrayList<String> tipoErrores = analizador.getTipoErrores();
+        Intermedio archInt = new Intermedio(instrucciones, archivoFuente, lineas, tipoErrores);
         archivoIntermedio = archInt.archivoIntermedio();
         if(archivoIntermedio != null){
             btnAbrirAInt.setVisible(true);
