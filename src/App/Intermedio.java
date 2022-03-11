@@ -1,76 +1,75 @@
 package App;
 
+import sintaxis.Instruccion;
+
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Intermedio {
-    private final File aIntermedio;
-    private final File aFuente;
-    private final Map<Integer, Object> mapa;
-    private final ArrayList<String> lineasErrores;
-    private ArrayList<String> lineasArchivo;
-    private Map<String, String> tabsim;
+    private  File aIntermedio;
+    private LinkedHashMap<String, String> tabsim;
+    private File aFuente, tabsimbolos;
+    private final ArrayList<Instruccion> instrucciones;
+    private final ArrayList<Integer> lineasErrores;
+    private final ArrayList<String> lineasArchivo;
+    private int primerDir, ultimaDir;
 
-    public Intermedio(Map<Integer, Object> mapa, File archivo, ArrayList lineasErrores){
+    public Intermedio(ArrayList<Instruccion> mapa, File archivo, ArrayList<Integer> lineasErrores){
         lineasArchivo = new ArrayList<>();
         String nombre = archivo.getName().replace(".xe", ".int");
         aFuente = archivo;
-        this.mapa = mapa;
+        this.instrucciones = mapa;
         this.lineasErrores = lineasErrores;
         aIntermedio = new File(nombre);
+        primerDir = ultimaDir = 0;
         generaTabla();
         escribeArchivo();
+        escribeTabsim();
+        escribeRegistros();
     }
 
     private void generaTabla(){
+        tabsim = new LinkedHashMap<>();
         String linea;
         Scanner sc;
-        String[] elementos;
-        tabsim = new HashMap<>();
         String lineaAEscribir;
         int cp = 0x0;
         int contador = 1;
-        int contMap = 1;
+        int contInst = 1;
         try {
             sc = new Scanner(aFuente);
-            cp += bytesStart();
+            cp += instrucciones.get(0).getBytes();
             while (sc.hasNext()){
                 linea = sc.nextLine();
+                if(linea.contains("END")) {
+                    lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
+                    lineasArchivo.add(lineaAEscribir);
+                    ultimaDir = cp;
+                    break;
+                }
                 if(!lineasErrores.contains(contador)){
-                    elementos = linea.split("[\t\r\0]");
-                    String aEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea;
-                    if(elementos[1].equals("START")){
-                        lineaAEscribir = aEscribir;
+                    if(linea.contains("START")){
+                        lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
                         lineasArchivo.add(lineaAEscribir);
                         contador++;
+                        primerDir = cp;
                         continue;
                     }
-                    if(elementos[1].equals("END")) {
-                        lineaAEscribir = aEscribir;
-                        lineasArchivo.add(lineaAEscribir);
-                        break;
-                    }
-                    HashMap mapaArchivo = (HashMap) this.mapa.get(contMap++);
-                    Iterator it = mapaArchivo.keySet().iterator();
-                    Object key = it.next();
-
-                    if(!elementos[0].isBlank() && !tabsim.containsKey(elementos[0]) && !elementos[1].equals("START")){
-                        tabsim.put(elementos[0],Integer.toHexString(cp));
+                    Instruccion instruccion = instrucciones.get(contInst++);
+                    if( instruccion.getSimbolo() != null && !instruccion.getSimbolo().isBlank()){
+                        if(tabsim.containsKey(instruccion.getSimbolo())){
+                            lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\tError: Símbolo duplicado";
+                            lineasArchivo.add(lineaAEscribir);
+                            cp += instruccion.getBytes();
+                            contador++;
+                            continue;
+                        }
+                        tabsim.put(instruccion.getSimbolo(),Integer.toHexString(cp));
                     }
                     lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
-                    switch (tipoInstruccion(key)){
-                        case "SIC":
-                            cp += (int)mapaArchivo.get(key);
-                        break;
-                        case "DIRECTIVA":
-                            cp += bytesDirectiva(key,mapaArchivo);
-                        break;
-                        case "Byte":
-                            cp += bytesByte(key,mapaArchivo);
-                        break;
-                    }
+                    cp += instruccion.getBytes();
                     contador++;
                 }else{
                     lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\tError: sintaxis";
@@ -78,73 +77,10 @@ public class Intermedio {
                 }
                 lineasArchivo.add(lineaAEscribir);
             }
+            sc.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-    }
-
-    private int bytesStart(){
-        HashMap mapaStart = (HashMap) this.mapa.get(0);
-        String dirInicial = (String) mapaStart.get("Start");
-        if(dirInicial.contains("H") | dirInicial.contains("H")){
-            String[] cadenas = dirInicial.split("[H|h]+");
-            return Integer.parseInt(cadenas[0],16);
-        }
-        return Integer.parseInt(dirInicial);
-    }
-    private int bytesDirectiva(Object key, HashMap mapa){
-        int bytes = 0;
-        if(key.toString().contains("WORD")){
-            bytes = 3;
-        }else if(key.toString().contains("RESB")){
-            String direccion = (String) mapa.get(key);
-            bytes = direccion.contains("H") | direccion.contains("h")
-                    ?
-                    Integer.parseInt(direccion,16)
-                    :
-                    Integer.parseInt(direccion);
-        }
-        else{
-
-            String direccion = (String) mapa.get(key);
-            bytes = direccion.contains("H") | direccion.contains("h")
-                    ?
-                    Integer.parseInt(direccion,16)
-                    :
-                    Integer.parseInt(direccion);
-            bytes *= 3;
-        }
-        return bytes;
-    }
-
-    private String tipoInstruccion(Object key){
-        Pattern patronFormato = Pattern.compile("F1|F2|F3|F4");
-        Pattern patronDirectivas = Pattern.compile("WORD|RESB|RESW");
-        Matcher matcher;
-        matcher = patronFormato.matcher(key.toString());
-        if(matcher.find()) return "SIC";
-        matcher = patronDirectivas.matcher(key.toString());
-        if(matcher.find()) return  "DIRECTIVA";
-        if(key.toString().contains("Byte")) return "Byte";
-        if(key.toString().contains("Base")) return "Base";
-        return "End";
-    }
-
-    private int bytesByte(Object key, HashMap mapa){
-        String total;
-        if(key.toString().contains("C")){
-            String valor = (String) mapa.get(key);
-            total = String.valueOf(valor.length());
-            return Integer.parseInt(total,16);
-        }
-        String valor = (String) mapa.get(key);
-        int longitud = valor.length();
-        if(longitud % 2 == 0) {
-            total = String.valueOf(longitud/2);
-            return Integer.parseInt(total,16);
-        }
-        total = String.valueOf((longitud+1)/2);
-        return Integer.parseInt(total);
     }
 
     private void escribeArchivo(){
@@ -163,7 +99,55 @@ public class Intermedio {
         }
 
     }
+    private void escribeTabsim(){
+        String nombre = aFuente.getName().replace(".xe", ".tabsim");
+        tabsimbolos = new File(nombre);
+        try {
+            String encabezado = "Símbolo\t" + "\tDirección\n";
+            PrintWriter wr = new PrintWriter(tabsimbolos);
+            wr.write(encabezado);
+            Iterator it = tabsim.keySet().iterator();
+            String linea;
+            while (it.hasNext()){
+                String key = (String) it.next();
+                linea = key + "\t\t" + tabsim.get(key);
+                wr.println(linea);
+            }
+            wr.close();
+            tabsimbolos.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    private void escribeRegistros(){
+        String[] arregloRegistros = new String[]{"A","X","L","B","S","T","F","CP ó PC","SW"};
+        try {
+            FileReader descripciones = new FileReader("descripciones.txt");
+            Scanner sc = new Scanner(descripciones);
+            String nombre = aFuente.getName().replace(".xe",".registros");
+            File registros = new File(nombre);
+            PrintWriter wr = new PrintWriter(registros);
+            //String encabezado = "Nemónico\t" + "Número\t" + "Uso especial";
+            //wr.println(encabezado);
+
+            int contador = 0;
+            String linea;
+            for(String registro : arregloRegistros){
+                if(contador == 7) contador = 8;
+                linea = registro + "\t" + contador + "\t" + sc.nextLine();
+                wr.println(linea);
+                contador++;
+            }
+            wr.println("\nTamaño del programa: " + Integer.toHexString((ultimaDir - primerDir)));
+            wr.close();
+            sc.close();
+            registros.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     public File archivoIntermedio() {return  aIntermedio;}
-
+    public File tablaSimbolos(){return tabsimbolos;}
 }

@@ -1,8 +1,7 @@
 // Generated from /home/raul/Documentos/UASLP/2021-2022-2/SoftwareDeSistemas/Laboratorio/analizador/grammar/sicstd.g4 by ANTLR 4.9.2
 
     package sintaxis;
-    import java.util.Map;
-    import java.util.HashMap;
+    import java.util.*;
 
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -21,38 +20,38 @@ public class sicstdParser extends Parser {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, START=2, END=3, COMA=4, SHARP=5, ARROBA=6, H=7, MAS=8, BYTE=9, 
-		BASE=10, X=11, C=12, REGISTRO=13, DIRECTIVA=14, INSF1=15, INSF2=16, INSF3=17, 
-		COMILLA=18, SIMBOLO=19, HEXADECIMAL=20, CONSTANTE=21, FIN_INSTRUCCION=22, 
-		EB=23;
+		START=1, END=2, COMA=3, SHARP=4, ARROBA=5, H=6, MAS=7, BYTE=8, BASE=9, 
+		X=10, C=11, CLEAR=12, REGISTRO=13, DIRECTIVA=14, INSF1=15, INSF2=16, SHIFT=17, 
+		SVC=18, INSF3=19, RSUB=20, FIN_INSTRUCCION=21, COMILLA=22, NUMERO=23, 
+		HEXADECIMAL=24, SIMBOLO=25, EB=26;
 	public static final int
-		RULE_programa = 0, RULE_dec_start = 1, RULE_dec_end = 2, RULE_dec_instruccion = 3, 
-		RULE_dec_f2 = 4, RULE_dec_f1 = 5, RULE_dec_f3 = 6, RULE_dec_f4 = 7, RULE_dec_directiva = 8, 
-		RULE_dec_base = 9, RULE_dec_byte = 10, RULE_valor_byte = 11, RULE_directiva = 12, 
-		RULE_simple = 13, RULE_indirecto = 14, RULE_inmediato = 15;
+		RULE_programa = 0, RULE_start = 1, RULE_end = 2, RULE_instruccion = 3, 
+		RULE_inst_f1 = 4, RULE_inst_f2 = 5, RULE_op_insf2 = 6, RULE_inst_f3 = 7, 
+		RULE_inst_f4 = 8, RULE_directiva = 9, RULE_direccion = 10, RULE_simple = 11, 
+		RULE_indirecto = 12, RULE_inmediato = 13;
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"programa", "dec_start", "dec_end", "dec_instruccion", "dec_f2", "dec_f1", 
-			"dec_f3", "dec_f4", "dec_directiva", "dec_base", "dec_byte", "valor_byte", 
-			"directiva", "simple", "indirecto", "inmediato"
+			"programa", "start", "end", "instruccion", "inst_f1", "inst_f2", "op_insf2", 
+			"inst_f3", "inst_f4", "directiva", "direccion", "simple", "indirecto", 
+			"inmediato"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'RSUB'", "'START'", "'END'", "','", "'#'", "'@'", null, "'+'", 
-			"'BYTE'", "'BASE'", "'X'", "'C'", null, null, null, null, null, null, 
-			null, null, null, "'\n'"
+			null, "'START'", "'END'", "','", "'#'", "'@'", null, "'+'", "'BYTE'", 
+			"'BASE'", "'X'", "'C'", "'CLEAR'", null, null, null, null, null, "'SVC'", 
+			null, "'RSUB'", "'\n'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, "START", "END", "COMA", "SHARP", "ARROBA", "H", "MAS", "BYTE", 
-			"BASE", "X", "C", "REGISTRO", "DIRECTIVA", "INSF1", "INSF2", "INSF3", 
-			"COMILLA", "SIMBOLO", "HEXADECIMAL", "CONSTANTE", "FIN_INSTRUCCION", 
-			"EB"
+			null, "START", "END", "COMA", "SHARP", "ARROBA", "H", "MAS", "BYTE", 
+			"BASE", "X", "C", "CLEAR", "REGISTRO", "DIRECTIVA", "INSF1", "INSF2", 
+			"SHIFT", "SVC", "INSF3", "RSUB", "FIN_INSTRUCCION", "COMILLA", "NUMERO", 
+			"HEXADECIMAL", "SIMBOLO", "EB"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -102,9 +101,7 @@ public class sicstdParser extends Parser {
 	public ATN getATN() { return _ATN; }
 
 
-	    int linea = 0;
-	    Map<String, Object> tablaSimbolos = new HashMap<String, Object>();
-	    Map<Integer, Object> lineas = new HashMap<Integer, Object>();
+	    public ArrayList<Instruccion> listaInstrucciones = new ArrayList<>();
 
 	public sicstdParser(TokenStream input) {
 		super(input);
@@ -112,17 +109,17 @@ public class sicstdParser extends Parser {
 	}
 
 	public static class ProgramaContext extends ParserRuleContext {
-		public Dec_startContext dec_start() {
-			return getRuleContext(Dec_startContext.class,0);
+		public StartContext start() {
+			return getRuleContext(StartContext.class,0);
 		}
-		public Dec_endContext dec_end() {
-			return getRuleContext(Dec_endContext.class,0);
+		public EndContext end() {
+			return getRuleContext(EndContext.class,0);
 		}
-		public List<Dec_instruccionContext> dec_instruccion() {
-			return getRuleContexts(Dec_instruccionContext.class);
+		public List<InstruccionContext> instruccion() {
+			return getRuleContexts(InstruccionContext.class);
 		}
-		public Dec_instruccionContext dec_instruccion(int i) {
-			return getRuleContext(Dec_instruccionContext.class,i);
+		public InstruccionContext instruccion(int i) {
+			return getRuleContext(InstruccionContext.class,i);
 		}
 		public ProgramaContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -137,24 +134,24 @@ public class sicstdParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
+			setState(28);
+			start();
 			setState(32);
-			dec_start();
-			setState(36);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << T__0) | (1L << MAS) | (1L << BYTE) | (1L << BASE) | (1L << DIRECTIVA) | (1L << INSF1) | (1L << INSF2) | (1L << INSF3) | (1L << SIMBOLO))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MAS) | (1L << BYTE) | (1L << BASE) | (1L << CLEAR) | (1L << DIRECTIVA) | (1L << INSF1) | (1L << INSF2) | (1L << SHIFT) | (1L << SVC) | (1L << INSF3) | (1L << RSUB) | (1L << SIMBOLO))) != 0)) {
 				{
 				{
-				setState(33);
-				dec_instruccion();
+				setState(29);
+				instruccion();
 				}
 				}
-				setState(38);
+				setState(34);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			}
-			setState(39);
-			dec_end();
+			setState(35);
+			end();
 			}
 		}
 		catch (RecognitionException re) {
@@ -168,60 +165,66 @@ public class sicstdParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Dec_startContext extends ParserRuleContext {
+	public static class StartContext extends ParserRuleContext {
+		public Token SIMBOLO;
+		public Token NUMERO;
 		public Token HEXADECIMAL;
-		public Token H;
 		public TerminalNode START() { return getToken(sicstdParser.START, 0); }
 		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
+		public TerminalNode NUMERO() { return getToken(sicstdParser.NUMERO, 0); }
 		public TerminalNode HEXADECIMAL() { return getToken(sicstdParser.HEXADECIMAL, 0); }
 		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
-		public TerminalNode H() { return getToken(sicstdParser.H, 0); }
-		public Dec_startContext(ParserRuleContext parent, int invokingState) {
+		public StartContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_dec_start; }
+		@Override public int getRuleIndex() { return RULE_start; }
 	}
 
-	public final Dec_startContext dec_start() throws RecognitionException {
-		Dec_startContext _localctx = new Dec_startContext(_ctx, getState());
-		enterRule(_localctx, 2, RULE_dec_start);
+	public final StartContext start() throws RecognitionException {
+		StartContext _localctx = new StartContext(_ctx, getState());
+		enterRule(_localctx, 2, RULE_start);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(42);
+			setState(38);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SIMBOLO) {
 				{
-				setState(41);
-				match(SIMBOLO);
+				setState(37);
+				((StartContext)_localctx).SIMBOLO = match(SIMBOLO);
 				}
 			}
 
-			setState(44);
+			setState(40);
 			match(START);
-			{
 			setState(45);
-			((Dec_startContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case NUMERO:
+				{
+				setState(41);
+				((StartContext)_localctx).NUMERO = match(NUMERO);
+
+				            listaInstrucciones.add(new Instruccion("Start",(((StartContext)_localctx).NUMERO!=null?((StartContext)_localctx).NUMERO.getText():null),(((StartContext)_localctx).SIMBOLO!=null?((StartContext)_localctx).SIMBOLO.getText():null)));
+				        
+				}
+				break;
+			case HEXADECIMAL:
+				{
+				setState(43);
+				((StartContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
+
+				            listaInstrucciones.add(new Instruccion("Start",(((StartContext)_localctx).HEXADECIMAL!=null?((StartContext)_localctx).HEXADECIMAL.getText():null),(((StartContext)_localctx).SIMBOLO!=null?((StartContext)_localctx).SIMBOLO.getText():null)));
+				        
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
 			}
 			setState(47);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==H) {
-				{
-				setState(46);
-				((Dec_startContext)_localctx).H = match(H);
-				}
-			}
-
-			setState(49);
 			match(FIN_INSTRUCCION);
-
-			    Map<String, Object> mapaStart = new HashMap<String, Object>();
-			    mapaStart.put("Start", (((Dec_startContext)_localctx).HEXADECIMAL!=null?((Dec_startContext)_localctx).HEXADECIMAL.getText():null) + (((Dec_startContext)_localctx).H!=null?((Dec_startContext)_localctx).H.getText():null));
-			    lineas.put(linea++,mapaStart);
-			  
 			}
 		}
 		catch (RecognitionException re) {
@@ -235,40 +238,36 @@ public class sicstdParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Dec_endContext extends ParserRuleContext {
+	public static class EndContext extends ParserRuleContext {
 		public Token SIMBOLO;
 		public TerminalNode END() { return getToken(sicstdParser.END, 0); }
 		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
-		public Dec_endContext(ParserRuleContext parent, int invokingState) {
+		public EndContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_dec_end; }
+		@Override public int getRuleIndex() { return RULE_end; }
 	}
 
-	public final Dec_endContext dec_end() throws RecognitionException {
-		Dec_endContext _localctx = new Dec_endContext(_ctx, getState());
-		enterRule(_localctx, 4, RULE_dec_end);
+	public final EndContext end() throws RecognitionException {
+		EndContext _localctx = new EndContext(_ctx, getState());
+		enterRule(_localctx, 4, RULE_end);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(52);
+			setState(49);
 			match(END);
-			setState(54);
+			setState(51);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SIMBOLO) {
 				{
-				setState(53);
-				((Dec_endContext)_localctx).SIMBOLO = match(SIMBOLO);
+				setState(50);
+				((EndContext)_localctx).SIMBOLO = match(SIMBOLO);
 				}
 			}
 
-
-			    Map<String, Object> mapaStart = new HashMap<String, Object>();
-			    mapaStart.put("END", (((Dec_endContext)_localctx).SIMBOLO!=null?((Dec_endContext)_localctx).SIMBOLO.getText():null));
-			    lineas.put(linea++,mapaStart);
-			  
+			listaInstrucciones.add(new Instruccion("END",(((EndContext)_localctx).SIMBOLO!=null?((EndContext)_localctx).SIMBOLO.getText():null)));
 			}
 		}
 		catch (RecognitionException re) {
@@ -282,92 +281,79 @@ public class sicstdParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Dec_instruccionContext extends ParserRuleContext {
-		public Dec_f1Context dec_f1;
-		public Dec_f2Context dec_f2;
-		public Dec_f3Context dec_f3;
-		public Dec_f4Context dec_f4;
-		public Dec_f1Context dec_f1() {
-			return getRuleContext(Dec_f1Context.class,0);
+	public static class InstruccionContext extends ParserRuleContext {
+		public Inst_f1Context inst_f1() {
+			return getRuleContext(Inst_f1Context.class,0);
 		}
-		public Dec_f2Context dec_f2() {
-			return getRuleContext(Dec_f2Context.class,0);
+		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
+		public Inst_f2Context inst_f2() {
+			return getRuleContext(Inst_f2Context.class,0);
 		}
-		public Dec_f3Context dec_f3() {
-			return getRuleContext(Dec_f3Context.class,0);
+		public Inst_f3Context inst_f3() {
+			return getRuleContext(Inst_f3Context.class,0);
 		}
-		public Dec_f4Context dec_f4() {
-			return getRuleContext(Dec_f4Context.class,0);
+		public Inst_f4Context inst_f4() {
+			return getRuleContext(Inst_f4Context.class,0);
 		}
-		public Dec_directivaContext dec_directiva() {
-			return getRuleContext(Dec_directivaContext.class,0);
+		public DirectivaContext directiva() {
+			return getRuleContext(DirectivaContext.class,0);
 		}
-		public Dec_instruccionContext(ParserRuleContext parent, int invokingState) {
+		public InstruccionContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_dec_instruccion; }
+		@Override public int getRuleIndex() { return RULE_instruccion; }
 	}
 
-	public final Dec_instruccionContext dec_instruccion() throws RecognitionException {
-		Dec_instruccionContext _localctx = new Dec_instruccionContext(_ctx, getState());
-		enterRule(_localctx, 6, RULE_dec_instruccion);
+	public final InstruccionContext instruccion() throws RecognitionException {
+		InstruccionContext _localctx = new InstruccionContext(_ctx, getState());
+		enterRule(_localctx, 6, RULE_instruccion);
 		try {
-			setState(71);
+			setState(70);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,4,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(58);
-				((Dec_instruccionContext)_localctx).dec_f1 = dec_f1();
-
-				      Map<Object, Integer> mapa = new HashMap<Object, Integer>();
-				      mapa.put(((Dec_instruccionContext)_localctx).dec_f1.value, 1);
-				      lineas.put(linea++,mapa);
-				    
+				setState(55);
+				inst_f1();
+				setState(56);
+				match(FIN_INSTRUCCION);
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(61);
-				((Dec_instruccionContext)_localctx).dec_f2 = dec_f2();
-
-				      Map<Object, Integer> mapa = new HashMap<Object, Integer>();
-				      mapa.put(((Dec_instruccionContext)_localctx).dec_f2.value, 2);
-				      lineas.put(linea++,mapa);
-				    
+				setState(58);
+				inst_f2();
+				setState(59);
+				match(FIN_INSTRUCCION);
 				}
 				break;
 			case 3:
 				enterOuterAlt(_localctx, 3);
 				{
-				setState(64);
-				((Dec_instruccionContext)_localctx).dec_f3 = dec_f3();
-
-				      Map<Object, Integer> mapa = new HashMap<Object, Integer>();
-				      mapa.put(((Dec_instruccionContext)_localctx).dec_f3.value, 3);
-				      lineas.put(linea++,mapa);
-				    
+				setState(61);
+				inst_f3();
+				setState(62);
+				match(FIN_INSTRUCCION);
 				}
 				break;
 			case 4:
 				enterOuterAlt(_localctx, 4);
 				{
-				setState(67);
-				((Dec_instruccionContext)_localctx).dec_f4 = dec_f4();
-
-				      Map<Object, Integer> mapa = new HashMap<Object, Integer>();
-				      mapa.put(((Dec_instruccionContext)_localctx).dec_f4.value, 4);
-				      lineas.put(linea++,mapa);
-				    
+				setState(64);
+				inst_f4();
+				setState(65);
+				match(FIN_INSTRUCCION);
 				}
 				break;
 			case 5:
 				enterOuterAlt(_localctx, 5);
 				{
-				setState(70);
-				dec_directiva();
+				setState(67);
+				directiva();
+				setState(68);
+				match(FIN_INSTRUCCION);
 				}
 				break;
 			}
@@ -383,426 +369,37 @@ public class sicstdParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Dec_f2Context extends ParserRuleContext {
-		public Object value;
-		public Token SIMBOLO;
-		public TerminalNode INSF2() { return getToken(sicstdParser.INSF2, 0); }
-		public List<TerminalNode> REGISTRO() { return getTokens(sicstdParser.REGISTRO); }
-		public TerminalNode REGISTRO(int i) {
-			return getToken(sicstdParser.REGISTRO, i);
-		}
-		public TerminalNode COMA() { return getToken(sicstdParser.COMA, 0); }
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
-		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
-		public Dec_f2Context(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_dec_f2; }
-	}
-
-	public final Dec_f2Context dec_f2() throws RecognitionException {
-		Dec_f2Context _localctx = new Dec_f2Context(_ctx, getState());
-		enterRule(_localctx, 8, RULE_dec_f2);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(74);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==SIMBOLO) {
-				{
-				setState(73);
-				((Dec_f2Context)_localctx).SIMBOLO = match(SIMBOLO);
-				}
-			}
-
-			setState(76);
-			match(INSF2);
-			setState(77);
-			match(REGISTRO);
-			setState(78);
-			match(COMA);
-			setState(79);
-			match(REGISTRO);
-			setState(80);
-			match(FIN_INSTRUCCION);
-			((Dec_f2Context)_localctx).value =  (((Dec_f2Context)_localctx).SIMBOLO!=null?((Dec_f2Context)_localctx).SIMBOLO.getText():null) + "," + "F2";
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class Dec_f1Context extends ParserRuleContext {
-		public Object value;
+	public static class Inst_f1Context extends ParserRuleContext {
 		public Token SIMBOLO;
 		public TerminalNode INSF1() { return getToken(sicstdParser.INSF1, 0); }
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
 		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
-		public Dec_f1Context(ParserRuleContext parent, int invokingState) {
+		public Inst_f1Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_dec_f1; }
+		@Override public int getRuleIndex() { return RULE_inst_f1; }
 	}
 
-	public final Dec_f1Context dec_f1() throws RecognitionException {
-		Dec_f1Context _localctx = new Dec_f1Context(_ctx, getState());
-		enterRule(_localctx, 10, RULE_dec_f1);
+	public final Inst_f1Context inst_f1() throws RecognitionException {
+		Inst_f1Context _localctx = new Inst_f1Context(_ctx, getState());
+		enterRule(_localctx, 8, RULE_inst_f1);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(84);
+			setState(73);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SIMBOLO) {
 				{
-				setState(83);
-				((Dec_f1Context)_localctx).SIMBOLO = match(SIMBOLO);
+				setState(72);
+				((Inst_f1Context)_localctx).SIMBOLO = match(SIMBOLO);
 				}
 			}
 
-			setState(86);
+			setState(75);
 			match(INSF1);
-			setState(87);
-			match(FIN_INSTRUCCION);
-			((Dec_f1Context)_localctx).value =  (((Dec_f1Context)_localctx).SIMBOLO!=null?((Dec_f1Context)_localctx).SIMBOLO.getText():null) + "," + "F1";
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
 
-	public static class Dec_f3Context extends ParserRuleContext {
-		public Object value;
-		public SimpleContext simple;
-		public IndirectoContext indirecto;
-		public InmediatoContext inmediato;
-		public SimpleContext simple() {
-			return getRuleContext(SimpleContext.class,0);
-		}
-		public IndirectoContext indirecto() {
-			return getRuleContext(IndirectoContext.class,0);
-		}
-		public InmediatoContext inmediato() {
-			return getRuleContext(InmediatoContext.class,0);
-		}
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
-		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
-		public Dec_f3Context(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_dec_f3; }
-	}
-
-	public final Dec_f3Context dec_f3() throws RecognitionException {
-		Dec_f3Context _localctx = new Dec_f3Context(_ctx, getState());
-		enterRule(_localctx, 12, RULE_dec_f3);
-		int _la;
-		try {
-			setState(105);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,8,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(90);
-				((Dec_f3Context)_localctx).simple = simple();
-				((Dec_f3Context)_localctx).value =  ((Dec_f3Context)_localctx).simple.value;
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(93);
-				((Dec_f3Context)_localctx).indirecto = indirecto();
-				((Dec_f3Context)_localctx).value =  ((Dec_f3Context)_localctx).indirecto.value;
-				}
-				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(96);
-				((Dec_f3Context)_localctx).inmediato = inmediato();
-				((Dec_f3Context)_localctx).value =  ((Dec_f3Context)_localctx).inmediato.value;
-				}
-				break;
-			case 4:
-				enterOuterAlt(_localctx, 4);
-				{
-				setState(100);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==SIMBOLO) {
-					{
-					setState(99);
-					match(SIMBOLO);
-					}
-				}
-
-				setState(102);
-				match(T__0);
-				setState(103);
-				match(FIN_INSTRUCCION);
-				((Dec_f3Context)_localctx).value =  "F3";
-				}
-				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class Dec_f4Context extends ParserRuleContext {
-		public Object value;
-		public Token SIMBOLO;
-		public TerminalNode MAS() { return getToken(sicstdParser.MAS, 0); }
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
-		public TerminalNode INSF3() { return getToken(sicstdParser.INSF3, 0); }
-		public List<TerminalNode> SIMBOLO() { return getTokens(sicstdParser.SIMBOLO); }
-		public TerminalNode SIMBOLO(int i) {
-			return getToken(sicstdParser.SIMBOLO, i);
-		}
-		public TerminalNode COMA() { return getToken(sicstdParser.COMA, 0); }
-		public TerminalNode X() { return getToken(sicstdParser.X, 0); }
-		public TerminalNode ARROBA() { return getToken(sicstdParser.ARROBA, 0); }
-		public TerminalNode SHARP() { return getToken(sicstdParser.SHARP, 0); }
-		public TerminalNode CONSTANTE() { return getToken(sicstdParser.CONSTANTE, 0); }
-		public Dec_f4Context(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_dec_f4; }
-	}
-
-	public final Dec_f4Context dec_f4() throws RecognitionException {
-		Dec_f4Context _localctx = new Dec_f4Context(_ctx, getState());
-		enterRule(_localctx, 14, RULE_dec_f4);
-		int _la;
-		try {
-			setState(129);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(108);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==SIMBOLO) {
-					{
-					setState(107);
-					((Dec_f4Context)_localctx).SIMBOLO = match(SIMBOLO);
-					}
-				}
-
-				setState(110);
-				match(MAS);
-				{
-				setState(111);
-				match(INSF3);
-				}
-				setState(116);
-				_errHandler.sync(this);
-				switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
-				case 1:
-					{
-					setState(112);
-					((Dec_f4Context)_localctx).SIMBOLO = match(SIMBOLO);
-					}
-					break;
-				case 2:
-					{
-					setState(113);
-					((Dec_f4Context)_localctx).SIMBOLO = match(SIMBOLO);
-					setState(114);
-					match(COMA);
-					setState(115);
-					match(X);
-					}
-					break;
-				}
-				setState(118);
-				match(FIN_INSTRUCCION);
-				((Dec_f4Context)_localctx).value =  (((Dec_f4Context)_localctx).SIMBOLO!=null?((Dec_f4Context)_localctx).SIMBOLO.getText():null) + "," + "F4";
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(121);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==SIMBOLO) {
-					{
-					setState(120);
-					((Dec_f4Context)_localctx).SIMBOLO = match(SIMBOLO);
-					}
-				}
-
-				setState(123);
-				match(MAS);
-				{
-				setState(124);
-				match(INSF3);
-				}
-				setState(125);
-				_la = _input.LA(1);
-				if ( !(_la==SHARP || _la==ARROBA) ) {
-				_errHandler.recoverInline(this);
-				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
-					consume();
-				}
-				setState(126);
-				_la = _input.LA(1);
-				if ( !(_la==SIMBOLO || _la==CONSTANTE) ) {
-				_errHandler.recoverInline(this);
-				}
-				else {
-					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-					_errHandler.reportMatch(this);
-					consume();
-				}
-				setState(127);
-				match(FIN_INSTRUCCION);
-				((Dec_f4Context)_localctx).value =  (((Dec_f4Context)_localctx).SIMBOLO!=null?((Dec_f4Context)_localctx).SIMBOLO.getText():null) + "," + "F4";
-				}
-				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class Dec_directivaContext extends ParserRuleContext {
-		public Dec_baseContext dec_base() {
-			return getRuleContext(Dec_baseContext.class,0);
-		}
-		public Dec_byteContext dec_byte() {
-			return getRuleContext(Dec_byteContext.class,0);
-		}
-		public DirectivaContext directiva() {
-			return getRuleContext(DirectivaContext.class,0);
-		}
-		public Dec_directivaContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_dec_directiva; }
-	}
-
-	public final Dec_directivaContext dec_directiva() throws RecognitionException {
-		Dec_directivaContext _localctx = new Dec_directivaContext(_ctx, getState());
-		enterRule(_localctx, 16, RULE_dec_directiva);
-		try {
-			setState(134);
-			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,13,_ctx) ) {
-			case 1:
-				enterOuterAlt(_localctx, 1);
-				{
-				setState(131);
-				dec_base();
-				}
-				break;
-			case 2:
-				enterOuterAlt(_localctx, 2);
-				{
-				setState(132);
-				dec_byte();
-				}
-				break;
-			case 3:
-				enterOuterAlt(_localctx, 3);
-				{
-				setState(133);
-				directiva();
-				}
-				break;
-			}
-		}
-		catch (RecognitionException re) {
-			_localctx.exception = re;
-			_errHandler.reportError(this, re);
-			_errHandler.recover(this, re);
-		}
-		finally {
-			exitRule();
-		}
-		return _localctx;
-	}
-
-	public static class Dec_baseContext extends ParserRuleContext {
-		public Token SIMBOLO;
-		public TerminalNode BASE() { return getToken(sicstdParser.BASE, 0); }
-		public List<TerminalNode> SIMBOLO() { return getTokens(sicstdParser.SIMBOLO); }
-		public TerminalNode SIMBOLO(int i) {
-			return getToken(sicstdParser.SIMBOLO, i);
-		}
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
-		public Dec_baseContext(ParserRuleContext parent, int invokingState) {
-			super(parent, invokingState);
-		}
-		@Override public int getRuleIndex() { return RULE_dec_base; }
-	}
-
-	public final Dec_baseContext dec_base() throws RecognitionException {
-		Dec_baseContext _localctx = new Dec_baseContext(_ctx, getState());
-		enterRule(_localctx, 18, RULE_dec_base);
-		int _la;
-		try {
-			enterOuterAlt(_localctx, 1);
-			{
-			setState(137);
-			_errHandler.sync(this);
-			_la = _input.LA(1);
-			if (_la==SIMBOLO) {
-				{
-				setState(136);
-				((Dec_baseContext)_localctx).SIMBOLO = match(SIMBOLO);
-				}
-			}
-
-			setState(139);
-			match(BASE);
-			setState(140);
-			((Dec_baseContext)_localctx).SIMBOLO = match(SIMBOLO);
-			setState(141);
-			match(FIN_INSTRUCCION);
-
-			      Map<String, Object> mapa = new HashMap<String, Object>();
-			      mapa.put("Base", (((Dec_baseContext)_localctx).SIMBOLO!=null?((Dec_baseContext)_localctx).SIMBOLO.getText():null));
-			      lineas.put(linea++,mapa);
+			        listaInstrucciones.add(new Instruccion("INSF1","",(((Inst_f1Context)_localctx).SIMBOLO!=null?((Inst_f1Context)_localctx).SIMBOLO.getText():null)));
 			    
 			}
 		}
@@ -817,98 +414,156 @@ public class sicstdParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Dec_byteContext extends ParserRuleContext {
-		public Valor_byteContext valor_byte;
-		public Token HEXADECIMAL;
-		public TerminalNode BYTE() { return getToken(sicstdParser.BYTE, 0); }
-		public TerminalNode C() { return getToken(sicstdParser.C, 0); }
-		public List<TerminalNode> COMILLA() { return getTokens(sicstdParser.COMILLA); }
-		public TerminalNode COMILLA(int i) {
-			return getToken(sicstdParser.COMILLA, i);
+	public static class Inst_f2Context extends ParserRuleContext {
+		public Token SIMBOLO;
+		public Token NUMERO;
+		public TerminalNode INSF2() { return getToken(sicstdParser.INSF2, 0); }
+		public TerminalNode COMA() { return getToken(sicstdParser.COMA, 0); }
+		public List<TerminalNode> REGISTRO() { return getTokens(sicstdParser.REGISTRO); }
+		public TerminalNode REGISTRO(int i) {
+			return getToken(sicstdParser.REGISTRO, i);
 		}
-		public Valor_byteContext valor_byte() {
-			return getRuleContext(Valor_byteContext.class,0);
+		public List<TerminalNode> X() { return getTokens(sicstdParser.X); }
+		public TerminalNode X(int i) {
+			return getToken(sicstdParser.X, i);
 		}
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
 		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
-		public TerminalNode X() { return getToken(sicstdParser.X, 0); }
-		public TerminalNode HEXADECIMAL() { return getToken(sicstdParser.HEXADECIMAL, 0); }
-		public Dec_byteContext(ParserRuleContext parent, int invokingState) {
+		public TerminalNode CLEAR() { return getToken(sicstdParser.CLEAR, 0); }
+		public TerminalNode SHIFT() { return getToken(sicstdParser.SHIFT, 0); }
+		public TerminalNode NUMERO() { return getToken(sicstdParser.NUMERO, 0); }
+		public TerminalNode SVC() { return getToken(sicstdParser.SVC, 0); }
+		public Inst_f2Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_dec_byte; }
+		@Override public int getRuleIndex() { return RULE_inst_f2; }
 	}
 
-	public final Dec_byteContext dec_byte() throws RecognitionException {
-		Dec_byteContext _localctx = new Dec_byteContext(_ctx, getState());
-		enterRule(_localctx, 20, RULE_dec_byte);
+	public final Inst_f2Context inst_f2() throws RecognitionException {
+		Inst_f2Context _localctx = new Inst_f2Context(_ctx, getState());
+		enterRule(_localctx, 10, RULE_inst_f2);
 		int _la;
 		try {
-			setState(165);
+			setState(106);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,17,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,10,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(145);
+				setState(79);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==SIMBOLO) {
 					{
-					setState(144);
-					match(SIMBOLO);
+					setState(78);
+					((Inst_f2Context)_localctx).SIMBOLO = match(SIMBOLO);
 					}
 				}
 
-				setState(147);
-				match(BYTE);
-				setState(148);
-				match(C);
-				setState(149);
-				match(COMILLA);
-				setState(150);
-				((Dec_byteContext)_localctx).valor_byte = valor_byte();
-				setState(151);
-				match(COMILLA);
-				setState(152);
-				match(FIN_INSTRUCCION);
-
-				        Map<String, Object> mapa = new HashMap<String, Object>();
-				        mapa.put("ByteC", ((Dec_byteContext)_localctx).valor_byte.value);
-				        lineas.put(linea++,mapa);
-				    
+				setState(81);
+				match(INSF2);
+				setState(82);
+				_la = _input.LA(1);
+				if ( !(_la==X || _la==REGISTRO) ) {
+				_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
+				setState(83);
+				match(COMA);
+				setState(84);
+				_la = _input.LA(1);
+				if ( !(_la==X || _la==REGISTRO) ) {
+				_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
+				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null)));
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(156);
+				setState(87);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 				if (_la==SIMBOLO) {
 					{
-					setState(155);
-					match(SIMBOLO);
+					setState(86);
+					((Inst_f2Context)_localctx).SIMBOLO = match(SIMBOLO);
 					}
 				}
 
-				setState(158);
-				match(BYTE);
-				setState(159);
-				match(X);
-				setState(160);
-				match(COMILLA);
-				setState(161);
-				((Dec_byteContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
-				setState(162);
-				match(COMILLA);
-				setState(163);
-				match(FIN_INSTRUCCION);
+				setState(89);
+				match(CLEAR);
+				setState(90);
+				_la = _input.LA(1);
+				if ( !(_la==X || _la==REGISTRO) ) {
+				_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
+				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null)));
+				}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(93);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				if (_la==SIMBOLO) {
+					{
+					setState(92);
+					((Inst_f2Context)_localctx).SIMBOLO = match(SIMBOLO);
+					}
+				}
 
-				        Map<String, Object> mapa = new HashMap<String, Object>();
-				        mapa.put("ByteX", (((Dec_byteContext)_localctx).HEXADECIMAL!=null?((Dec_byteContext)_localctx).HEXADECIMAL.getText():null));
-				        lineas.put(linea++,mapa);
-				    
+				setState(95);
+				match(SHIFT);
+				setState(96);
+				_la = _input.LA(1);
+				if ( !(_la==X || _la==REGISTRO) ) {
+				_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
+				setState(97);
+				match(COMA);
+				setState(98);
+				match(NUMERO);
+				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null)));
+				}
+				break;
+			case 4:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(101);
+				_errHandler.sync(this);
+				_la = _input.LA(1);
+				if (_la==SIMBOLO) {
+					{
+					setState(100);
+					((Inst_f2Context)_localctx).SIMBOLO = match(SIMBOLO);
+					}
+				}
+
+				setState(103);
+				match(SVC);
+				setState(104);
+				((Inst_f2Context)_localctx).NUMERO = match(NUMERO);
+				listaInstrucciones.add(new Instruccion("INSF2",(((Inst_f2Context)_localctx).NUMERO!=null?((Inst_f2Context)_localctx).NUMERO.getText():null),(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null)));
 				}
 				break;
 			}
@@ -924,39 +579,39 @@ public class sicstdParser extends Parser {
 		return _localctx;
 	}
 
-	public static class Valor_byteContext extends ParserRuleContext {
-		public Object value;
-		public Token SIMBOLO;
-		public Token HEXADECIMAL;
-		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
-		public TerminalNode HEXADECIMAL() { return getToken(sicstdParser.HEXADECIMAL, 0); }
-		public Valor_byteContext(ParserRuleContext parent, int invokingState) {
+	public static class Op_insf2Context extends ParserRuleContext {
+		public String value;
+		public Token REGISTRO;
+		public Token X;
+		public TerminalNode REGISTRO() { return getToken(sicstdParser.REGISTRO, 0); }
+		public TerminalNode X() { return getToken(sicstdParser.X, 0); }
+		public Op_insf2Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_valor_byte; }
+		@Override public int getRuleIndex() { return RULE_op_insf2; }
 	}
 
-	public final Valor_byteContext valor_byte() throws RecognitionException {
-		Valor_byteContext _localctx = new Valor_byteContext(_ctx, getState());
-		enterRule(_localctx, 22, RULE_valor_byte);
+	public final Op_insf2Context op_insf2() throws RecognitionException {
+		Op_insf2Context _localctx = new Op_insf2Context(_ctx, getState());
+		enterRule(_localctx, 12, RULE_op_insf2);
 		try {
-			setState(171);
+			setState(112);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
-			case SIMBOLO:
+			case REGISTRO:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(167);
-				((Valor_byteContext)_localctx).SIMBOLO = match(SIMBOLO);
-				((Valor_byteContext)_localctx).value =  (((Valor_byteContext)_localctx).SIMBOLO!=null?((Valor_byteContext)_localctx).SIMBOLO.getText():null);
+				setState(108);
+				((Op_insf2Context)_localctx).REGISTRO = match(REGISTRO);
+				((Op_insf2Context)_localctx).value =  (((Op_insf2Context)_localctx).REGISTRO!=null?((Op_insf2Context)_localctx).REGISTRO.getText():null);
 				}
 				break;
-			case HEXADECIMAL:
+			case X:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(169);
-				((Valor_byteContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
-				((Valor_byteContext)_localctx).value =  (((Valor_byteContext)_localctx).HEXADECIMAL!=null?((Valor_byteContext)_localctx).HEXADECIMAL.getText():null);
+				setState(110);
+				((Op_insf2Context)_localctx).X = match(X);
+				((Op_insf2Context)_localctx).value =  (((Op_insf2Context)_localctx).X!=null?((Op_insf2Context)_localctx).X.getText():null);
 				}
 				break;
 			default:
@@ -974,89 +629,58 @@ public class sicstdParser extends Parser {
 		return _localctx;
 	}
 
-	public static class DirectivaContext extends ParserRuleContext {
-		public Token DIRECTIVA;
-		public Token CONSTANTE;
-		public Token HEXADECIMAL;
-		public TerminalNode DIRECTIVA() { return getToken(sicstdParser.DIRECTIVA, 0); }
-		public TerminalNode CONSTANTE() { return getToken(sicstdParser.CONSTANTE, 0); }
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
-		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
-		public TerminalNode HEXADECIMAL() { return getToken(sicstdParser.HEXADECIMAL, 0); }
-		public TerminalNode H() { return getToken(sicstdParser.H, 0); }
-		public DirectivaContext(ParserRuleContext parent, int invokingState) {
+	public static class Inst_f3Context extends ParserRuleContext {
+		public SimpleContext simple() {
+			return getRuleContext(SimpleContext.class,0);
+		}
+		public IndirectoContext indirecto() {
+			return getRuleContext(IndirectoContext.class,0);
+		}
+		public InmediatoContext inmediato() {
+			return getRuleContext(InmediatoContext.class,0);
+		}
+		public TerminalNode RSUB() { return getToken(sicstdParser.RSUB, 0); }
+		public Inst_f3Context(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
-		@Override public int getRuleIndex() { return RULE_directiva; }
+		@Override public int getRuleIndex() { return RULE_inst_f3; }
 	}
 
-	public final DirectivaContext directiva() throws RecognitionException {
-		DirectivaContext _localctx = new DirectivaContext(_ctx, getState());
-		enterRule(_localctx, 24, RULE_directiva);
-		int _la;
+	public final Inst_f3Context inst_f3() throws RecognitionException {
+		Inst_f3Context _localctx = new Inst_f3Context(_ctx, getState());
+		enterRule(_localctx, 14, RULE_inst_f3);
 		try {
-			setState(190);
+			setState(119);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,12,_ctx) ) {
 			case 1:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(174);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==SIMBOLO) {
-					{
-					setState(173);
-					match(SIMBOLO);
-					}
-				}
-
-				setState(176);
-				((DirectivaContext)_localctx).DIRECTIVA = match(DIRECTIVA);
-				setState(177);
-				((DirectivaContext)_localctx).CONSTANTE = match(CONSTANTE);
-				setState(178);
-				match(FIN_INSTRUCCION);
-
-				        Map<String, Object> mapa = new HashMap<String, Object>();
-				        mapa.put((((DirectivaContext)_localctx).DIRECTIVA!=null?((DirectivaContext)_localctx).DIRECTIVA.getText():null), (((DirectivaContext)_localctx).CONSTANTE!=null?((DirectivaContext)_localctx).CONSTANTE.getText():null));
-				        lineas.put(linea++,mapa);
-				    
+				setState(114);
+				simple();
 				}
 				break;
 			case 2:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(181);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==SIMBOLO) {
-					{
-					setState(180);
-					match(SIMBOLO);
-					}
+				setState(115);
+				indirecto();
 				}
-
-				setState(183);
-				((DirectivaContext)_localctx).DIRECTIVA = match(DIRECTIVA);
-				setState(184);
-				((DirectivaContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
-				setState(186);
-				_errHandler.sync(this);
-				_la = _input.LA(1);
-				if (_la==H) {
-					{
-					setState(185);
-					match(H);
-					}
+				break;
+			case 3:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(116);
+				inmediato();
 				}
+				break;
+			case 4:
+				enterOuterAlt(_localctx, 4);
+				{
+				setState(117);
+				match(RSUB);
 
-				setState(188);
-				match(FIN_INSTRUCCION);
-
-				        Map<String, Object> mapa = new HashMap<String, Object>();
-				        mapa.put((((DirectivaContext)_localctx).DIRECTIVA!=null?((DirectivaContext)_localctx).DIRECTIVA.getText():null), (((DirectivaContext)_localctx).HEXADECIMAL!=null?((DirectivaContext)_localctx).HEXADECIMAL.getText():null));
-				        lineas.put(linea++,mapa);
+				        listaInstrucciones.add(new Instruccion("INSF3","",""));
 				    
 				}
 				break;
@@ -1073,17 +697,322 @@ public class sicstdParser extends Parser {
 		return _localctx;
 	}
 
-	public static class SimpleContext extends ParserRuleContext {
-		public Object value;
+	public static class Inst_f4Context extends ParserRuleContext {
+		public Token SIMBOLO;
+		public DireccionContext direccion;
+		public TerminalNode MAS() { return getToken(sicstdParser.MAS, 0); }
 		public TerminalNode INSF3() { return getToken(sicstdParser.INSF3, 0); }
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
-		public TerminalNode CONSTANTE() { return getToken(sicstdParser.CONSTANTE, 0); }
+		public DireccionContext direccion() {
+			return getRuleContext(DireccionContext.class,0);
+		}
+		public TerminalNode COMA() { return getToken(sicstdParser.COMA, 0); }
+		public TerminalNode X() { return getToken(sicstdParser.X, 0); }
+		public TerminalNode ARROBA() { return getToken(sicstdParser.ARROBA, 0); }
+		public TerminalNode SHARP() { return getToken(sicstdParser.SHARP, 0); }
+		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
+		public Inst_f4Context(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_inst_f4; }
+	}
+
+	public final Inst_f4Context inst_f4() throws RecognitionException {
+		Inst_f4Context _localctx = new Inst_f4Context(_ctx, getState());
+		enterRule(_localctx, 16, RULE_inst_f4);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(122);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==SIMBOLO) {
+				{
+				setState(121);
+				((Inst_f4Context)_localctx).SIMBOLO = match(SIMBOLO);
+				}
+			}
+
+			setState(124);
+			match(MAS);
+			{
+			setState(125);
+			match(INSF3);
+			}
+			setState(142);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,14,_ctx) ) {
+			case 1:
+				{
+				setState(126);
+				((Inst_f4Context)_localctx).direccion = direccion();
+
+				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null)));
+				        
+				}
+				break;
+			case 2:
+				{
+				setState(129);
+				((Inst_f4Context)_localctx).direccion = direccion();
+				setState(130);
+				match(COMA);
+				setState(131);
+				match(X);
+
+				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value + ", X",(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null)));
+				        
+				}
+				break;
+			case 3:
+				{
+				setState(134);
+				match(ARROBA);
+				{
+				setState(135);
+				((Inst_f4Context)_localctx).direccion = direccion();
+				}
+
+				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null)));
+				        
+				}
+				break;
+			case 4:
+				{
+				setState(138);
+				match(SHARP);
+				{
+				setState(139);
+				((Inst_f4Context)_localctx).direccion = direccion();
+				}
+
+				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null)));
+				        
+				}
+				break;
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class DirectivaContext extends ParserRuleContext {
+		public Token SIMBOLO;
+		public Token DIRECTIVA;
+		public Token NUMERO;
+		public Token HEXADECIMAL;
+		public TerminalNode DIRECTIVA() { return getToken(sicstdParser.DIRECTIVA, 0); }
+		public TerminalNode BYTE() { return getToken(sicstdParser.BYTE, 0); }
+		public TerminalNode BASE() { return getToken(sicstdParser.BASE, 0); }
 		public List<TerminalNode> SIMBOLO() { return getTokens(sicstdParser.SIMBOLO); }
 		public TerminalNode SIMBOLO(int i) {
 			return getToken(sicstdParser.SIMBOLO, i);
 		}
+		public TerminalNode NUMERO() { return getToken(sicstdParser.NUMERO, 0); }
+		public TerminalNode HEXADECIMAL() { return getToken(sicstdParser.HEXADECIMAL, 0); }
+		public TerminalNode C() { return getToken(sicstdParser.C, 0); }
+		public List<TerminalNode> COMILLA() { return getTokens(sicstdParser.COMILLA); }
+		public TerminalNode COMILLA(int i) {
+			return getToken(sicstdParser.COMILLA, i);
+		}
+		public TerminalNode X() { return getToken(sicstdParser.X, 0); }
+		public DirectivaContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_directiva; }
+	}
+
+	public final DirectivaContext directiva() throws RecognitionException {
+		DirectivaContext _localctx = new DirectivaContext(_ctx, getState());
+		enterRule(_localctx, 18, RULE_directiva);
+		int _la;
+		try {
+			enterOuterAlt(_localctx, 1);
+			{
+			setState(145);
+			_errHandler.sync(this);
+			_la = _input.LA(1);
+			if (_la==SIMBOLO) {
+				{
+				setState(144);
+				((DirectivaContext)_localctx).SIMBOLO = match(SIMBOLO);
+				}
+			}
+
+			setState(170);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case DIRECTIVA:
+				{
+				setState(147);
+				((DirectivaContext)_localctx).DIRECTIVA = match(DIRECTIVA);
+				setState(152);
+				_errHandler.sync(this);
+				switch (_input.LA(1)) {
+				case NUMERO:
+					{
+					setState(148);
+					((DirectivaContext)_localctx).NUMERO = match(NUMERO);
+					listaInstrucciones.add(new Instruccion((((DirectivaContext)_localctx).DIRECTIVA!=null?((DirectivaContext)_localctx).DIRECTIVA.getText():null),(((DirectivaContext)_localctx).NUMERO!=null?((DirectivaContext)_localctx).NUMERO.getText():null),(((DirectivaContext)_localctx).SIMBOLO!=null?((DirectivaContext)_localctx).SIMBOLO.getText():null)));
+					}
+					break;
+				case HEXADECIMAL:
+					{
+					setState(150);
+					((DirectivaContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
+					listaInstrucciones.add(new Instruccion((((DirectivaContext)_localctx).DIRECTIVA!=null?((DirectivaContext)_localctx).DIRECTIVA.getText():null),(((DirectivaContext)_localctx).HEXADECIMAL!=null?((DirectivaContext)_localctx).HEXADECIMAL.getText():null),(((DirectivaContext)_localctx).SIMBOLO!=null?((DirectivaContext)_localctx).SIMBOLO.getText():null)));
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
+				}
+				break;
+			case BYTE:
+				{
+				setState(154);
+				match(BYTE);
+				setState(165);
+				_errHandler.sync(this);
+				switch (_input.LA(1)) {
+				case C:
+					{
+					setState(155);
+					match(C);
+					setState(156);
+					match(COMILLA);
+					setState(157);
+					((DirectivaContext)_localctx).SIMBOLO = match(SIMBOLO);
+					setState(158);
+					match(COMILLA);
+
+					                listaInstrucciones.add(new Instruccion("BYTEC",(((DirectivaContext)_localctx).SIMBOLO!=null?((DirectivaContext)_localctx).SIMBOLO.getText():null),"C"));
+					            
+					}
+					break;
+				case X:
+					{
+					setState(160);
+					match(X);
+					setState(161);
+					match(COMILLA);
+					setState(162);
+					((DirectivaContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
+					setState(163);
+					match(COMILLA);
+					listaInstrucciones.add(new Instruccion("BYTEX",(((DirectivaContext)_localctx).HEXADECIMAL!=null?((DirectivaContext)_localctx).HEXADECIMAL.getText():null),"X"));
+					}
+					break;
+				default:
+					throw new NoViableAltException(this);
+				}
+				}
+				break;
+			case BASE:
+				{
+				setState(167);
+				match(BASE);
+				setState(168);
+				((DirectivaContext)_localctx).SIMBOLO = match(SIMBOLO);
+				listaInstrucciones.add(new Instruccion("BASE",(((DirectivaContext)_localctx).SIMBOLO!=null?((DirectivaContext)_localctx).SIMBOLO.getText():null)));
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class DireccionContext extends ParserRuleContext {
+		public Object value;
+		public Token HEXADECIMAL;
+		public Token NUMERO;
+		public Token SIMBOLO;
+		public TerminalNode HEXADECIMAL() { return getToken(sicstdParser.HEXADECIMAL, 0); }
+		public TerminalNode NUMERO() { return getToken(sicstdParser.NUMERO, 0); }
+		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
+		public DireccionContext(ParserRuleContext parent, int invokingState) {
+			super(parent, invokingState);
+		}
+		@Override public int getRuleIndex() { return RULE_direccion; }
+	}
+
+	public final DireccionContext direccion() throws RecognitionException {
+		DireccionContext _localctx = new DireccionContext(_ctx, getState());
+		enterRule(_localctx, 20, RULE_direccion);
+		try {
+			setState(178);
+			_errHandler.sync(this);
+			switch (_input.LA(1)) {
+			case HEXADECIMAL:
+				enterOuterAlt(_localctx, 1);
+				{
+				setState(172);
+				((DireccionContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
+				((DireccionContext)_localctx).value =  (((DireccionContext)_localctx).HEXADECIMAL!=null?((DireccionContext)_localctx).HEXADECIMAL.getText():null);
+				}
+				break;
+			case NUMERO:
+				enterOuterAlt(_localctx, 2);
+				{
+				setState(174);
+				((DireccionContext)_localctx).NUMERO = match(NUMERO);
+				((DireccionContext)_localctx).value =  (((DireccionContext)_localctx).NUMERO!=null?((DireccionContext)_localctx).NUMERO.getText():null);
+				}
+				break;
+			case SIMBOLO:
+				enterOuterAlt(_localctx, 3);
+				{
+				setState(176);
+				((DireccionContext)_localctx).SIMBOLO = match(SIMBOLO);
+				((DireccionContext)_localctx).value =  (((DireccionContext)_localctx).SIMBOLO!=null?((DireccionContext)_localctx).SIMBOLO.getText():null);
+				}
+				break;
+			default:
+				throw new NoViableAltException(this);
+			}
+		}
+		catch (RecognitionException re) {
+			_localctx.exception = re;
+			_errHandler.reportError(this, re);
+			_errHandler.recover(this, re);
+		}
+		finally {
+			exitRule();
+		}
+		return _localctx;
+	}
+
+	public static class SimpleContext extends ParserRuleContext {
+		public Token SIMBOLO;
+		public Token NUMERO;
+		public DireccionContext direccion;
+		public TerminalNode INSF3() { return getToken(sicstdParser.INSF3, 0); }
+		public TerminalNode NUMERO() { return getToken(sicstdParser.NUMERO, 0); }
+		public DireccionContext direccion() {
+			return getRuleContext(DireccionContext.class,0);
+		}
 		public TerminalNode COMA() { return getToken(sicstdParser.COMA, 0); }
 		public TerminalNode X() { return getToken(sicstdParser.X, 0); }
+		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
 		public SimpleContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1092,62 +1021,67 @@ public class sicstdParser extends Parser {
 
 	public final SimpleContext simple() throws RecognitionException {
 		SimpleContext _localctx = new SimpleContext(_ctx, getState());
-		enterRule(_localctx, 26, RULE_simple);
+		enterRule(_localctx, 22, RULE_simple);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(193);
+			setState(181);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SIMBOLO) {
 				{
-				setState(192);
-				match(SIMBOLO);
+				setState(180);
+				((SimpleContext)_localctx).SIMBOLO = match(SIMBOLO);
 				}
 			}
 
-			setState(195);
+			setState(183);
 			match(INSF3);
-			setState(204);
+			setState(198);
 			_errHandler.sync(this);
-			switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
+			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
 			case 1:
 				{
-				setState(196);
-				match(CONSTANTE);
+				setState(184);
+				((SimpleContext)_localctx).NUMERO = match(NUMERO);
+				listaInstrucciones.add(new Instruccion("INSF3",(((SimpleContext)_localctx).NUMERO!=null?((SimpleContext)_localctx).NUMERO.getText():null),(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null)));
 				}
 				break;
 			case 2:
 				{
-				setState(197);
-				match(SIMBOLO);
+				setState(186);
+				((SimpleContext)_localctx).direccion = direccion();
+				listaInstrucciones.add(new Instruccion("INSF3",(String)((SimpleContext)_localctx).direccion.value,(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null)));
 				}
 				break;
 			case 3:
 				{
-				setState(198);
-				match(CONSTANTE);
-				setState(199);
-				match(COMA);
-				setState(200);
-				match(X);
+				setState(194);
+				_errHandler.sync(this);
+				switch ( getInterpreter().adaptivePredict(_input,21,_ctx) ) {
+				case 1:
+					{
+					setState(189);
+					((SimpleContext)_localctx).NUMERO = match(NUMERO);
+					listaInstrucciones.add(new Instruccion("INSF3",(((SimpleContext)_localctx).NUMERO!=null?((SimpleContext)_localctx).NUMERO.getText():null) + ",X",(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null)));
+					}
+					break;
+				case 2:
+					{
+					setState(191);
+					((SimpleContext)_localctx).direccion = direccion();
+					listaInstrucciones.add(new Instruccion("INSF3",(String)((SimpleContext)_localctx).direccion.value + ",X",(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null)));
+					}
+					break;
 				}
-				break;
-			case 4:
-				{
-				setState(201);
-				match(SIMBOLO);
-				setState(202);
+				setState(196);
 				match(COMA);
-				setState(203);
+				setState(197);
 				match(X);
 				}
 				break;
 			}
-			setState(206);
-			match(FIN_INSTRUCCION);
-			((SimpleContext)_localctx).value =  "F3";
 			}
 		}
 		catch (RecognitionException re) {
@@ -1163,14 +1097,16 @@ public class sicstdParser extends Parser {
 
 	public static class IndirectoContext extends ParserRuleContext {
 		public Object value;
+		public Token SIMBOLO;
+		public Token NUMERO;
+		public DireccionContext direccion;
 		public TerminalNode INSF3() { return getToken(sicstdParser.INSF3, 0); }
 		public TerminalNode ARROBA() { return getToken(sicstdParser.ARROBA, 0); }
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
-		public TerminalNode CONSTANTE() { return getToken(sicstdParser.CONSTANTE, 0); }
-		public List<TerminalNode> SIMBOLO() { return getTokens(sicstdParser.SIMBOLO); }
-		public TerminalNode SIMBOLO(int i) {
-			return getToken(sicstdParser.SIMBOLO, i);
+		public TerminalNode NUMERO() { return getToken(sicstdParser.NUMERO, 0); }
+		public DireccionContext direccion() {
+			return getRuleContext(DireccionContext.class,0);
 		}
+		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
 		public IndirectoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1179,38 +1115,45 @@ public class sicstdParser extends Parser {
 
 	public final IndirectoContext indirecto() throws RecognitionException {
 		IndirectoContext _localctx = new IndirectoContext(_ctx, getState());
-		enterRule(_localctx, 28, RULE_indirecto);
+		enterRule(_localctx, 24, RULE_indirecto);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(210);
+			setState(201);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SIMBOLO) {
 				{
-				setState(209);
-				match(SIMBOLO);
+				setState(200);
+				((IndirectoContext)_localctx).SIMBOLO = match(SIMBOLO);
 				}
 			}
 
-			setState(212);
+			setState(203);
 			match(INSF3);
-			setState(213);
-			match(ARROBA);
-			setState(214);
-			_la = _input.LA(1);
-			if ( !(_la==SIMBOLO || _la==CONSTANTE) ) {
-			_errHandler.recoverInline(this);
+			setState(211);
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
+			case 1:
+				{
+				setState(204);
+				match(ARROBA);
+				setState(205);
+				((IndirectoContext)_localctx).NUMERO = match(NUMERO);
+				listaInstrucciones.add(new Instruccion("INSF3",(((IndirectoContext)_localctx).NUMERO!=null?((IndirectoContext)_localctx).NUMERO.getText():null),(((IndirectoContext)_localctx).SIMBOLO!=null?((IndirectoContext)_localctx).SIMBOLO.getText():null)));
+				}
+				break;
+			case 2:
+				{
+				setState(207);
+				match(ARROBA);
+				setState(208);
+				((IndirectoContext)_localctx).direccion = direccion();
+				listaInstrucciones.add(new Instruccion("INSF3",(String)((IndirectoContext)_localctx).direccion.value,(((IndirectoContext)_localctx).SIMBOLO!=null?((IndirectoContext)_localctx).SIMBOLO.getText():null)));
+				}
+				break;
 			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
-				consume();
-			}
-			setState(215);
-			match(FIN_INSTRUCCION);
-			((IndirectoContext)_localctx).value =  "F3";
 			}
 		}
 		catch (RecognitionException re) {
@@ -1226,14 +1169,16 @@ public class sicstdParser extends Parser {
 
 	public static class InmediatoContext extends ParserRuleContext {
 		public Object value;
+		public Token SIMBOLO;
+		public Token NUMERO;
+		public DireccionContext direccion;
 		public TerminalNode INSF3() { return getToken(sicstdParser.INSF3, 0); }
 		public TerminalNode SHARP() { return getToken(sicstdParser.SHARP, 0); }
-		public TerminalNode FIN_INSTRUCCION() { return getToken(sicstdParser.FIN_INSTRUCCION, 0); }
-		public TerminalNode CONSTANTE() { return getToken(sicstdParser.CONSTANTE, 0); }
-		public List<TerminalNode> SIMBOLO() { return getTokens(sicstdParser.SIMBOLO); }
-		public TerminalNode SIMBOLO(int i) {
-			return getToken(sicstdParser.SIMBOLO, i);
+		public TerminalNode NUMERO() { return getToken(sicstdParser.NUMERO, 0); }
+		public DireccionContext direccion() {
+			return getRuleContext(DireccionContext.class,0);
 		}
+		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
 		public InmediatoContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1242,38 +1187,45 @@ public class sicstdParser extends Parser {
 
 	public final InmediatoContext inmediato() throws RecognitionException {
 		InmediatoContext _localctx = new InmediatoContext(_ctx, getState());
-		enterRule(_localctx, 30, RULE_inmediato);
+		enterRule(_localctx, 26, RULE_inmediato);
 		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(219);
+			setState(214);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==SIMBOLO) {
 				{
-				setState(218);
-				match(SIMBOLO);
+				setState(213);
+				((InmediatoContext)_localctx).SIMBOLO = match(SIMBOLO);
 				}
 			}
 
-			setState(221);
+			setState(216);
 			match(INSF3);
-			setState(222);
-			match(SHARP);
-			setState(223);
-			_la = _input.LA(1);
-			if ( !(_la==SIMBOLO || _la==CONSTANTE) ) {
-			_errHandler.recoverInline(this);
-			}
-			else {
-				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
-				_errHandler.reportMatch(this);
-				consume();
-			}
 			setState(224);
-			match(FIN_INSTRUCCION);
-			((InmediatoContext)_localctx).value =  "F3";
+			_errHandler.sync(this);
+			switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
+			case 1:
+				{
+				setState(217);
+				match(SHARP);
+				setState(218);
+				((InmediatoContext)_localctx).NUMERO = match(NUMERO);
+				listaInstrucciones.add(new Instruccion("INSF3",(((InmediatoContext)_localctx).NUMERO!=null?((InmediatoContext)_localctx).NUMERO.getText():null),(((InmediatoContext)_localctx).SIMBOLO!=null?((InmediatoContext)_localctx).SIMBOLO.getText():null)));
+				}
+				break;
+			case 2:
+				{
+				setState(220);
+				match(SHARP);
+				setState(221);
+				((InmediatoContext)_localctx).direccion = direccion();
+				listaInstrucciones.add(new Instruccion("INSF3",(String)((InmediatoContext)_localctx).direccion.value,(((InmediatoContext)_localctx).SIMBOLO!=null?((InmediatoContext)_localctx).SIMBOLO.getText():null)));
+				}
+				break;
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -1288,80 +1240,80 @@ public class sicstdParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\31\u00e6\4\2\t\2"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\34\u00e5\4\2\t\2"+
 		"\4\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13"+
-		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\3\2\3\2"+
-		"\7\2%\n\2\f\2\16\2(\13\2\3\2\3\2\3\3\5\3-\n\3\3\3\3\3\3\3\5\3\62\n\3\3"+
-		"\3\3\3\3\3\3\4\3\4\5\49\n\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
-		"\5\3\5\3\5\3\5\3\5\5\5J\n\5\3\6\5\6M\n\6\3\6\3\6\3\6\3\6\3\6\3\6\3\6\3"+
-		"\7\5\7W\n\7\3\7\3\7\3\7\3\7\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\3\b\5"+
-		"\bg\n\b\3\b\3\b\3\b\5\bl\n\b\3\t\5\to\n\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t"+
-		"w\n\t\3\t\3\t\3\t\5\t|\n\t\3\t\3\t\3\t\3\t\3\t\3\t\5\t\u0084\n\t\3\n\3"+
-		"\n\3\n\5\n\u0089\n\n\3\13\5\13\u008c\n\13\3\13\3\13\3\13\3\13\3\13\3\f"+
-		"\5\f\u0094\n\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\3\f\5\f\u009f\n\f\3\f\3"+
-		"\f\3\f\3\f\3\f\3\f\3\f\5\f\u00a8\n\f\3\r\3\r\3\r\3\r\5\r\u00ae\n\r\3\16"+
-		"\5\16\u00b1\n\16\3\16\3\16\3\16\3\16\3\16\5\16\u00b8\n\16\3\16\3\16\3"+
-		"\16\5\16\u00bd\n\16\3\16\3\16\5\16\u00c1\n\16\3\17\5\17\u00c4\n\17\3\17"+
-		"\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\5\17\u00cf\n\17\3\17\3\17\3\17"+
-		"\3\20\5\20\u00d5\n\20\3\20\3\20\3\20\3\20\3\20\3\20\3\21\5\21\u00de\n"+
-		"\21\3\21\3\21\3\21\3\21\3\21\3\21\3\21\2\2\22\2\4\6\b\n\f\16\20\22\24"+
-		"\26\30\32\34\36 \2\4\3\2\7\b\4\2\25\25\27\27\2\u00f8\2\"\3\2\2\2\4,\3"+
-		"\2\2\2\6\66\3\2\2\2\bI\3\2\2\2\nL\3\2\2\2\fV\3\2\2\2\16k\3\2\2\2\20\u0083"+
-		"\3\2\2\2\22\u0088\3\2\2\2\24\u008b\3\2\2\2\26\u00a7\3\2\2\2\30\u00ad\3"+
-		"\2\2\2\32\u00c0\3\2\2\2\34\u00c3\3\2\2\2\36\u00d4\3\2\2\2 \u00dd\3\2\2"+
-		"\2\"&\5\4\3\2#%\5\b\5\2$#\3\2\2\2%(\3\2\2\2&$\3\2\2\2&\'\3\2\2\2\')\3"+
-		"\2\2\2(&\3\2\2\2)*\5\6\4\2*\3\3\2\2\2+-\7\25\2\2,+\3\2\2\2,-\3\2\2\2-"+
-		".\3\2\2\2./\7\4\2\2/\61\7\26\2\2\60\62\7\t\2\2\61\60\3\2\2\2\61\62\3\2"+
-		"\2\2\62\63\3\2\2\2\63\64\7\30\2\2\64\65\b\3\1\2\65\5\3\2\2\2\668\7\5\2"+
-		"\2\679\7\25\2\28\67\3\2\2\289\3\2\2\29:\3\2\2\2:;\b\4\1\2;\7\3\2\2\2<"+
-		"=\5\f\7\2=>\b\5\1\2>J\3\2\2\2?@\5\n\6\2@A\b\5\1\2AJ\3\2\2\2BC\5\16\b\2"+
-		"CD\b\5\1\2DJ\3\2\2\2EF\5\20\t\2FG\b\5\1\2GJ\3\2\2\2HJ\5\22\n\2I<\3\2\2"+
-		"\2I?\3\2\2\2IB\3\2\2\2IE\3\2\2\2IH\3\2\2\2J\t\3\2\2\2KM\7\25\2\2LK\3\2"+
-		"\2\2LM\3\2\2\2MN\3\2\2\2NO\7\22\2\2OP\7\17\2\2PQ\7\6\2\2QR\7\17\2\2RS"+
-		"\7\30\2\2ST\b\6\1\2T\13\3\2\2\2UW\7\25\2\2VU\3\2\2\2VW\3\2\2\2WX\3\2\2"+
-		"\2XY\7\21\2\2YZ\7\30\2\2Z[\b\7\1\2[\r\3\2\2\2\\]\5\34\17\2]^\b\b\1\2^"+
-		"l\3\2\2\2_`\5\36\20\2`a\b\b\1\2al\3\2\2\2bc\5 \21\2cd\b\b\1\2dl\3\2\2"+
-		"\2eg\7\25\2\2fe\3\2\2\2fg\3\2\2\2gh\3\2\2\2hi\7\3\2\2ij\7\30\2\2jl\b\b"+
-		"\1\2k\\\3\2\2\2k_\3\2\2\2kb\3\2\2\2kf\3\2\2\2l\17\3\2\2\2mo\7\25\2\2n"+
-		"m\3\2\2\2no\3\2\2\2op\3\2\2\2pq\7\n\2\2qv\7\23\2\2rw\7\25\2\2st\7\25\2"+
-		"\2tu\7\6\2\2uw\7\r\2\2vr\3\2\2\2vs\3\2\2\2wx\3\2\2\2xy\7\30\2\2y\u0084"+
-		"\b\t\1\2z|\7\25\2\2{z\3\2\2\2{|\3\2\2\2|}\3\2\2\2}~\7\n\2\2~\177\7\23"+
-		"\2\2\177\u0080\t\2\2\2\u0080\u0081\t\3\2\2\u0081\u0082\7\30\2\2\u0082"+
-		"\u0084\b\t\1\2\u0083n\3\2\2\2\u0083{\3\2\2\2\u0084\21\3\2\2\2\u0085\u0089"+
-		"\5\24\13\2\u0086\u0089\5\26\f\2\u0087\u0089\5\32\16\2\u0088\u0085\3\2"+
-		"\2\2\u0088\u0086\3\2\2\2\u0088\u0087\3\2\2\2\u0089\23\3\2\2\2\u008a\u008c"+
-		"\7\25\2\2\u008b\u008a\3\2\2\2\u008b\u008c\3\2\2\2\u008c\u008d\3\2\2\2"+
-		"\u008d\u008e\7\f\2\2\u008e\u008f\7\25\2\2\u008f\u0090\7\30\2\2\u0090\u0091"+
-		"\b\13\1\2\u0091\25\3\2\2\2\u0092\u0094\7\25\2\2\u0093\u0092\3\2\2\2\u0093"+
-		"\u0094\3\2\2\2\u0094\u0095\3\2\2\2\u0095\u0096\7\13\2\2\u0096\u0097\7"+
-		"\16\2\2\u0097\u0098\7\24\2\2\u0098\u0099\5\30\r\2\u0099\u009a\7\24\2\2"+
-		"\u009a\u009b\7\30\2\2\u009b\u009c\b\f\1\2\u009c\u00a8\3\2\2\2\u009d\u009f"+
-		"\7\25\2\2\u009e\u009d\3\2\2\2\u009e\u009f\3\2\2\2\u009f\u00a0\3\2\2\2"+
-		"\u00a0\u00a1\7\13\2\2\u00a1\u00a2\7\r\2\2\u00a2\u00a3\7\24\2\2\u00a3\u00a4"+
-		"\7\26\2\2\u00a4\u00a5\7\24\2\2\u00a5\u00a6\7\30\2\2\u00a6\u00a8\b\f\1"+
-		"\2\u00a7\u0093\3\2\2\2\u00a7\u009e\3\2\2\2\u00a8\27\3\2\2\2\u00a9\u00aa"+
-		"\7\25\2\2\u00aa\u00ae\b\r\1\2\u00ab\u00ac\7\26\2\2\u00ac\u00ae\b\r\1\2"+
-		"\u00ad\u00a9\3\2\2\2\u00ad\u00ab\3\2\2\2\u00ae\31\3\2\2\2\u00af\u00b1"+
-		"\7\25\2\2\u00b0\u00af\3\2\2\2\u00b0\u00b1\3\2\2\2\u00b1\u00b2\3\2\2\2"+
-		"\u00b2\u00b3\7\20\2\2\u00b3\u00b4\7\27\2\2\u00b4\u00b5\7\30\2\2\u00b5"+
-		"\u00c1\b\16\1\2\u00b6\u00b8\7\25\2\2\u00b7\u00b6\3\2\2\2\u00b7\u00b8\3"+
-		"\2\2\2\u00b8\u00b9\3\2\2\2\u00b9\u00ba\7\20\2\2\u00ba\u00bc\7\26\2\2\u00bb"+
-		"\u00bd\7\t\2\2\u00bc\u00bb\3\2\2\2\u00bc\u00bd\3\2\2\2\u00bd\u00be\3\2"+
-		"\2\2\u00be\u00bf\7\30\2\2\u00bf\u00c1\b\16\1\2\u00c0\u00b0\3\2\2\2\u00c0"+
-		"\u00b7\3\2\2\2\u00c1\33\3\2\2\2\u00c2\u00c4\7\25\2\2\u00c3\u00c2\3\2\2"+
-		"\2\u00c3\u00c4\3\2\2\2\u00c4\u00c5\3\2\2\2\u00c5\u00ce\7\23\2\2\u00c6"+
-		"\u00cf\7\27\2\2\u00c7\u00cf\7\25\2\2\u00c8\u00c9\7\27\2\2\u00c9\u00ca"+
-		"\7\6\2\2\u00ca\u00cf\7\r\2\2\u00cb\u00cc\7\25\2\2\u00cc\u00cd\7\6\2\2"+
-		"\u00cd\u00cf\7\r\2\2\u00ce\u00c6\3\2\2\2\u00ce\u00c7\3\2\2\2\u00ce\u00c8"+
-		"\3\2\2\2\u00ce\u00cb\3\2\2\2\u00cf\u00d0\3\2\2\2\u00d0\u00d1\7\30\2\2"+
-		"\u00d1\u00d2\b\17\1\2\u00d2\35\3\2\2\2\u00d3\u00d5\7\25\2\2\u00d4\u00d3"+
-		"\3\2\2\2\u00d4\u00d5\3\2\2\2\u00d5\u00d6\3\2\2\2\u00d6\u00d7\7\23\2\2"+
-		"\u00d7\u00d8\7\b\2\2\u00d8\u00d9\t\3\2\2\u00d9\u00da\7\30\2\2\u00da\u00db"+
-		"\b\20\1\2\u00db\37\3\2\2\2\u00dc\u00de\7\25\2\2\u00dd\u00dc\3\2\2\2\u00dd"+
-		"\u00de\3\2\2\2\u00de\u00df\3\2\2\2\u00df\u00e0\7\23\2\2\u00e0\u00e1\7"+
-		"\7\2\2\u00e1\u00e2\t\3\2\2\u00e2\u00e3\7\30\2\2\u00e3\u00e4\b\21\1\2\u00e4"+
-		"!\3\2\2\2\35&,\618ILVfknv{\u0083\u0088\u008b\u0093\u009e\u00a7\u00ad\u00b0"+
-		"\u00b7\u00bc\u00c0\u00c3\u00ce\u00d4\u00dd";
+		"\t\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\3\2\3\2\7\2!\n\2\f\2\16\2$\13"+
+		"\2\3\2\3\2\3\3\5\3)\n\3\3\3\3\3\3\3\3\3\3\3\5\3\60\n\3\3\3\3\3\3\4\3\4"+
+		"\5\4\66\n\4\3\4\3\4\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3\5\3"+
+		"\5\3\5\3\5\5\5I\n\5\3\6\5\6L\n\6\3\6\3\6\3\6\3\7\5\7R\n\7\3\7\3\7\3\7"+
+		"\3\7\3\7\3\7\5\7Z\n\7\3\7\3\7\3\7\3\7\5\7`\n\7\3\7\3\7\3\7\3\7\3\7\3\7"+
+		"\5\7h\n\7\3\7\3\7\3\7\5\7m\n\7\3\b\3\b\3\b\3\b\5\bs\n\b\3\t\3\t\3\t\3"+
+		"\t\3\t\5\tz\n\t\3\n\5\n}\n\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\3"+
+		"\n\3\n\3\n\3\n\3\n\3\n\3\n\3\n\5\n\u0091\n\n\3\13\5\13\u0094\n\13\3\13"+
+		"\3\13\3\13\3\13\3\13\5\13\u009b\n\13\3\13\3\13\3\13\3\13\3\13\3\13\3\13"+
+		"\3\13\3\13\3\13\3\13\5\13\u00a8\n\13\3\13\3\13\3\13\5\13\u00ad\n\13\3"+
+		"\f\3\f\3\f\3\f\3\f\3\f\5\f\u00b5\n\f\3\r\5\r\u00b8\n\r\3\r\3\r\3\r\3\r"+
+		"\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00c5\n\r\3\r\3\r\5\r\u00c9\n\r\3\16"+
+		"\5\16\u00cc\n\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\5\16\u00d6\n"+
+		"\16\3\17\5\17\u00d9\n\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\5\17"+
+		"\u00e3\n\17\3\17\2\2\20\2\4\6\b\n\f\16\20\22\24\26\30\32\34\2\3\4\2\f"+
+		"\f\17\17\2\u00fd\2\36\3\2\2\2\4(\3\2\2\2\6\63\3\2\2\2\bH\3\2\2\2\nK\3"+
+		"\2\2\2\fl\3\2\2\2\16r\3\2\2\2\20y\3\2\2\2\22|\3\2\2\2\24\u0093\3\2\2\2"+
+		"\26\u00b4\3\2\2\2\30\u00b7\3\2\2\2\32\u00cb\3\2\2\2\34\u00d8\3\2\2\2\36"+
+		"\"\5\4\3\2\37!\5\b\5\2 \37\3\2\2\2!$\3\2\2\2\" \3\2\2\2\"#\3\2\2\2#%\3"+
+		"\2\2\2$\"\3\2\2\2%&\5\6\4\2&\3\3\2\2\2\')\7\33\2\2(\'\3\2\2\2()\3\2\2"+
+		"\2)*\3\2\2\2*/\7\3\2\2+,\7\31\2\2,\60\b\3\1\2-.\7\32\2\2.\60\b\3\1\2/"+
+		"+\3\2\2\2/-\3\2\2\2\60\61\3\2\2\2\61\62\7\27\2\2\62\5\3\2\2\2\63\65\7"+
+		"\4\2\2\64\66\7\33\2\2\65\64\3\2\2\2\65\66\3\2\2\2\66\67\3\2\2\2\678\b"+
+		"\4\1\28\7\3\2\2\29:\5\n\6\2:;\7\27\2\2;I\3\2\2\2<=\5\f\7\2=>\7\27\2\2"+
+		">I\3\2\2\2?@\5\20\t\2@A\7\27\2\2AI\3\2\2\2BC\5\22\n\2CD\7\27\2\2DI\3\2"+
+		"\2\2EF\5\24\13\2FG\7\27\2\2GI\3\2\2\2H9\3\2\2\2H<\3\2\2\2H?\3\2\2\2HB"+
+		"\3\2\2\2HE\3\2\2\2I\t\3\2\2\2JL\7\33\2\2KJ\3\2\2\2KL\3\2\2\2LM\3\2\2\2"+
+		"MN\7\21\2\2NO\b\6\1\2O\13\3\2\2\2PR\7\33\2\2QP\3\2\2\2QR\3\2\2\2RS\3\2"+
+		"\2\2ST\7\22\2\2TU\t\2\2\2UV\7\5\2\2VW\t\2\2\2Wm\b\7\1\2XZ\7\33\2\2YX\3"+
+		"\2\2\2YZ\3\2\2\2Z[\3\2\2\2[\\\7\16\2\2\\]\t\2\2\2]m\b\7\1\2^`\7\33\2\2"+
+		"_^\3\2\2\2_`\3\2\2\2`a\3\2\2\2ab\7\23\2\2bc\t\2\2\2cd\7\5\2\2de\7\31\2"+
+		"\2em\b\7\1\2fh\7\33\2\2gf\3\2\2\2gh\3\2\2\2hi\3\2\2\2ij\7\24\2\2jk\7\31"+
+		"\2\2km\b\7\1\2lQ\3\2\2\2lY\3\2\2\2l_\3\2\2\2lg\3\2\2\2m\r\3\2\2\2no\7"+
+		"\17\2\2os\b\b\1\2pq\7\f\2\2qs\b\b\1\2rn\3\2\2\2rp\3\2\2\2s\17\3\2\2\2"+
+		"tz\5\30\r\2uz\5\32\16\2vz\5\34\17\2wx\7\26\2\2xz\b\t\1\2yt\3\2\2\2yu\3"+
+		"\2\2\2yv\3\2\2\2yw\3\2\2\2z\21\3\2\2\2{}\7\33\2\2|{\3\2\2\2|}\3\2\2\2"+
+		"}~\3\2\2\2~\177\7\t\2\2\177\u0090\7\25\2\2\u0080\u0081\5\26\f\2\u0081"+
+		"\u0082\b\n\1\2\u0082\u0091\3\2\2\2\u0083\u0084\5\26\f\2\u0084\u0085\7"+
+		"\5\2\2\u0085\u0086\7\f\2\2\u0086\u0087\b\n\1\2\u0087\u0091\3\2\2\2\u0088"+
+		"\u0089\7\7\2\2\u0089\u008a\5\26\f\2\u008a\u008b\b\n\1\2\u008b\u0091\3"+
+		"\2\2\2\u008c\u008d\7\6\2\2\u008d\u008e\5\26\f\2\u008e\u008f\b\n\1\2\u008f"+
+		"\u0091\3\2\2\2\u0090\u0080\3\2\2\2\u0090\u0083\3\2\2\2\u0090\u0088\3\2"+
+		"\2\2\u0090\u008c\3\2\2\2\u0091\23\3\2\2\2\u0092\u0094\7\33\2\2\u0093\u0092"+
+		"\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u00ac\3\2\2\2\u0095\u009a\7\20\2\2"+
+		"\u0096\u0097\7\31\2\2\u0097\u009b\b\13\1\2\u0098\u0099\7\32\2\2\u0099"+
+		"\u009b\b\13\1\2\u009a\u0096\3\2\2\2\u009a\u0098\3\2\2\2\u009b\u00ad\3"+
+		"\2\2\2\u009c\u00a7\7\n\2\2\u009d\u009e\7\r\2\2\u009e\u009f\7\30\2\2\u009f"+
+		"\u00a0\7\33\2\2\u00a0\u00a1\7\30\2\2\u00a1\u00a8\b\13\1\2\u00a2\u00a3"+
+		"\7\f\2\2\u00a3\u00a4\7\30\2\2\u00a4\u00a5\7\32\2\2\u00a5\u00a6\7\30\2"+
+		"\2\u00a6\u00a8\b\13\1\2\u00a7\u009d\3\2\2\2\u00a7\u00a2\3\2\2\2\u00a8"+
+		"\u00ad\3\2\2\2\u00a9\u00aa\7\13\2\2\u00aa\u00ab\7\33\2\2\u00ab\u00ad\b"+
+		"\13\1\2\u00ac\u0095\3\2\2\2\u00ac\u009c\3\2\2\2\u00ac\u00a9\3\2\2\2\u00ad"+
+		"\25\3\2\2\2\u00ae\u00af\7\32\2\2\u00af\u00b5\b\f\1\2\u00b0\u00b1\7\31"+
+		"\2\2\u00b1\u00b5\b\f\1\2\u00b2\u00b3\7\33\2\2\u00b3\u00b5\b\f\1\2\u00b4"+
+		"\u00ae\3\2\2\2\u00b4\u00b0\3\2\2\2\u00b4\u00b2\3\2\2\2\u00b5\27\3\2\2"+
+		"\2\u00b6\u00b8\7\33\2\2\u00b7\u00b6\3\2\2\2\u00b7\u00b8\3\2\2\2\u00b8"+
+		"\u00b9\3\2\2\2\u00b9\u00c8\7\25\2\2\u00ba\u00bb\7\31\2\2\u00bb\u00c9\b"+
+		"\r\1\2\u00bc\u00bd\5\26\f\2\u00bd\u00be\b\r\1\2\u00be\u00c9\3\2\2\2\u00bf"+
+		"\u00c0\7\31\2\2\u00c0\u00c5\b\r\1\2\u00c1\u00c2\5\26\f\2\u00c2\u00c3\b"+
+		"\r\1\2\u00c3\u00c5\3\2\2\2\u00c4\u00bf\3\2\2\2\u00c4\u00c1\3\2\2\2\u00c5"+
+		"\u00c6\3\2\2\2\u00c6\u00c7\7\5\2\2\u00c7\u00c9\7\f\2\2\u00c8\u00ba\3\2"+
+		"\2\2\u00c8\u00bc\3\2\2\2\u00c8\u00c4\3\2\2\2\u00c9\31\3\2\2\2\u00ca\u00cc"+
+		"\7\33\2\2\u00cb\u00ca\3\2\2\2\u00cb\u00cc\3\2\2\2\u00cc\u00cd\3\2\2\2"+
+		"\u00cd\u00d5\7\25\2\2\u00ce\u00cf\7\7\2\2\u00cf\u00d0\7\31\2\2\u00d0\u00d6"+
+		"\b\16\1\2\u00d1\u00d2\7\7\2\2\u00d2\u00d3\5\26\f\2\u00d3\u00d4\b\16\1"+
+		"\2\u00d4\u00d6\3\2\2\2\u00d5\u00ce\3\2\2\2\u00d5\u00d1\3\2\2\2\u00d6\33"+
+		"\3\2\2\2\u00d7\u00d9\7\33\2\2\u00d8\u00d7\3\2\2\2\u00d8\u00d9\3\2\2\2"+
+		"\u00d9\u00da\3\2\2\2\u00da\u00e2\7\25\2\2\u00db\u00dc\7\6\2\2\u00dc\u00dd"+
+		"\7\31\2\2\u00dd\u00e3\b\17\1\2\u00de\u00df\7\6\2\2\u00df\u00e0\5\26\f"+
+		"\2\u00e0\u00e1\b\17\1\2\u00e1\u00e3\3\2\2\2\u00e2\u00db\3\2\2\2\u00e2"+
+		"\u00de\3\2\2\2\u00e3\35\3\2\2\2\35\"(/\65HKQY_glry|\u0090\u0093\u009a"+
+		"\u00a7\u00ac\u00b4\u00b7\u00c4\u00c8\u00cb\u00d5\u00d8\u00e2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

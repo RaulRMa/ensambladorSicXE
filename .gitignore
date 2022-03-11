@@ -5,3 +5,7 @@
 *.iml
 *.err
 *.patch
+*.int
+*.err
+*.registros
+*.tabsim

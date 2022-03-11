@@ -2,6 +2,7 @@ package Gui;
 
 import App.Intermedio;
 import sintaxis.Analizador;
+import sintaxis.Instruccion;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -78,18 +79,14 @@ public class Principal extends JFrame{
         btnAbrirUbInt.addActionListener(actionEvent -> {
             try {
                 expArchivos(archivoIntermedio);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
         btnAbrirAInt.addActionListener(actionEvent -> {
             try {
                 abreArchivo(archivoIntermedio);
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
@@ -123,9 +120,9 @@ public class Principal extends JFrame{
     }
 
     private void generaIntermedio() {
-        Map<Integer, Object> mapa = analizador.regresaMapa();
-        ArrayList lineas = analizador.lineasErr();
-        Intermedio archInt = new Intermedio(mapa, archivoFuente, lineas);
+        ArrayList<Integer> lineas = analizador.lineasErr();
+        ArrayList<Instruccion> instrucciones = analizador.listaInstrucciones();
+        Intermedio archInt = new Intermedio(instrucciones, archivoFuente, lineas);
         archivoIntermedio = archInt.archivoIntermedio();
         if(archivoIntermedio != null){
             btnAbrirAInt.setVisible(true);

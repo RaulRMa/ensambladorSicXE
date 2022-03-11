@@ -1,0 +1,9 @@
+Acumulador para operaciones aritméticas y lógicas
+Registro índice para redireccionar
+Registro de enlace, para regreso de subrutinas
+Registro base, para direccionamiento
+Registro de aplicación general
+Registro de aplicación general
+Acumulador de punto flotante (48 bits)
+Contador de programa. Contiene la dirección de la siguiente instrucción a ejecutar
+Palabra de estado, diversa información de banderas

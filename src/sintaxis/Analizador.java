@@ -17,13 +17,14 @@ public class Analizador {
     private File archivoSalida;
     private ArrayList<String> listaErrores;
     private ArrayList<Integer> lineasErrores;
+    private ArrayList<Instruccion> instrucciones;
     private boolean hayErrores;
-    private Map<Integer, Object> mapalineas;
 
     public Analizador(File archivo){
         try {
             listaErrores = new ArrayList<>();
             lineasErrores = new ArrayList<>();
+            instrucciones = new ArrayList<>();
             hayErrores = false;
             String nombre = archivo.getName().replace(".xe", ".err");
             archivoSalida = new File(nombre);
@@ -50,18 +51,16 @@ public class Analizador {
         parser.removeErrorListeners();
         parser.addErrorListener(errorListener);
         parser.programa();
-        mapalineas = parser.lineas;
+        instrucciones = parser.listaInstrucciones;
     }
-    public Map<Integer, Object> regresaMapa() {
-        return mapalineas;
-    }
-    public ArrayList lineasErr (){return lineasErrores;}
+    public ArrayList<Integer> lineasErr (){return lineasErrores;}
+    public ArrayList<Instruccion> listaInstrucciones(){return  instrucciones;}
 
     private ANTLRErrorListener errores() {
         return new ANTLRErrorListener() {
             @Override
             public void syntaxError(Recognizer<?, ?> recognizer, Object o, int i, int i1, String s, RecognitionException e) {
-                String error = "Error en línea: " + i;
+                String error = "Error en línea: " + i + " " + s;
                 if(!listaErrores.contains(error)){
                     listaErrores.add(error);
                     lineasErrores.add(i);
