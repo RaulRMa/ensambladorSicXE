@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/analizador.iml" filepath="$PROJECT_DIR$/analizador.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ensambladorSicXE.iml" filepath="$PROJECT_DIR$/ensambladorSicXE.iml" />
     </modules>
   </component>
 </project>

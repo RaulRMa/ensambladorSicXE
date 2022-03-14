@@ -2,9 +2,10 @@
 /iconos
 /ejemplos
 *.iml
-*.err
 *.patch
 *.int
 *.err
 *.registros
 *.tabsim
+/.idea
+/.idea/*
