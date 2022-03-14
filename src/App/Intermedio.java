@@ -46,14 +46,14 @@ public class Intermedio {
             cp += instrucciones.get(0).getBytes();
             while (sc.hasNext()){
                 linea = sc.nextLine();
-                String[] elementos = linea.split("[\t\r]");
-                if(elementos[1].equals("END")) {
+                String[] elementos = linea.split("[\t]");
+                if(elementos[1].trim().equals("END")) {
                     lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
                     lineasArchivo.add(lineaAEscribir);
                     ultimaDir = cp;
                     break;
                 }
-                if(elementos[1].equals("START")){
+                if(elementos[1].trim().equals("START")){
                     lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
                     lineasArchivo.add(lineaAEscribir);
                     contador++;
@@ -162,5 +162,60 @@ public class Intermedio {
     }
 
     public File archivoIntermedio() {return  aIntermedio;}
+    private String codigoObjeto(Instruccion instruccion){
+        String algo = "";
+        if(instruccion.isDirectiva()){
+            return codopDirectiva(instruccion);
+        }
+        switch (instruccion.getNombre()){
+            case "INSF3":
+
+                break;
+            case "INSF2":
+
+                break;
+            case "INSF1":
+
+                break;
+        }
+        return algo;
+    }
+
+    private String codopDirectiva(Instruccion instruccion){
+        Pattern patronDirectivas = Pattern.compile("WORD|BYTE");
+        Matcher matcher = patronDirectivas.matcher(instruccion.getNombre());
+        if(matcher.find()){
+            if(instruccion.getNombre().contains("BYTE") ){
+                if( instruccion.getSimbolo().equals("C")) {
+                    char[] caracteres = instruccion.getDireccion().toCharArray();
+                    StringBuilder asciiCaracteres = new StringBuilder();
+                    for (char caracter : caracteres) {
+                        asciiCaracteres.append(Integer.toHexString(caracter));
+                    }
+                    return String.valueOf(asciiCaracteres);
+                }
+                int tamano = instruccion.getDireccion().length();
+                if(tamano %2 == 0) return instruccion.getDireccion();
+                return "0"+ instruccion.getDireccion();
+            }
+            String[] numero = instruccion.getDireccion().split("[h|H]");
+            int bytes = instruccion.getDireccion().contains("H") | instruccion.getDireccion().contains("h")
+                    ?
+                    Integer.parseInt(numero[0], 16)
+                    :
+                    Integer.parseInt(instruccion.getDireccion());
+            int valor = 6 - instruccion.getDireccion().length();
+            if(6 - valor != 0){
+                String ceros = "";
+                for(int i = 0; i < valor; i++) ceros += "0";
+                return ceros + bytes;
+            }
+            return String.valueOf(bytes);
+        }
+        return "\t----";
+    }
+    private String codopInstF3(Instruccion instruccion){
+        return "";
+    }
     public File tablaSimbolos(){return tabsimbolos;}
 }

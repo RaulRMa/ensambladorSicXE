@@ -207,7 +207,7 @@ public class sicstdParser extends Parser {
 				setState(41);
 				((StartContext)_localctx).NUMERO = match(NUMERO);
 
-				            listaInstrucciones.add(new Instruccion("Start",(((StartContext)_localctx).NUMERO!=null?((StartContext)_localctx).NUMERO.getText():null),(((StartContext)_localctx).SIMBOLO!=null?((StartContext)_localctx).SIMBOLO.getText():null)));
+				            listaInstrucciones.add(new Instruccion("Start",(((StartContext)_localctx).NUMERO!=null?((StartContext)_localctx).NUMERO.getText():null),(((StartContext)_localctx).SIMBOLO!=null?((StartContext)_localctx).SIMBOLO.getText():null), "Start"));
 				        
 				}
 				break;
@@ -216,7 +216,7 @@ public class sicstdParser extends Parser {
 				setState(43);
 				((StartContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
 
-				            listaInstrucciones.add(new Instruccion("Start",(((StartContext)_localctx).HEXADECIMAL!=null?((StartContext)_localctx).HEXADECIMAL.getText():null),(((StartContext)_localctx).SIMBOLO!=null?((StartContext)_localctx).SIMBOLO.getText():null)));
+				            listaInstrucciones.add(new Instruccion("Start",(((StartContext)_localctx).HEXADECIMAL!=null?((StartContext)_localctx).HEXADECIMAL.getText():null),(((StartContext)_localctx).SIMBOLO!=null?((StartContext)_localctx).SIMBOLO.getText():null), "Start"));
 				        
 				}
 				break;
@@ -371,6 +371,7 @@ public class sicstdParser extends Parser {
 
 	public static class Inst_f1Context extends ParserRuleContext {
 		public Token SIMBOLO;
+		public Token INSF1;
 		public TerminalNode INSF1() { return getToken(sicstdParser.INSF1, 0); }
 		public TerminalNode SIMBOLO() { return getToken(sicstdParser.SIMBOLO, 0); }
 		public Inst_f1Context(ParserRuleContext parent, int invokingState) {
@@ -397,9 +398,9 @@ public class sicstdParser extends Parser {
 			}
 
 			setState(75);
-			match(INSF1);
+			((Inst_f1Context)_localctx).INSF1 = match(INSF1);
 
-			        listaInstrucciones.add(new Instruccion("INSF1","",(((Inst_f1Context)_localctx).SIMBOLO!=null?((Inst_f1Context)_localctx).SIMBOLO.getText():null)));
+			        listaInstrucciones.add(new Instruccion("INSF1","",(((Inst_f1Context)_localctx).SIMBOLO!=null?((Inst_f1Context)_localctx).SIMBOLO.getText():null),(((Inst_f1Context)_localctx).INSF1!=null?((Inst_f1Context)_localctx).INSF1.getText():null)));
 			    
 			}
 		}
@@ -416,6 +417,10 @@ public class sicstdParser extends Parser {
 
 	public static class Inst_f2Context extends ParserRuleContext {
 		public Token SIMBOLO;
+		public Token INSF2;
+		public Token CLEAR;
+		public Token SHIFT;
+		public Token SVC;
 		public Token NUMERO;
 		public TerminalNode INSF2() { return getToken(sicstdParser.INSF2, 0); }
 		public TerminalNode COMA() { return getToken(sicstdParser.COMA, 0); }
@@ -460,7 +465,7 @@ public class sicstdParser extends Parser {
 				}
 
 				setState(81);
-				match(INSF2);
+				((Inst_f2Context)_localctx).INSF2 = match(INSF2);
 				setState(82);
 				_la = _input.LA(1);
 				if ( !(_la==X || _la==REGISTRO) ) {
@@ -483,7 +488,7 @@ public class sicstdParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null)));
+				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).INSF2!=null?((Inst_f2Context)_localctx).INSF2.getText():null)));
 				}
 				break;
 			case 2:
@@ -500,7 +505,7 @@ public class sicstdParser extends Parser {
 				}
 
 				setState(89);
-				match(CLEAR);
+				((Inst_f2Context)_localctx).CLEAR = match(CLEAR);
 				setState(90);
 				_la = _input.LA(1);
 				if ( !(_la==X || _la==REGISTRO) ) {
@@ -511,7 +516,7 @@ public class sicstdParser extends Parser {
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null)));
+				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).CLEAR!=null?((Inst_f2Context)_localctx).CLEAR.getText():null)));
 				}
 				break;
 			case 3:
@@ -528,7 +533,7 @@ public class sicstdParser extends Parser {
 				}
 
 				setState(95);
-				match(SHIFT);
+				((Inst_f2Context)_localctx).SHIFT = match(SHIFT);
 				setState(96);
 				_la = _input.LA(1);
 				if ( !(_la==X || _la==REGISTRO) ) {
@@ -543,7 +548,7 @@ public class sicstdParser extends Parser {
 				match(COMA);
 				setState(98);
 				match(NUMERO);
-				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null)));
+				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).SHIFT!=null?((Inst_f2Context)_localctx).SHIFT.getText():null)));
 				}
 				break;
 			case 4:
@@ -560,10 +565,10 @@ public class sicstdParser extends Parser {
 				}
 
 				setState(103);
-				match(SVC);
+				((Inst_f2Context)_localctx).SVC = match(SVC);
 				setState(104);
 				((Inst_f2Context)_localctx).NUMERO = match(NUMERO);
-				listaInstrucciones.add(new Instruccion("INSF2",(((Inst_f2Context)_localctx).NUMERO!=null?((Inst_f2Context)_localctx).NUMERO.getText():null),(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null)));
+				listaInstrucciones.add(new Instruccion("INSF2",(((Inst_f2Context)_localctx).NUMERO!=null?((Inst_f2Context)_localctx).NUMERO.getText():null),(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).SVC!=null?((Inst_f2Context)_localctx).SVC.getText():null)));
 				}
 				break;
 			}
@@ -680,7 +685,7 @@ public class sicstdParser extends Parser {
 				setState(117);
 				match(RSUB);
 
-				        listaInstrucciones.add(new Instruccion("INSF3","",""));
+				        listaInstrucciones.add(new Instruccion("INSF3","","","RSUB"));
 				    
 				}
 				break;
@@ -699,6 +704,7 @@ public class sicstdParser extends Parser {
 
 	public static class Inst_f4Context extends ParserRuleContext {
 		public Token SIMBOLO;
+		public Token INSF3;
 		public DireccionContext direccion;
 		public TerminalNode MAS() { return getToken(sicstdParser.MAS, 0); }
 		public TerminalNode INSF3() { return getToken(sicstdParser.INSF3, 0); }
@@ -737,7 +743,7 @@ public class sicstdParser extends Parser {
 			match(MAS);
 			{
 			setState(125);
-			match(INSF3);
+			((Inst_f4Context)_localctx).INSF3 = match(INSF3);
 			}
 			setState(142);
 			_errHandler.sync(this);
@@ -747,7 +753,7 @@ public class sicstdParser extends Parser {
 				setState(126);
 				((Inst_f4Context)_localctx).direccion = direccion();
 
-				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null)));
+				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null)));
 				        
 				}
 				break;
@@ -760,7 +766,7 @@ public class sicstdParser extends Parser {
 				setState(131);
 				match(X);
 
-				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value + ", X",(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null)));
+				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value + ", X",(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null)));
 				        
 				}
 				break;
@@ -773,7 +779,7 @@ public class sicstdParser extends Parser {
 				((Inst_f4Context)_localctx).direccion = direccion();
 				}
 
-				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null)));
+				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null)));
 				        
 				}
 				break;
@@ -1003,6 +1009,7 @@ public class sicstdParser extends Parser {
 
 	public static class SimpleContext extends ParserRuleContext {
 		public Token SIMBOLO;
+		public Token INSF3;
 		public Token NUMERO;
 		public DireccionContext direccion;
 		public TerminalNode INSF3() { return getToken(sicstdParser.INSF3, 0); }
@@ -1037,7 +1044,7 @@ public class sicstdParser extends Parser {
 			}
 
 			setState(183);
-			match(INSF3);
+			((SimpleContext)_localctx).INSF3 = match(INSF3);
 			setState(198);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,22,_ctx) ) {
@@ -1045,14 +1052,23 @@ public class sicstdParser extends Parser {
 				{
 				setState(184);
 				((SimpleContext)_localctx).NUMERO = match(NUMERO);
-				listaInstrucciones.add(new Instruccion("INSF3",(((SimpleContext)_localctx).NUMERO!=null?((SimpleContext)_localctx).NUMERO.getText():null),(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null)));
+
+				            Instruccion inst = new Instruccion("INSF3",(((SimpleContext)_localctx).NUMERO!=null?((SimpleContext)_localctx).NUMERO.getText():null),(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null),(((SimpleContext)_localctx).INSF3!=null?((SimpleContext)_localctx).INSF3.getText():null));
+				            inst.setTipo("simple");
+				            inst.setConstante(true);
+				            listaInstrucciones.add(inst);
+				        
 				}
 				break;
 			case 2:
 				{
 				setState(186);
 				((SimpleContext)_localctx).direccion = direccion();
-				listaInstrucciones.add(new Instruccion("INSF3",(String)((SimpleContext)_localctx).direccion.value,(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null)));
+
+				            Instruccion inst = new Instruccion("INSF3",(String)((SimpleContext)_localctx).direccion.value,(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null),(((SimpleContext)_localctx).INSF3!=null?((SimpleContext)_localctx).INSF3.getText():null));
+				            inst.setTipo("simple");
+				            listaInstrucciones.add(inst);
+				        
 				}
 				break;
 			case 3:
@@ -1064,14 +1080,24 @@ public class sicstdParser extends Parser {
 					{
 					setState(189);
 					((SimpleContext)_localctx).NUMERO = match(NUMERO);
-					listaInstrucciones.add(new Instruccion("INSF3",(((SimpleContext)_localctx).NUMERO!=null?((SimpleContext)_localctx).NUMERO.getText():null) + ",X",(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null)));
+
+					                Instruccion inst = new Instruccion("INSF3",(((SimpleContext)_localctx).NUMERO!=null?((SimpleContext)_localctx).NUMERO.getText():null) + ",X",(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null),(((SimpleContext)_localctx).INSF3!=null?((SimpleContext)_localctx).INSF3.getText():null));
+					                inst.setTipo("simple");
+					                inst.setConstante(true);
+					                listaInstrucciones.add(inst);
+					            
 					}
 					break;
 				case 2:
 					{
 					setState(191);
 					((SimpleContext)_localctx).direccion = direccion();
-					listaInstrucciones.add(new Instruccion("INSF3",(String)((SimpleContext)_localctx).direccion.value + ",X",(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null)));
+
+					                Instruccion inst = new Instruccion("INSF3",(String)((SimpleContext)_localctx).direccion.value + ",X",(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null),(((SimpleContext)_localctx).INSF3!=null?((SimpleContext)_localctx).INSF3.getText():null));
+					                inst.setTipo("simple");
+					                inst.setIndexado(true);
+					                listaInstrucciones.add(inst);
+					            
 					}
 					break;
 				}
@@ -1098,6 +1124,7 @@ public class sicstdParser extends Parser {
 	public static class IndirectoContext extends ParserRuleContext {
 		public Object value;
 		public Token SIMBOLO;
+		public Token INSF3;
 		public Token NUMERO;
 		public DireccionContext direccion;
 		public TerminalNode INSF3() { return getToken(sicstdParser.INSF3, 0); }
@@ -1131,7 +1158,7 @@ public class sicstdParser extends Parser {
 			}
 
 			setState(203);
-			match(INSF3);
+			((IndirectoContext)_localctx).INSF3 = match(INSF3);
 			setState(211);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,24,_ctx) ) {
@@ -1141,7 +1168,11 @@ public class sicstdParser extends Parser {
 				match(ARROBA);
 				setState(205);
 				((IndirectoContext)_localctx).NUMERO = match(NUMERO);
-				listaInstrucciones.add(new Instruccion("INSF3",(((IndirectoContext)_localctx).NUMERO!=null?((IndirectoContext)_localctx).NUMERO.getText():null),(((IndirectoContext)_localctx).SIMBOLO!=null?((IndirectoContext)_localctx).SIMBOLO.getText():null)));
+
+				            Instruccion inst = new Instruccion("INSF3",(((IndirectoContext)_localctx).NUMERO!=null?((IndirectoContext)_localctx).NUMERO.getText():null),(((IndirectoContext)_localctx).SIMBOLO!=null?((IndirectoContext)_localctx).SIMBOLO.getText():null),(((IndirectoContext)_localctx).INSF3!=null?((IndirectoContext)_localctx).INSF3.getText():null));
+				            inst.setTipo("indirecto");
+				            inst.setConstante(true);
+				            listaInstrucciones.add(inst);
 				}
 				break;
 			case 2:
@@ -1150,7 +1181,10 @@ public class sicstdParser extends Parser {
 				match(ARROBA);
 				setState(208);
 				((IndirectoContext)_localctx).direccion = direccion();
-				listaInstrucciones.add(new Instruccion("INSF3",(String)((IndirectoContext)_localctx).direccion.value,(((IndirectoContext)_localctx).SIMBOLO!=null?((IndirectoContext)_localctx).SIMBOLO.getText():null)));
+
+				            Instruccion inst = new Instruccion("INSF3",(String)((IndirectoContext)_localctx).direccion.value,(((IndirectoContext)_localctx).SIMBOLO!=null?((IndirectoContext)_localctx).SIMBOLO.getText():null),(((IndirectoContext)_localctx).INSF3!=null?((IndirectoContext)_localctx).INSF3.getText():null));
+				            inst.setTipo("indirecto");
+				            listaInstrucciones.add(inst);
 				}
 				break;
 			}
@@ -1170,6 +1204,7 @@ public class sicstdParser extends Parser {
 	public static class InmediatoContext extends ParserRuleContext {
 		public Object value;
 		public Token SIMBOLO;
+		public Token INSF3;
 		public Token NUMERO;
 		public DireccionContext direccion;
 		public TerminalNode INSF3() { return getToken(sicstdParser.INSF3, 0); }
@@ -1203,7 +1238,7 @@ public class sicstdParser extends Parser {
 			}
 
 			setState(216);
-			match(INSF3);
+			((InmediatoContext)_localctx).INSF3 = match(INSF3);
 			setState(224);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,26,_ctx) ) {
@@ -1213,7 +1248,11 @@ public class sicstdParser extends Parser {
 				match(SHARP);
 				setState(218);
 				((InmediatoContext)_localctx).NUMERO = match(NUMERO);
-				listaInstrucciones.add(new Instruccion("INSF3",(((InmediatoContext)_localctx).NUMERO!=null?((InmediatoContext)_localctx).NUMERO.getText():null),(((InmediatoContext)_localctx).SIMBOLO!=null?((InmediatoContext)_localctx).SIMBOLO.getText():null)));
+
+				            Instruccion inst = new Instruccion("INSF3",(((InmediatoContext)_localctx).NUMERO!=null?((InmediatoContext)_localctx).NUMERO.getText():null),(((InmediatoContext)_localctx).SIMBOLO!=null?((InmediatoContext)_localctx).SIMBOLO.getText():null),(((InmediatoContext)_localctx).INSF3!=null?((InmediatoContext)_localctx).INSF3.getText():null));
+				            inst.setTipo("inmediato");
+				            inst.setConstante(true);
+				            listaInstrucciones.add(inst);
 				}
 				break;
 			case 2:
@@ -1222,7 +1261,10 @@ public class sicstdParser extends Parser {
 				match(SHARP);
 				setState(221);
 				((InmediatoContext)_localctx).direccion = direccion();
-				listaInstrucciones.add(new Instruccion("INSF3",(String)((InmediatoContext)_localctx).direccion.value,(((InmediatoContext)_localctx).SIMBOLO!=null?((InmediatoContext)_localctx).SIMBOLO.getText():null)));
+
+				            Instruccion inst = new Instruccion("INSF3",(String)((InmediatoContext)_localctx).direccion.value,(((InmediatoContext)_localctx).SIMBOLO!=null?((InmediatoContext)_localctx).SIMBOLO.getText():null),(((InmediatoContext)_localctx).INSF3!=null?((InmediatoContext)_localctx).INSF3.getText():null));
+				            inst.setTipo("inmediato");
+				            listaInstrucciones.add(inst);
 				}
 				break;
 			}
