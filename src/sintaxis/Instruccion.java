@@ -14,7 +14,7 @@ public class Instruccion {
     private int codigoOp;
     private String codigoOp2;
     private String instruccion;
-    private boolean relocalizable, directiva, indexado, constante;
+    private boolean relocalizable, directiva, indexado, constante,f4;
     private String tipo;
 
     public Instruccion(String nombre, String direccion, String simbolo){
@@ -30,6 +30,8 @@ public class Instruccion {
         this.nombre = nombre;
         this.direccion = direccion;
         this.simbolo = simbolo;
+        if(nombre.equals("INSF4"))
+            System.out.println("algo");
         calculaBytes(nombre,direccion);
     }
     public Instruccion(String nombre, String direccion){
@@ -45,7 +47,6 @@ public class Instruccion {
                 bytes = bytesStart(direccion);
                 break;
             case "SIC":
-
                 bytes = bytesInstruccion(nombre);
                 break;
             case "DIRECTIVA":
@@ -225,5 +226,18 @@ public class Instruccion {
 
     public void setConstante(boolean constante) {
         this.constante = constante;
+    }
+    public String getInstruccion(){return this.instruccion;}
+
+    public String getCodigoOp2() {
+        return codigoOp2;
+    }
+
+    public boolean isF4() {
+        return f4;
+    }
+
+    public void setF4(boolean f4) {
+        this.f4 = f4;
     }
 }

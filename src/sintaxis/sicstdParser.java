@@ -1,4 +1,4 @@
-// Generated from /home/raul/Documentos/UASLP/2021-2022-2/SoftwareDeSistemas/Laboratorio/analizador/grammar/sicstd.g4 by ANTLR 4.9.2
+// Generated from /home/raulr/Documentos/UASLP/Software de sistemas/laboratorio/ensambladorSicXE/grammar/sicstd.g4 by ANTLR 4.9.2
 
     package sintaxis;
     import java.util.*;
@@ -125,6 +125,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_programa; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterPrograma(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitPrograma(this);
+		}
 	}
 
 	public final ProgramaContext programa() throws RecognitionException {
@@ -178,6 +186,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_start; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterStart(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitStart(this);
+		}
 	}
 
 	public final StartContext start() throws RecognitionException {
@@ -246,6 +262,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_end; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterEnd(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitEnd(this);
+		}
 	}
 
 	public final EndContext end() throws RecognitionException {
@@ -302,6 +326,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_instruccion; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterInstruccion(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitInstruccion(this);
+		}
 	}
 
 	public final InstruccionContext instruccion() throws RecognitionException {
@@ -378,6 +410,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inst_f1; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterInst_f1(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitInst_f1(this);
+		}
 	}
 
 	public final Inst_f1Context inst_f1() throws RecognitionException {
@@ -441,6 +481,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inst_f2; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterInst_f2(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitInst_f2(this);
+		}
 	}
 
 	public final Inst_f2Context inst_f2() throws RecognitionException {
@@ -594,6 +642,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_op_insf2; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterOp_insf2(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitOp_insf2(this);
+		}
 	}
 
 	public final Op_insf2Context op_insf2() throws RecognitionException {
@@ -649,6 +705,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inst_f3; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterInst_f3(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitInst_f3(this);
+		}
 	}
 
 	public final Inst_f3Context inst_f3() throws RecognitionException {
@@ -720,6 +784,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inst_f4; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterInst_f4(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitInst_f4(this);
+		}
 	}
 
 	public final Inst_f4Context inst_f4() throws RecognitionException {
@@ -753,7 +825,10 @@ public class sicstdParser extends Parser {
 				setState(126);
 				((Inst_f4Context)_localctx).direccion = direccion();
 
-				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null)));
+				            Instruccion inst = new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null));
+				            inst.setF4(true);
+				            inst.setTipo("simple");
+				            listaInstrucciones.add(inst);
 				        
 				}
 				break;
@@ -766,7 +841,10 @@ public class sicstdParser extends Parser {
 				setState(131);
 				match(X);
 
-				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value + ", X",(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null)));
+				            Instruccion inst = new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value + ", X",(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null));
+				            inst.setF4(true);
+				            inst.setTipo("simple");
+				            listaInstrucciones.add(inst);
 				        
 				}
 				break;
@@ -779,7 +857,10 @@ public class sicstdParser extends Parser {
 				((Inst_f4Context)_localctx).direccion = direccion();
 				}
 
-				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null)));
+				            Instruccion inst = new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null));
+				            inst.setF4(true);
+				            inst.setTipo("indirecto");
+				            listaInstrucciones.add(inst);
 				        
 				}
 				break;
@@ -792,7 +873,10 @@ public class sicstdParser extends Parser {
 				((Inst_f4Context)_localctx).direccion = direccion();
 				}
 
-				            listaInstrucciones.add(new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null)));
+				            Instruccion inst = new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value,(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null));
+				            inst.setF4(true);
+				            inst.setTipo("inmediato");
+				            listaInstrucciones.add(inst);
 				        
 				}
 				break;
@@ -834,6 +918,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_directiva; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterDirectiva(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitDirectiva(this);
+		}
 	}
 
 	public final DirectivaContext directiva() throws RecognitionException {
@@ -959,6 +1051,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_direccion; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterDireccion(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitDireccion(this);
+		}
 	}
 
 	public final DireccionContext direccion() throws RecognitionException {
@@ -1024,6 +1124,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_simple; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterSimple(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitSimple(this);
+		}
 	}
 
 	public final SimpleContext simple() throws RecognitionException {
@@ -1138,6 +1246,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_indirecto; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterIndirecto(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitIndirecto(this);
+		}
 	}
 
 	public final IndirectoContext indirecto() throws RecognitionException {
@@ -1218,6 +1334,14 @@ public class sicstdParser extends Parser {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_inmediato; }
+		@Override
+		public void enterRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).enterInmediato(this);
+		}
+		@Override
+		public void exitRule(ParseTreeListener listener) {
+			if ( listener instanceof sicstdListener ) ((sicstdListener)listener).exitInmediato(this);
+		}
 	}
 
 	public final InmediatoContext inmediato() throws RecognitionException {

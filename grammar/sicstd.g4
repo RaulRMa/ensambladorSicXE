@@ -95,22 +95,34 @@ inst_f4:
     (
         direccion
         {
-            listaInstrucciones.add(new Instruccion("INSF4",(String)$direccion.value,$SIMBOLO.text,$INSF3.text));
+            Instruccion inst = new Instruccion("INSF4",(String)$direccion.value,$SIMBOLO.text,$INSF3.text);
+            inst.setF4(true);
+            inst.setTipo("simple");
+            listaInstrucciones.add(inst);
         }
         |
         direccion COMA X
         {
-            listaInstrucciones.add(new Instruccion("INSF4",(String)$direccion.value + ", X",$SIMBOLO.text,$INSF3.text));
+            Instruccion inst = new Instruccion("INSF4",(String)$direccion.value + ", X",$SIMBOLO.text,$INSF3.text);
+            inst.setF4(true);
+            inst.setTipo("simple");
+            listaInstrucciones.add(inst);
         }
         |
         ARROBA(direccion)
         {
-            listaInstrucciones.add(new Instruccion("INSF4",(String)$direccion.value,$SIMBOLO.text,$INSF3.text));
+            Instruccion inst = new Instruccion("INSF4",(String)$direccion.value,$SIMBOLO.text,$INSF3.text);
+            inst.setF4(true);
+            inst.setTipo("indirecto");
+            listaInstrucciones.add(inst);
         }
         |
         SHARP(direccion)
         {
-            listaInstrucciones.add(new Instruccion("INSF4",(String)$direccion.value,$SIMBOLO.text));
+            Instruccion inst = new Instruccion("INSF4",(String)$direccion.value,$SIMBOLO.text,$INSF3.text);
+            inst.setF4(true);
+            inst.setTipo("inmediato");
+            listaInstrucciones.add(inst);
         }
     )
 

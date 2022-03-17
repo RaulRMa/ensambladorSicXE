@@ -1,4 +1,4 @@
-// Generated from /home/raul/Documentos/UASLP/2021-2022-2/SoftwareDeSistemas/Laboratorio/analizador/grammar/sicstd.g4 by ANTLR 4.9.2
+// Generated from /home/raulr/Documentos/UASLP/Software de sistemas/laboratorio/ensambladorSicXE/grammar/sicstd.g4 by ANTLR 4.9.2
 
     package sintaxis;
 
