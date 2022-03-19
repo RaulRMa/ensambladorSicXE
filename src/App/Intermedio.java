@@ -48,18 +48,37 @@ public class Intermedio {
             while (sc.hasNext()){
                 linea = sc.nextLine();
                 String[] elementos = linea.split("[\t]");
-                if(elementos[1].trim().equals("END")) {
-                    lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
-                    lineasArchivo.add(lineaAEscribir);
-                    ultimaDir = cp;
-                    break;
+                if(elementos.length > 1){
+                    if(elementos[1].trim().equals("END")) {
+                        lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
+                        lineasArchivo.add(lineaAEscribir);
+                        ultimaDir = cp;
+                        break;
+                    }
+                }else{
+                    if(elementos[0].trim().equals("END")) {
+                        lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
+                        lineasArchivo.add(lineaAEscribir);
+                        ultimaDir = cp;
+                        break;
+                    }
                 }
-                if(elementos[1].trim().equals("START")){
-                    lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
-                    lineasArchivo.add(lineaAEscribir);
-                    contador++;
-                    primerDir = cp;
-                    continue;
+                if(elementos.length > 1){
+                    if (elementos[1].trim().equals("START")) {
+                        lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
+                        lineasArchivo.add(lineaAEscribir);
+                        contador++;
+                        primerDir = cp;
+                        continue;
+                    }
+                }else{
+                    if (elementos[0].trim().equals("START")) {
+                        lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
+                        lineasArchivo.add(lineaAEscribir);
+                        contador++;
+                        primerDir = cp;
+                        continue;
+                    }
                 }
                 if(!lineasErrores.contains(contador)){
                     Instruccion instruccion = instrucciones.get(contInst++);
@@ -220,13 +239,13 @@ public class Intermedio {
                     Integer.parseInt(numero[0], 16)
                     :
                     Integer.parseInt(instruccion.getDireccion());
-            int valor = 6 - instruccion.getDireccion().length();
+            int valor = 6 - numero[0].length();
             if(6 - valor != 0){
                 String ceros = "";
                 for(int i = 0; i < valor; i++) ceros += "0";
-                return ceros + bytes;
+                return ceros +Integer.toHexString( bytes);
             }
-            return String.valueOf(bytes);
+            return Integer.toHexString(bytes);
         }
         return "\t----";
     }
@@ -289,27 +308,24 @@ public class Intermedio {
         return resultado + desp + " Error: no relativo a la base o contador";
     }
     private String calculaIndirecto(Instruccion inst, int cp){
+        String operando = obtenOperando(inst.getDireccion());
         String[] codigo = inst.getCodigoOp2().split("");
         String n,i,x,b,p,e;
         if(inst.getTipo().equals("indirecto")) {
-            n = "1";
-            i = "0";
+            n = "1";i = "0";
         }
         else {
-            n = "0";
-            i = "1";
+            n = "0";i = "1";
         }
         String bytes = getByteBinario(codigo[0],codigo[1]);
-        x = "0"; e = "0";
+        x = "0"; e = inst.isF4() ? "1" : "0";
         b = "0"; p = "0";
         String[] banderas = new String[]{n,i,x,b,p,e};
         if(inst.isConstante()){
-            return valorFinal(bytes,banderas,inst.getDireccion(),3);
+            return valorFinal(bytes,banderas,operando,3);
         }
-        if(inst.isF4() && n.equals("0")){
-            banderas[5] = "1";
-            if(!tabsim.containsKey(inst.getSimbolo())) return "Error: símbolo no existe en tabsim";
-            return valorFinal(bytes,banderas,inst.getDireccion(),4);
+        if(inst.isF4() && n.equals("0") && !operando.equals("Error: Símbolo no encontrado")){
+            return valorFinal(bytes,banderas,operando,4);
         }
         x = "0"; e = "0";
         String dirCont = relativoAContador(inst,cp);
@@ -323,6 +339,23 @@ public class Intermedio {
             b = "1"; p = "0";
             int binario = Integer.parseInt((n+i+x+b+p+e));
             return Integer.toHexString(binario) + dirBase;
+        }
+        return "";
+    }
+    private String obtenOperando(String operando){
+        Pattern hexadecimal = Pattern.compile("^[A-F0-9]+^[H|h]*");
+        Pattern simbolo = Pattern.compile("^[a-zA-Z0-9]+");
+        Pattern constante = Pattern.compile("^[0-9]+");
+        Matcher match = constante.matcher(operando);
+        if(match.find()) return operando;
+        match = hexadecimal.matcher(operando);
+        if(match.find()) return operando.split("[H|h]")[0];
+        match = simbolo.matcher(operando);
+        if(match.find()){
+            if(tabsim.containsKey(operando)){
+                return tabsim.get(operando);
+            }
+            return "Error: Símbolo no encontrado";
         }
         return "";
     }
