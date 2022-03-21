@@ -113,6 +113,7 @@ public class Intermedio {
                 lineasArchivo.add(lineaAEscribir);
             }
             sc.close();
+
             generaCodigoObjeto();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -253,7 +254,9 @@ public class Intermedio {
         String[] registros = inst.getDireccion().split("");
         String codopInst = String.valueOf(inst.getCodigoOp());
         String r1 = valorRegistro(registros[0]);
-        String r2 = valorRegistro(registros[1]);
+        String r2 = "0";
+        if(registros.length > 1)
+         r2 = valorRegistro(registros[1]);
         return codopInst + r1 + r2;
     }
     private String valorRegistro(String registro){
@@ -374,6 +377,12 @@ public class Intermedio {
         int TA = Integer.parseInt(dirSimbolo,16);
         if(TA - cp < -2408 || TA - cp > 2047) return "\0";
         String result = Integer.toHexString(TA- cp);
+        if(TA - cp < 1){
+            int caracterFinal = result.length();
+            result = inst.isF4()
+                    ? result.substring(caracterFinal-4,caracterFinal)
+                    : result.substring(caracterFinal-3,caracterFinal);
+        }
         if(inst.getNombre().equals("INSF3")){
             return anexaCeros(3,result);
         }
