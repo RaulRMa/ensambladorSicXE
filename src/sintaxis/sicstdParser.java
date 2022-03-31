@@ -147,7 +147,7 @@ public class sicstdParser extends Parser {
 			setState(32);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MAS) | (1L << BYTE) | (1L << BASE) | (1L << CLEAR) | (1L << DIRECTIVA) | (1L << INSF1) | (1L << INSF2) | (1L << SHIFT) | (1L << SVC) | (1L << INSF3) | (1L << RSUB) | (1L << SIMBOLO))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << MAS) | (1L << BYTE) | (1L << BASE) | (1L << CLEAR) | (1L << DIRECTIVA) | (1L << INSF1) | (1L << INSF2) | (1L << SHIFT) | (1L << SVC) | (1L << INSF3) | (1L << RSUB) | (1L << HEXADECIMAL) | (1L << SIMBOLO))) != 0)) {
 				{
 				{
 				setState(29);
@@ -458,6 +458,8 @@ public class sicstdParser extends Parser {
 	public static class Inst_f2Context extends ParserRuleContext {
 		public Token SIMBOLO;
 		public Token INSF2;
+		public Token t1;
+		public Token t2;
 		public Token CLEAR;
 		public Token SHIFT;
 		public Token SVC;
@@ -515,9 +517,10 @@ public class sicstdParser extends Parser {
 				setState(81);
 				((Inst_f2Context)_localctx).INSF2 = match(INSF2);
 				setState(82);
+				((Inst_f2Context)_localctx).t1 = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==X || _la==REGISTRO) ) {
-				_errHandler.recoverInline(this);
+					((Inst_f2Context)_localctx).t1 = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -527,16 +530,17 @@ public class sicstdParser extends Parser {
 				setState(83);
 				match(COMA);
 				setState(84);
+				((Inst_f2Context)_localctx).t2 = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==X || _la==REGISTRO) ) {
-				_errHandler.recoverInline(this);
+					((Inst_f2Context)_localctx).t2 = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).INSF2!=null?((Inst_f2Context)_localctx).INSF2.getText():null)));
+				listaInstrucciones.add(new Instruccion("INSF2",(((Inst_f2Context)_localctx).t1!=null?((Inst_f2Context)_localctx).t1.getText():null) + "," + (((Inst_f2Context)_localctx).t2!=null?((Inst_f2Context)_localctx).t2.getText():null),(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).INSF2!=null?((Inst_f2Context)_localctx).INSF2.getText():null)));
 				}
 				break;
 			case 2:
@@ -555,16 +559,17 @@ public class sicstdParser extends Parser {
 				setState(89);
 				((Inst_f2Context)_localctx).CLEAR = match(CLEAR);
 				setState(90);
+				((Inst_f2Context)_localctx).t1 = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==X || _la==REGISTRO) ) {
-				_errHandler.recoverInline(this);
+					((Inst_f2Context)_localctx).t1 = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
 					_errHandler.reportMatch(this);
 					consume();
 				}
-				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).CLEAR!=null?((Inst_f2Context)_localctx).CLEAR.getText():null)));
+				listaInstrucciones.add(new Instruccion("INSF2",(((Inst_f2Context)_localctx).t1!=null?((Inst_f2Context)_localctx).t1.getText():null),(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).CLEAR!=null?((Inst_f2Context)_localctx).CLEAR.getText():null)));
 				}
 				break;
 			case 3:
@@ -583,9 +588,10 @@ public class sicstdParser extends Parser {
 				setState(95);
 				((Inst_f2Context)_localctx).SHIFT = match(SHIFT);
 				setState(96);
+				((Inst_f2Context)_localctx).t1 = _input.LT(1);
 				_la = _input.LA(1);
 				if ( !(_la==X || _la==REGISTRO) ) {
-				_errHandler.recoverInline(this);
+					((Inst_f2Context)_localctx).t1 = (Token)_errHandler.recoverInline(this);
 				}
 				else {
 					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
@@ -596,7 +602,7 @@ public class sicstdParser extends Parser {
 				match(COMA);
 				setState(98);
 				match(NUMERO);
-				listaInstrucciones.add(new Instruccion("INSF2","",(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).SHIFT!=null?((Inst_f2Context)_localctx).SHIFT.getText():null)));
+				listaInstrucciones.add(new Instruccion("INSF2",(((Inst_f2Context)_localctx).t1!=null?((Inst_f2Context)_localctx).t1.getText():null),(((Inst_f2Context)_localctx).SIMBOLO!=null?((Inst_f2Context)_localctx).SIMBOLO.getText():null),(((Inst_f2Context)_localctx).SHIFT!=null?((Inst_f2Context)_localctx).SHIFT.getText():null)));
 				}
 				break;
 			case 4:
@@ -844,6 +850,7 @@ public class sicstdParser extends Parser {
 				            Instruccion inst = new Instruccion("INSF4",(String)((Inst_f4Context)_localctx).direccion.value + ", X",(((Inst_f4Context)_localctx).SIMBOLO!=null?((Inst_f4Context)_localctx).SIMBOLO.getText():null),(((Inst_f4Context)_localctx).INSF3!=null?((Inst_f4Context)_localctx).INSF3.getText():null));
 				            inst.setF4(true);
 				            inst.setTipo("simple");
+				            inst.setIndexado(true);
 				            listaInstrucciones.add(inst);
 				        
 				}
@@ -895,10 +902,12 @@ public class sicstdParser extends Parser {
 	}
 
 	public static class DirectivaContext extends ParserRuleContext {
-		public Token SIMBOLO;
+		public Token t1;
 		public Token DIRECTIVA;
 		public Token NUMERO;
 		public Token HEXADECIMAL;
+		public Token SIMBOLO;
+		public Token t2;
 		public TerminalNode DIRECTIVA() { return getToken(sicstdParser.DIRECTIVA, 0); }
 		public TerminalNode BYTE() { return getToken(sicstdParser.BYTE, 0); }
 		public TerminalNode BASE() { return getToken(sicstdParser.BASE, 0); }
@@ -907,7 +916,10 @@ public class sicstdParser extends Parser {
 			return getToken(sicstdParser.SIMBOLO, i);
 		}
 		public TerminalNode NUMERO() { return getToken(sicstdParser.NUMERO, 0); }
-		public TerminalNode HEXADECIMAL() { return getToken(sicstdParser.HEXADECIMAL, 0); }
+		public List<TerminalNode> HEXADECIMAL() { return getTokens(sicstdParser.HEXADECIMAL); }
+		public TerminalNode HEXADECIMAL(int i) {
+			return getToken(sicstdParser.HEXADECIMAL, i);
+		}
 		public TerminalNode C() { return getToken(sicstdParser.C, 0); }
 		public List<TerminalNode> COMILLA() { return getTokens(sicstdParser.COMILLA); }
 		public TerminalNode COMILLA(int i) {
@@ -938,10 +950,19 @@ public class sicstdParser extends Parser {
 			setState(145);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if (_la==SIMBOLO) {
+			if (_la==HEXADECIMAL || _la==SIMBOLO) {
 				{
 				setState(144);
-				((DirectivaContext)_localctx).SIMBOLO = match(SIMBOLO);
+				((DirectivaContext)_localctx).t1 = _input.LT(1);
+				_la = _input.LA(1);
+				if ( !(_la==HEXADECIMAL || _la==SIMBOLO) ) {
+					((DirectivaContext)_localctx).t1 = (Token)_errHandler.recoverInline(this);
+				}
+				else {
+					if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+					_errHandler.reportMatch(this);
+					consume();
+				}
 				}
 			}
 
@@ -959,14 +980,14 @@ public class sicstdParser extends Parser {
 					{
 					setState(148);
 					((DirectivaContext)_localctx).NUMERO = match(NUMERO);
-					listaInstrucciones.add(new Instruccion((((DirectivaContext)_localctx).DIRECTIVA!=null?((DirectivaContext)_localctx).DIRECTIVA.getText():null),(((DirectivaContext)_localctx).NUMERO!=null?((DirectivaContext)_localctx).NUMERO.getText():null),(((DirectivaContext)_localctx).SIMBOLO!=null?((DirectivaContext)_localctx).SIMBOLO.getText():null)));
+					listaInstrucciones.add(new Instruccion((((DirectivaContext)_localctx).DIRECTIVA!=null?((DirectivaContext)_localctx).DIRECTIVA.getText():null),(((DirectivaContext)_localctx).NUMERO!=null?((DirectivaContext)_localctx).NUMERO.getText():null),(((DirectivaContext)_localctx).t1!=null?((DirectivaContext)_localctx).t1.getText():null)));
 					}
 					break;
 				case HEXADECIMAL:
 					{
 					setState(150);
 					((DirectivaContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
-					listaInstrucciones.add(new Instruccion((((DirectivaContext)_localctx).DIRECTIVA!=null?((DirectivaContext)_localctx).DIRECTIVA.getText():null),(((DirectivaContext)_localctx).HEXADECIMAL!=null?((DirectivaContext)_localctx).HEXADECIMAL.getText():null),(((DirectivaContext)_localctx).SIMBOLO!=null?((DirectivaContext)_localctx).SIMBOLO.getText():null)));
+					listaInstrucciones.add(new Instruccion((((DirectivaContext)_localctx).DIRECTIVA!=null?((DirectivaContext)_localctx).DIRECTIVA.getText():null),(((DirectivaContext)_localctx).HEXADECIMAL!=null?((DirectivaContext)_localctx).HEXADECIMAL.getText():null),(((DirectivaContext)_localctx).t1!=null?((DirectivaContext)_localctx).t1.getText():null)));
 					}
 					break;
 				default:
@@ -992,7 +1013,7 @@ public class sicstdParser extends Parser {
 					setState(158);
 					match(COMILLA);
 
-					                listaInstrucciones.add(new Instruccion("BYTEC",(((DirectivaContext)_localctx).SIMBOLO!=null?((DirectivaContext)_localctx).SIMBOLO.getText():null),"C"));
+					                listaInstrucciones.add(new Instruccion("BYTEC",(((DirectivaContext)_localctx).SIMBOLO!=null?((DirectivaContext)_localctx).SIMBOLO.getText():null),(((DirectivaContext)_localctx).t1!=null?((DirectivaContext)_localctx).t1.getText():null)));
 					            
 					}
 					break;
@@ -1003,10 +1024,19 @@ public class sicstdParser extends Parser {
 					setState(161);
 					match(COMILLA);
 					setState(162);
-					((DirectivaContext)_localctx).HEXADECIMAL = match(HEXADECIMAL);
+					((DirectivaContext)_localctx).t2 = _input.LT(1);
+					_la = _input.LA(1);
+					if ( !(_la==NUMERO || _la==HEXADECIMAL) ) {
+						((DirectivaContext)_localctx).t2 = (Token)_errHandler.recoverInline(this);
+					}
+					else {
+						if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+						_errHandler.reportMatch(this);
+						consume();
+					}
 					setState(163);
 					match(COMILLA);
-					listaInstrucciones.add(new Instruccion("BYTEX",(((DirectivaContext)_localctx).HEXADECIMAL!=null?((DirectivaContext)_localctx).HEXADECIMAL.getText():null),"X"));
+					listaInstrucciones.add(new Instruccion("BYTEX",(((DirectivaContext)_localctx).t2!=null?((DirectivaContext)_localctx).t2.getText():null),(((DirectivaContext)_localctx).t1!=null?((DirectivaContext)_localctx).t1.getText():null)));
 					}
 					break;
 				default:
@@ -1422,64 +1452,64 @@ public class sicstdParser extends Parser {
 		"\3\r\3\r\3\r\3\r\3\r\3\r\3\r\5\r\u00c5\n\r\3\r\3\r\5\r\u00c9\n\r\3\16"+
 		"\5\16\u00cc\n\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\3\16\5\16\u00d6\n"+
 		"\16\3\17\5\17\u00d9\n\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\3\17\5\17"+
-		"\u00e3\n\17\3\17\2\2\20\2\4\6\b\n\f\16\20\22\24\26\30\32\34\2\3\4\2\f"+
-		"\f\17\17\2\u00fd\2\36\3\2\2\2\4(\3\2\2\2\6\63\3\2\2\2\bH\3\2\2\2\nK\3"+
-		"\2\2\2\fl\3\2\2\2\16r\3\2\2\2\20y\3\2\2\2\22|\3\2\2\2\24\u0093\3\2\2\2"+
-		"\26\u00b4\3\2\2\2\30\u00b7\3\2\2\2\32\u00cb\3\2\2\2\34\u00d8\3\2\2\2\36"+
-		"\"\5\4\3\2\37!\5\b\5\2 \37\3\2\2\2!$\3\2\2\2\" \3\2\2\2\"#\3\2\2\2#%\3"+
-		"\2\2\2$\"\3\2\2\2%&\5\6\4\2&\3\3\2\2\2\')\7\33\2\2(\'\3\2\2\2()\3\2\2"+
-		"\2)*\3\2\2\2*/\7\3\2\2+,\7\31\2\2,\60\b\3\1\2-.\7\32\2\2.\60\b\3\1\2/"+
-		"+\3\2\2\2/-\3\2\2\2\60\61\3\2\2\2\61\62\7\27\2\2\62\5\3\2\2\2\63\65\7"+
-		"\4\2\2\64\66\7\33\2\2\65\64\3\2\2\2\65\66\3\2\2\2\66\67\3\2\2\2\678\b"+
-		"\4\1\28\7\3\2\2\29:\5\n\6\2:;\7\27\2\2;I\3\2\2\2<=\5\f\7\2=>\7\27\2\2"+
-		">I\3\2\2\2?@\5\20\t\2@A\7\27\2\2AI\3\2\2\2BC\5\22\n\2CD\7\27\2\2DI\3\2"+
-		"\2\2EF\5\24\13\2FG\7\27\2\2GI\3\2\2\2H9\3\2\2\2H<\3\2\2\2H?\3\2\2\2HB"+
-		"\3\2\2\2HE\3\2\2\2I\t\3\2\2\2JL\7\33\2\2KJ\3\2\2\2KL\3\2\2\2LM\3\2\2\2"+
-		"MN\7\21\2\2NO\b\6\1\2O\13\3\2\2\2PR\7\33\2\2QP\3\2\2\2QR\3\2\2\2RS\3\2"+
-		"\2\2ST\7\22\2\2TU\t\2\2\2UV\7\5\2\2VW\t\2\2\2Wm\b\7\1\2XZ\7\33\2\2YX\3"+
-		"\2\2\2YZ\3\2\2\2Z[\3\2\2\2[\\\7\16\2\2\\]\t\2\2\2]m\b\7\1\2^`\7\33\2\2"+
-		"_^\3\2\2\2_`\3\2\2\2`a\3\2\2\2ab\7\23\2\2bc\t\2\2\2cd\7\5\2\2de\7\31\2"+
-		"\2em\b\7\1\2fh\7\33\2\2gf\3\2\2\2gh\3\2\2\2hi\3\2\2\2ij\7\24\2\2jk\7\31"+
-		"\2\2km\b\7\1\2lQ\3\2\2\2lY\3\2\2\2l_\3\2\2\2lg\3\2\2\2m\r\3\2\2\2no\7"+
-		"\17\2\2os\b\b\1\2pq\7\f\2\2qs\b\b\1\2rn\3\2\2\2rp\3\2\2\2s\17\3\2\2\2"+
-		"tz\5\30\r\2uz\5\32\16\2vz\5\34\17\2wx\7\26\2\2xz\b\t\1\2yt\3\2\2\2yu\3"+
-		"\2\2\2yv\3\2\2\2yw\3\2\2\2z\21\3\2\2\2{}\7\33\2\2|{\3\2\2\2|}\3\2\2\2"+
-		"}~\3\2\2\2~\177\7\t\2\2\177\u0090\7\25\2\2\u0080\u0081\5\26\f\2\u0081"+
-		"\u0082\b\n\1\2\u0082\u0091\3\2\2\2\u0083\u0084\5\26\f\2\u0084\u0085\7"+
-		"\5\2\2\u0085\u0086\7\f\2\2\u0086\u0087\b\n\1\2\u0087\u0091\3\2\2\2\u0088"+
-		"\u0089\7\7\2\2\u0089\u008a\5\26\f\2\u008a\u008b\b\n\1\2\u008b\u0091\3"+
-		"\2\2\2\u008c\u008d\7\6\2\2\u008d\u008e\5\26\f\2\u008e\u008f\b\n\1\2\u008f"+
-		"\u0091\3\2\2\2\u0090\u0080\3\2\2\2\u0090\u0083\3\2\2\2\u0090\u0088\3\2"+
-		"\2\2\u0090\u008c\3\2\2\2\u0091\23\3\2\2\2\u0092\u0094\7\33\2\2\u0093\u0092"+
-		"\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u00ac\3\2\2\2\u0095\u009a\7\20\2\2"+
-		"\u0096\u0097\7\31\2\2\u0097\u009b\b\13\1\2\u0098\u0099\7\32\2\2\u0099"+
-		"\u009b\b\13\1\2\u009a\u0096\3\2\2\2\u009a\u0098\3\2\2\2\u009b\u00ad\3"+
-		"\2\2\2\u009c\u00a7\7\n\2\2\u009d\u009e\7\r\2\2\u009e\u009f\7\30\2\2\u009f"+
-		"\u00a0\7\33\2\2\u00a0\u00a1\7\30\2\2\u00a1\u00a8\b\13\1\2\u00a2\u00a3"+
-		"\7\f\2\2\u00a3\u00a4\7\30\2\2\u00a4\u00a5\7\32\2\2\u00a5\u00a6\7\30\2"+
-		"\2\u00a6\u00a8\b\13\1\2\u00a7\u009d\3\2\2\2\u00a7\u00a2\3\2\2\2\u00a8"+
-		"\u00ad\3\2\2\2\u00a9\u00aa\7\13\2\2\u00aa\u00ab\7\33\2\2\u00ab\u00ad\b"+
-		"\13\1\2\u00ac\u0095\3\2\2\2\u00ac\u009c\3\2\2\2\u00ac\u00a9\3\2\2\2\u00ad"+
-		"\25\3\2\2\2\u00ae\u00af\7\32\2\2\u00af\u00b5\b\f\1\2\u00b0\u00b1\7\31"+
-		"\2\2\u00b1\u00b5\b\f\1\2\u00b2\u00b3\7\33\2\2\u00b3\u00b5\b\f\1\2\u00b4"+
-		"\u00ae\3\2\2\2\u00b4\u00b0\3\2\2\2\u00b4\u00b2\3\2\2\2\u00b5\27\3\2\2"+
-		"\2\u00b6\u00b8\7\33\2\2\u00b7\u00b6\3\2\2\2\u00b7\u00b8\3\2\2\2\u00b8"+
-		"\u00b9\3\2\2\2\u00b9\u00c8\7\25\2\2\u00ba\u00bb\7\31\2\2\u00bb\u00c9\b"+
-		"\r\1\2\u00bc\u00bd\5\26\f\2\u00bd\u00be\b\r\1\2\u00be\u00c9\3\2\2\2\u00bf"+
-		"\u00c0\7\31\2\2\u00c0\u00c5\b\r\1\2\u00c1\u00c2\5\26\f\2\u00c2\u00c3\b"+
-		"\r\1\2\u00c3\u00c5\3\2\2\2\u00c4\u00bf\3\2\2\2\u00c4\u00c1\3\2\2\2\u00c5"+
-		"\u00c6\3\2\2\2\u00c6\u00c7\7\5\2\2\u00c7\u00c9\7\f\2\2\u00c8\u00ba\3\2"+
-		"\2\2\u00c8\u00bc\3\2\2\2\u00c8\u00c4\3\2\2\2\u00c9\31\3\2\2\2\u00ca\u00cc"+
-		"\7\33\2\2\u00cb\u00ca\3\2\2\2\u00cb\u00cc\3\2\2\2\u00cc\u00cd\3\2\2\2"+
-		"\u00cd\u00d5\7\25\2\2\u00ce\u00cf\7\7\2\2\u00cf\u00d0\7\31\2\2\u00d0\u00d6"+
-		"\b\16\1\2\u00d1\u00d2\7\7\2\2\u00d2\u00d3\5\26\f\2\u00d3\u00d4\b\16\1"+
-		"\2\u00d4\u00d6\3\2\2\2\u00d5\u00ce\3\2\2\2\u00d5\u00d1\3\2\2\2\u00d6\33"+
-		"\3\2\2\2\u00d7\u00d9\7\33\2\2\u00d8\u00d7\3\2\2\2\u00d8\u00d9\3\2\2\2"+
-		"\u00d9\u00da\3\2\2\2\u00da\u00e2\7\25\2\2\u00db\u00dc\7\6\2\2\u00dc\u00dd"+
-		"\7\31\2\2\u00dd\u00e3\b\17\1\2\u00de\u00df\7\6\2\2\u00df\u00e0\5\26\f"+
-		"\2\u00e0\u00e1\b\17\1\2\u00e1\u00e3\3\2\2\2\u00e2\u00db\3\2\2\2\u00e2"+
-		"\u00de\3\2\2\2\u00e3\35\3\2\2\2\35\"(/\65HKQY_glry|\u0090\u0093\u009a"+
-		"\u00a7\u00ac\u00b4\u00b7\u00c4\u00c8\u00cb\u00d5\u00d8\u00e2";
+		"\u00e3\n\17\3\17\2\2\20\2\4\6\b\n\f\16\20\22\24\26\30\32\34\2\5\4\2\f"+
+		"\f\17\17\3\2\32\33\3\2\31\32\2\u00fd\2\36\3\2\2\2\4(\3\2\2\2\6\63\3\2"+
+		"\2\2\bH\3\2\2\2\nK\3\2\2\2\fl\3\2\2\2\16r\3\2\2\2\20y\3\2\2\2\22|\3\2"+
+		"\2\2\24\u0093\3\2\2\2\26\u00b4\3\2\2\2\30\u00b7\3\2\2\2\32\u00cb\3\2\2"+
+		"\2\34\u00d8\3\2\2\2\36\"\5\4\3\2\37!\5\b\5\2 \37\3\2\2\2!$\3\2\2\2\" "+
+		"\3\2\2\2\"#\3\2\2\2#%\3\2\2\2$\"\3\2\2\2%&\5\6\4\2&\3\3\2\2\2\')\7\33"+
+		"\2\2(\'\3\2\2\2()\3\2\2\2)*\3\2\2\2*/\7\3\2\2+,\7\31\2\2,\60\b\3\1\2-"+
+		".\7\32\2\2.\60\b\3\1\2/+\3\2\2\2/-\3\2\2\2\60\61\3\2\2\2\61\62\7\27\2"+
+		"\2\62\5\3\2\2\2\63\65\7\4\2\2\64\66\7\33\2\2\65\64\3\2\2\2\65\66\3\2\2"+
+		"\2\66\67\3\2\2\2\678\b\4\1\28\7\3\2\2\29:\5\n\6\2:;\7\27\2\2;I\3\2\2\2"+
+		"<=\5\f\7\2=>\7\27\2\2>I\3\2\2\2?@\5\20\t\2@A\7\27\2\2AI\3\2\2\2BC\5\22"+
+		"\n\2CD\7\27\2\2DI\3\2\2\2EF\5\24\13\2FG\7\27\2\2GI\3\2\2\2H9\3\2\2\2H"+
+		"<\3\2\2\2H?\3\2\2\2HB\3\2\2\2HE\3\2\2\2I\t\3\2\2\2JL\7\33\2\2KJ\3\2\2"+
+		"\2KL\3\2\2\2LM\3\2\2\2MN\7\21\2\2NO\b\6\1\2O\13\3\2\2\2PR\7\33\2\2QP\3"+
+		"\2\2\2QR\3\2\2\2RS\3\2\2\2ST\7\22\2\2TU\t\2\2\2UV\7\5\2\2VW\t\2\2\2Wm"+
+		"\b\7\1\2XZ\7\33\2\2YX\3\2\2\2YZ\3\2\2\2Z[\3\2\2\2[\\\7\16\2\2\\]\t\2\2"+
+		"\2]m\b\7\1\2^`\7\33\2\2_^\3\2\2\2_`\3\2\2\2`a\3\2\2\2ab\7\23\2\2bc\t\2"+
+		"\2\2cd\7\5\2\2de\7\31\2\2em\b\7\1\2fh\7\33\2\2gf\3\2\2\2gh\3\2\2\2hi\3"+
+		"\2\2\2ij\7\24\2\2jk\7\31\2\2km\b\7\1\2lQ\3\2\2\2lY\3\2\2\2l_\3\2\2\2l"+
+		"g\3\2\2\2m\r\3\2\2\2no\7\17\2\2os\b\b\1\2pq\7\f\2\2qs\b\b\1\2rn\3\2\2"+
+		"\2rp\3\2\2\2s\17\3\2\2\2tz\5\30\r\2uz\5\32\16\2vz\5\34\17\2wx\7\26\2\2"+
+		"xz\b\t\1\2yt\3\2\2\2yu\3\2\2\2yv\3\2\2\2yw\3\2\2\2z\21\3\2\2\2{}\7\33"+
+		"\2\2|{\3\2\2\2|}\3\2\2\2}~\3\2\2\2~\177\7\t\2\2\177\u0090\7\25\2\2\u0080"+
+		"\u0081\5\26\f\2\u0081\u0082\b\n\1\2\u0082\u0091\3\2\2\2\u0083\u0084\5"+
+		"\26\f\2\u0084\u0085\7\5\2\2\u0085\u0086\7\f\2\2\u0086\u0087\b\n\1\2\u0087"+
+		"\u0091\3\2\2\2\u0088\u0089\7\7\2\2\u0089\u008a\5\26\f\2\u008a\u008b\b"+
+		"\n\1\2\u008b\u0091\3\2\2\2\u008c\u008d\7\6\2\2\u008d\u008e\5\26\f\2\u008e"+
+		"\u008f\b\n\1\2\u008f\u0091\3\2\2\2\u0090\u0080\3\2\2\2\u0090\u0083\3\2"+
+		"\2\2\u0090\u0088\3\2\2\2\u0090\u008c\3\2\2\2\u0091\23\3\2\2\2\u0092\u0094"+
+		"\t\3\2\2\u0093\u0092\3\2\2\2\u0093\u0094\3\2\2\2\u0094\u00ac\3\2\2\2\u0095"+
+		"\u009a\7\20\2\2\u0096\u0097\7\31\2\2\u0097\u009b\b\13\1\2\u0098\u0099"+
+		"\7\32\2\2\u0099\u009b\b\13\1\2\u009a\u0096\3\2\2\2\u009a\u0098\3\2\2\2"+
+		"\u009b\u00ad\3\2\2\2\u009c\u00a7\7\n\2\2\u009d\u009e\7\r\2\2\u009e\u009f"+
+		"\7\30\2\2\u009f\u00a0\7\33\2\2\u00a0\u00a1\7\30\2\2\u00a1\u00a8\b\13\1"+
+		"\2\u00a2\u00a3\7\f\2\2\u00a3\u00a4\7\30\2\2\u00a4\u00a5\t\4\2\2\u00a5"+
+		"\u00a6\7\30\2\2\u00a6\u00a8\b\13\1\2\u00a7\u009d\3\2\2\2\u00a7\u00a2\3"+
+		"\2\2\2\u00a8\u00ad\3\2\2\2\u00a9\u00aa\7\13\2\2\u00aa\u00ab\7\33\2\2\u00ab"+
+		"\u00ad\b\13\1\2\u00ac\u0095\3\2\2\2\u00ac\u009c\3\2\2\2\u00ac\u00a9\3"+
+		"\2\2\2\u00ad\25\3\2\2\2\u00ae\u00af\7\32\2\2\u00af\u00b5\b\f\1\2\u00b0"+
+		"\u00b1\7\31\2\2\u00b1\u00b5\b\f\1\2\u00b2\u00b3\7\33\2\2\u00b3\u00b5\b"+
+		"\f\1\2\u00b4\u00ae\3\2\2\2\u00b4\u00b0\3\2\2\2\u00b4\u00b2\3\2\2\2\u00b5"+
+		"\27\3\2\2\2\u00b6\u00b8\7\33\2\2\u00b7\u00b6\3\2\2\2\u00b7\u00b8\3\2\2"+
+		"\2\u00b8\u00b9\3\2\2\2\u00b9\u00c8\7\25\2\2\u00ba\u00bb\7\31\2\2\u00bb"+
+		"\u00c9\b\r\1\2\u00bc\u00bd\5\26\f\2\u00bd\u00be\b\r\1\2\u00be\u00c9\3"+
+		"\2\2\2\u00bf\u00c0\7\31\2\2\u00c0\u00c5\b\r\1\2\u00c1\u00c2\5\26\f\2\u00c2"+
+		"\u00c3\b\r\1\2\u00c3\u00c5\3\2\2\2\u00c4\u00bf\3\2\2\2\u00c4\u00c1\3\2"+
+		"\2\2\u00c5\u00c6\3\2\2\2\u00c6\u00c7\7\5\2\2\u00c7\u00c9\7\f\2\2\u00c8"+
+		"\u00ba\3\2\2\2\u00c8\u00bc\3\2\2\2\u00c8\u00c4\3\2\2\2\u00c9\31\3\2\2"+
+		"\2\u00ca\u00cc\7\33\2\2\u00cb\u00ca\3\2\2\2\u00cb\u00cc\3\2\2\2\u00cc"+
+		"\u00cd\3\2\2\2\u00cd\u00d5\7\25\2\2\u00ce\u00cf\7\7\2\2\u00cf\u00d0\7"+
+		"\31\2\2\u00d0\u00d6\b\16\1\2\u00d1\u00d2\7\7\2\2\u00d2\u00d3\5\26\f\2"+
+		"\u00d3\u00d4\b\16\1\2\u00d4\u00d6\3\2\2\2\u00d5\u00ce\3\2\2\2\u00d5\u00d1"+
+		"\3\2\2\2\u00d6\33\3\2\2\2\u00d7\u00d9\7\33\2\2\u00d8\u00d7\3\2\2\2\u00d8"+
+		"\u00d9\3\2\2\2\u00d9\u00da\3\2\2\2\u00da\u00e2\7\25\2\2\u00db\u00dc\7"+
+		"\6\2\2\u00dc\u00dd\7\31\2\2\u00dd\u00e3\b\17\1\2\u00de\u00df\7\6\2\2\u00df"+
+		"\u00e0\5\26\f\2\u00e0\u00e1\b\17\1\2\u00e1\u00e3\3\2\2\2\u00e2\u00db\3"+
+		"\2\2\2\u00e2\u00de\3\2\2\2\u00e3\35\3\2\2\2\35\"(/\65HKQY_glry|\u0090"+
+		"\u0093\u009a\u00a7\u00ac\u00b4\u00b7\u00c4\u00c8\u00cb\u00d5\u00d8\u00e2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

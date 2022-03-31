@@ -59,14 +59,14 @@ inst_f1:
 ;
 
 inst_f2:
-    SIMBOLO? INSF2 (REGISTRO | X) COMA (REGISTRO | X)
-    {listaInstrucciones.add(new Instruccion("INSF2","",$SIMBOLO.text,$INSF2.text));}
+    SIMBOLO? INSF2 t1=(REGISTRO | X) COMA t2=(REGISTRO | X)
+    {listaInstrucciones.add(new Instruccion("INSF2",$t1.text + "," + $t2.text,$SIMBOLO.text,$INSF2.text));}
     |
-    SIMBOLO? CLEAR (REGISTRO | X)
-    {listaInstrucciones.add(new Instruccion("INSF2","",$SIMBOLO.text,$CLEAR.text));}
+    SIMBOLO? CLEAR t1 = (REGISTRO | X)
+    {listaInstrucciones.add(new Instruccion("INSF2",$t1.text,$SIMBOLO.text,$CLEAR.text));}
     |
-    SIMBOLO? SHIFT (REGISTRO | X) COMA NUMERO
-    {listaInstrucciones.add(new Instruccion("INSF2","",$SIMBOLO.text,$SHIFT.text));}
+    SIMBOLO? SHIFT t1=(REGISTRO | X) COMA NUMERO
+    {listaInstrucciones.add(new Instruccion("INSF2",$t1.text,$SIMBOLO.text,$SHIFT.text));}
     |
     SIMBOLO? SVC NUMERO
     {listaInstrucciones.add(new Instruccion("INSF2",$NUMERO.text,$SIMBOLO.text,$SVC.text));}
@@ -106,6 +106,7 @@ inst_f4:
             Instruccion inst = new Instruccion("INSF4",(String)$direccion.value + ", X",$SIMBOLO.text,$INSF3.text);
             inst.setF4(true);
             inst.setTipo("simple");
+            inst.setIndexado(true);
             listaInstrucciones.add(inst);
         }
         |
@@ -129,20 +130,20 @@ inst_f4:
 ;
 
 directiva:
-    SIMBOLO?
+    t1 = (SIMBOLO | HEXADECIMAL)?
     (
-    DIRECTIVA (NUMERO {listaInstrucciones.add(new Instruccion($DIRECTIVA.text,$NUMERO.text,$SIMBOLO.text));}
-        | HEXADECIMAL {listaInstrucciones.add(new Instruccion($DIRECTIVA.text,$HEXADECIMAL.text,$SIMBOLO.text));})
+    DIRECTIVA (NUMERO {listaInstrucciones.add(new Instruccion($DIRECTIVA.text,$NUMERO.text,$t1.text));}
+        | HEXADECIMAL {listaInstrucciones.add(new Instruccion($DIRECTIVA.text,$HEXADECIMAL.text,$t1.text));})
     |
     BYTE
         (
             C COMILLA SIMBOLO COMILLA
             {
-                listaInstrucciones.add(new Instruccion("BYTEC",$SIMBOLO.text,"C"));
+                listaInstrucciones.add(new Instruccion("BYTEC",$SIMBOLO.text,$t1.text));
             }
             |
-            X COMILLA HEXADECIMAL COMILLA
-            {listaInstrucciones.add(new Instruccion("BYTEX",$HEXADECIMAL.text,"X"));}
+            X COMILLA t2=(HEXADECIMAL | NUMERO) COMILLA
+            {listaInstrucciones.add(new Instruccion("BYTEX",$t2.text,$t1.text));}
         )
     |
     BASE SIMBOLO

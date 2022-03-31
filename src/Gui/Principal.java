@@ -1,6 +1,7 @@
 package Gui;
 
 import App.Intermedio;
+import App.ProgramaObjeto;
 import sintaxis.Analizador;
 import sintaxis.Instruccion;
 
@@ -125,6 +126,8 @@ public class Principal extends JFrame{
         ArrayList<String> tipoErrores = analizador.getTipoErrores();
         Intermedio archInt = new Intermedio(instrucciones, archivoFuente, lineas, tipoErrores);
         archivoIntermedio = archInt.archivoIntermedio();
+        ArrayList<String> codigoObjeto = archInt.getCodigoObjeto();
+        ProgramaObjeto pO = new ProgramaObjeto(codigoObjeto,archivoSalida.getName());
         if(archivoIntermedio != null){
             btnAbrirAInt.setVisible(true);
             btnAbrirUbInt.setVisible(true);

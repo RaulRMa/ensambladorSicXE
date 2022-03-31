@@ -9,3 +9,4 @@
 *.tabsim
 /.idea
 /.idea/*
+*.obj

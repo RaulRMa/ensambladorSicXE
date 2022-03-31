@@ -30,8 +30,6 @@ public class Instruccion {
         this.nombre = nombre;
         this.direccion = direccion;
         this.simbolo = simbolo;
-        if(nombre.equals("INSF4"))
-            System.out.println("algo");
         calculaBytes(nombre,direccion);
     }
     public Instruccion(String nombre, String direccion){

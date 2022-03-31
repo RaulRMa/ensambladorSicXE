@@ -13,12 +13,15 @@ public class Intermedio {
     private File aFuente, tabsimbolos;
     private final ArrayList<Instruccion> instrucciones;
     private final ArrayList<Integer> lineasErrores;
-    private final ArrayList<String> lineasArchivo, tipoErrores;
+    private final ArrayList<String> lineasArchivo;
+    private final ArrayList<String> tipoErrores;
+    private final ArrayList<String> codigoObjeto;
     private int primerDir, ultimaDir;
     private String BASE;
 
     public Intermedio(ArrayList<Instruccion> mapa, File archivo, ArrayList<Integer> lineasErrores, ArrayList<String> errores){
         lineasArchivo = new ArrayList<>();
+        codigoObjeto = new ArrayList<>();
         String nombre = archivo.getName().replace(".xe", ".int");
         aFuente = archivo;
         this.instrucciones = mapa;
@@ -100,7 +103,6 @@ public class Intermedio {
                             tabsim.put(instruccion.getSimbolo(),Integer.toHexString(cp));
                         }
                     }
-                    if(instruccion.getNombre().equals("BASE")) BASE = Integer.toHexString(cp);
 
                     lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----" ;
                     cp += instruccion.getBytes();
@@ -121,19 +123,37 @@ public class Intermedio {
     }
     private void generaCodigoObjeto(){
         int contInst = 1;
+        codigoObjeto.add(lineasArchivo.get(0));
         for (int i = 1; i < lineasArchivo.size(); i++) {
             String instruccion = lineasArchivo.get(i);
-            if(instruccion.contains("END")) break;
-            if(!instruccion.contains("Error")){
+            String[] arregloInst = instruccion.split("\t+");
+            if(arregloInst[1].equals("END"))break;
+
+            if(!instruccion.contains("Error: sintaxis")){
 
                 String[] arreglo = lineasArchivo.get(i+1).split("\t");
                 int cp = Integer.parseInt(arreglo[0],16);
                 Instruccion inst = instrucciones.get(contInst++);
-                String nuevaInst = instruccion.replace("----",codigoObjeto(inst,cp));
+                String nuevaInst;
+                String codobj;
+                if(inst.getNombre().equals("BASE")) {
+                    BASE = Integer.toHexString(Integer.parseInt(tabsim.get(inst.getDireccion()), 16));
+                    codigoObjeto.add(instruccion);
+                    continue;
+                }
+                if(instruccion.contains("Error: Símbolo duplicado")){
+                    codobj = codigoObjeto(inst,cp);
+                    nuevaInst = instruccion.replace("Error: Símbolo duplicado",codobj + "Error: Símbolo duplicado");
+                }else{
+                    codobj = codigoObjeto(inst,cp);
+                    nuevaInst = instruccion.replace("----",codobj);
+                }
                 lineasArchivo.remove(i);
                 lineasArchivo.add(i,nuevaInst);
+                codigoObjeto.add(nuevaInst);
             }
         }
+        codigoObjeto.add(lineasArchivo.get(lineasArchivo.size() - 1));
     }
 
     private void escribeArchivo(){
@@ -222,7 +242,7 @@ public class Intermedio {
         Matcher matcher = patronDirectivas.matcher(instruccion.getNombre());
         if(matcher.find()){
             if(instruccion.getNombre().contains("BYTE") ){
-                if( instruccion.getSimbolo().equals("C")) {
+                if( instruccion.getNombre().contains("C")) {
                     char[] caracteres = instruccion.getDireccion().toCharArray();
                     StringBuilder asciiCaracteres = new StringBuilder();
                     for (char caracter : caracteres) {
@@ -251,8 +271,8 @@ public class Intermedio {
         return "\t----";
     }
     private String codopInstF2(Instruccion inst){
-        String[] registros = inst.getDireccion().split("");
-        String codopInst = String.valueOf(inst.getCodigoOp());
+        String[] registros = inst.getDireccion().split(",");
+        String codopInst = Integer.toHexString(inst.getCodigoOp());
         String r1 = valorRegistro(registros[0]);
         String r2 = "0";
         if(registros.length > 1)
@@ -281,17 +301,45 @@ public class Intermedio {
         return "";
     }
     private String calculaSimple(Instruccion inst, int cp){
+        String operando = obtenOperando(inst.getDireccion());
         String[] codigo = inst.getCodigoOp2().split("");
         String n,i,x,b,p,e;
         n = i = "1";
-        if(inst.isConstante()){
-            StringBuilder codobj = new StringBuilder();
-            return Integer.toHexString(Integer.parseInt("110000",2));
-        }else if(inst.isIndexado()){
-            System.out.println("Es indexado");
-        }
-        e = x = "0";
+        x = inst.isIndexado() ? "1" : "0";
+        e = inst.isF4() ? "1" : "0";
         String op = getByteBinario(codigo[0],codigo[1]);
+        if(operando.contains("H") || operando.contains("h")){
+            operando = operando.split("[H|h]")[0];
+            int decimal = Integer.parseInt(operando,16);
+            if(decimal < 4096) inst.setConstante(true);
+        }
+        if(operando.equals("Error: Símbolo no encontrado")){
+            b = p = "1";
+            String[] banderas = new String[]{n,i,x,b,p,e};
+            String binario = op;
+            for(int j = 0; j < banderas.length; j++) binario += banderas[j];
+            int bin = Integer.parseInt(binario,2);
+            String hexadecimal = Integer.toHexString(bin);
+            return  anexaCeros(3,hexadecimal)+ (inst.isF4() ? "FFFFF " : "FFF ") + operando;
+        }
+        if(inst.isConstante()){
+            b = p = "0";
+            String[] banderas = new String[]{n,i,x,b,p,e};
+            return valorFinal(op,banderas,operando,3);
+        }
+        if(inst.isF4() && inst.isIndexado()){
+            x = e = "1";
+            b = p = "0";
+            String dir = inst.getDireccion();
+            if(operando.contains("H") || operando.contains("h")){
+                dir = inst.getDireccion().split("[H|h]")[0];
+                dir = anexaCeros(4,dir);
+            }
+            int binario = Integer.parseInt((op+ n+i+x+b+p+e),2);
+            return Integer.toHexString(binario).toUpperCase() + dir;
+        }
+        x = inst.isIndexado() ? "1" : "0";
+        e = inst.isF4() ? "1" : "0";
         String despCont = relativoAContador(inst,cp);
         if(!despCont.equals("\0")) {
             b = "0"; p = "1";
@@ -302,13 +350,13 @@ public class Intermedio {
         if(this.BASE != null) despBase = relativoABase(inst);
         if(!despBase.equals("\0")) {
             b = "1"; p = "0";
-            return Integer.toHexString(Integer.parseInt((op + n + i + x + b + p + e))) + despBase;
+            return Integer.toHexString(Integer.parseInt((op + n + i + x + b + p + e),2)) + despBase;
         }
         String desp = inst.getNombre().equals("INSF3")
                 ? "FFF" : "FFFFF";
         b = p = "1";
-        String resultado = Integer.toHexString(Integer.parseInt((op + n+i+x+b+p+e)));
-        return resultado + desp + " Error: no relativo a la base o contador";
+        String resultado = Integer.toHexString(Integer.parseInt((op + n+i+x+b+p+e),2));
+        return resultado + desp + " Error: no relativo al contador o a la base";
     }
     private String calculaIndirecto(Instruccion inst, int cp){
         String operando = obtenOperando(inst.getDireccion());
@@ -320,43 +368,73 @@ public class Intermedio {
         else {
             n = "0";i = "1";
         }
+        if(operando.matches("^[A-F0-9]+^[H|h]*")){
+            operando = operando.split("[H|h]")[0];
+            int decimal = Integer.parseInt(operando,16);
+            if(decimal < 4096) inst.setConstante(true);
+        }
         String bytes = getByteBinario(codigo[0],codigo[1]);
-        x = "0"; e = inst.isF4() ? "1" : "0";
+        x = inst.isIndexado() ? "1" : "0"; e = inst.isF4() ? "1" : "0";
         b = "0"; p = "0";
         String[] banderas = new String[]{n,i,x,b,p,e};
+        if(operando.equals("Error: Símbolo no encontrado")){
+            banderas[3] = banderas [ 4] = "1";
+            int formato = inst.isF4() ? 4 : 3;
+            String binario = bytes;
+            for(int j = 0; j < banderas.length; j++) binario += banderas[j];
+            int bin = Integer.parseInt(binario,2);
+            String hexadecimal = Integer.toHexString(bin);
+            return anexaCeros(3,hexadecimal) + (formato == 4 ? "FFFFF " : "FFF ") + operando;
+        }
+        if(inst.isF4() && !inst.isConstante()){
+            inst.setF4(true);
+            return valorFinal(bytes,banderas,operando,4) + "*";
+        }
         if(inst.isConstante()){
             return valorFinal(bytes,banderas,operando,3);
         }
-        if(inst.isF4() && n.equals("0") && !operando.equals("Error: Símbolo no encontrado")){
+        if(inst.isF4()){
             return valorFinal(bytes,banderas,operando,4);
         }
-        x = "0"; e = "0";
         String dirCont = relativoAContador(inst,cp);
+        if(dirCont.contains("Error")){
+            banderas[3] = "1"; banderas[4] = "1";
+            String acumulador = "";
+            for (String bandera : banderas) acumulador += bandera;
+            int binario = Integer.parseInt((bytes + acumulador),2);
+            return Integer.toHexString(binario).toUpperCase() + "FFF   " + dirCont;
+        }else if(dirCont.contains("constante")){
+            int formato = inst.isF4() ? 4 : 3;
+            return valorFinal(bytes,banderas,operando,formato);
+        }
         if(!dirCont.equals("\0")){
             b = "0"; p= "1";
-            int binario = Integer.parseInt((n+i+x+b+p+e));
-            return Integer.toHexString(binario) + dirCont;
+            int binario = Integer.parseInt((bytes + n+i+x+b+p+e),2);
+            String hexadecimal = Integer.toHexString(binario);
+            return anexaCeros(3,hexadecimal) + dirCont;
         }
         String dirBase = relativoABase(inst);
         if(!dirBase.equals("\0")){
             b = "1"; p = "0";
-            int binario = Integer.parseInt((n+i+x+b+p+e));
-            return Integer.toHexString(binario) + dirBase;
+            int binario = Integer.parseInt((bytes +n+i+x+b+p+e));
+            String hexadecimal = Integer.toHexString(binario);
+            return  anexaCeros(3,hexadecimal)+ dirBase;
         }
         return "";
     }
     private String obtenOperando(String operando){
+        String op = operando.split(",")[0];
         Pattern hexadecimal = Pattern.compile("^[A-F0-9]+^[H|h]*");
         Pattern simbolo = Pattern.compile("^[a-zA-Z0-9]+");
         Pattern constante = Pattern.compile("^[0-9]+");
-        Matcher match = constante.matcher(operando);
-        if(match.find()) return operando;
-        match = hexadecimal.matcher(operando);
-        if(match.find()) return operando.split("[H|h]")[0];
-        match = simbolo.matcher(operando);
+        Matcher match = constante.matcher(op);
+        if(match.find()) return op;
+        match = hexadecimal.matcher(op);
+        if(match.find()) return op.split("[H|h]")[0];
+        match = simbolo.matcher(op);
         if(match.find()){
-            if(tabsim.containsKey(operando)){
-                return tabsim.get(operando);
+            if(tabsim.containsKey(op)){
+                return tabsim.get(op);
             }
             return "Error: Símbolo no encontrado";
         }
@@ -373,31 +451,50 @@ public class Intermedio {
         return valorBytes + codOperando;
     }
     private String relativoAContador(Instruccion inst, int cp){
-        String dirSimbolo = tabsim.get(inst.getDireccion());
-        int TA = Integer.parseInt(dirSimbolo,16);
-        if(TA - cp < -2408 || TA - cp > 2047) return "\0";
-        String result = Integer.toHexString(TA- cp);
-        if(TA - cp < 1){
-            int caracterFinal = result.length();
-            result = inst.isF4()
-                    ? result.substring(caracterFinal-4,caracterFinal)
-                    : result.substring(caracterFinal-3,caracterFinal);
+        String[] operadores = inst.getDireccion().split(",");
+        String simbolo = operadores[0];
+        String dirSimbolo = tabsim.get(simbolo);
+        try{
+            if((simbolo.contains("H") || simbolo.contains("h")) && dirSimbolo == null){
+                dirSimbolo = simbolo.split("[H|h]")[0];
+            }
+            int TA = Integer.parseInt(dirSimbolo,16);
+            //if(!(TA > 4096)) return "constante";
+            if(TA - cp < -2408 || TA - cp > 2047) return "\0";
+            String result = Integer.toHexString(TA- cp);
+            if(TA - cp < 1){
+                int caracterFinal = result.length();
+                result = inst.isF4()
+                        ? result.substring(caracterFinal-4,caracterFinal)
+                        : result.substring(caracterFinal-3,caracterFinal);
+            }
+            if(inst.getNombre().equals("INSF3")){
+                return anexaCeros(3,result);
+            }
+            return anexaCeros(4,result);
+        }catch (Exception e){
+            return " Error: símbolo no existe en tabsim";
         }
-        if(inst.getNombre().equals("INSF3")){
-            return anexaCeros(3,result);
-        }
-        return anexaCeros(4,result);
     }
     private String relativoABase(Instruccion inst){
-        String dirSimbolo = tabsim.get(inst.getDireccion());
-        int TA = Integer.parseInt(dirSimbolo,16);
-        int base = Integer.parseInt(this.BASE,16);
-        if(TA - base < 0 || TA - base > 4095) return "\0";
-        String result = Integer.toHexString(TA- base);
-        if(inst.getNombre().equals("INSF3")){
-            return anexaCeros(3,result);
+        String[] operadores = inst.getDireccion().split(",");
+        String simbolo = operadores[0];
+        String dirSimbolo = tabsim.get(simbolo);
+        try {
+            if(simbolo.contains("H") || simbolo.contains("h")){
+                dirSimbolo = simbolo.split("[H|h]")[0];
+            }
+            int TA = Integer.parseInt(dirSimbolo,16);
+            int base = Integer.parseInt(this.BASE,16);
+            if(TA - base < 0 || TA - base > 4095) return "\0";
+            String result = Integer.toHexString(TA- base);
+            if(inst.getNombre().equals("INSF3")){
+                return anexaCeros(3,result);
+            }
+            return anexaCeros(4,result);
+        }catch (Exception e){
+            return " Error: símbolo no existe en tabsim";
         }
-        return anexaCeros(4,result);
     }
     private String anexaCeros(int formato, String cadena){
         String cerosInsf3 = "000";
@@ -419,4 +516,7 @@ public class Intermedio {
         return binario + binario2.substring(0,2);
     }
     public File tablaSimbolos(){return tabsimbolos;}
+    public ArrayList<String> getCodigoObjeto() {
+        return codigoObjeto;
+    }
 }
