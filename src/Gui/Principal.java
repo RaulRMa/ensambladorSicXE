@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Objects;
 
-public class Principal extends JFrame{
+public class Principal{
     private JPanel panelPrincipal;
     private JButton abrirArchivoButton;
     private JLabel lbl_resultado;
@@ -28,18 +28,14 @@ public class Principal extends JFrame{
     private File archivoIntermedio;
     private Analizador analizador;
     private boolean errores;
+    private final JFrame ventana;
 
-    public Principal() {
+    public Principal(JButton abrir, JFrame ventana) {
+        //noinspection BoundFieldAssignment
+        this.abrirArchivoButton = abrir;
+        this.ventana = ventana;
         errores = false;
-        setContentPane(panelPrincipal);
-        setTitle("Analizador léxico sintáctico");
-        setSize(500,400);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setVisible(true);
         accionesBoton();
-        setLocation(200,300);
-        setMaximumSize(new Dimension(500,300));
-        setMinimumSize(new Dimension(500,300));
     }
 
     private void accionesBoton(){
@@ -50,13 +46,13 @@ public class Principal extends JFrame{
             btnAbrirArchvoErr.setVisible(false);
             btnAbrirAInt.setVisible(false);
             btnAbrirUbInt.setVisible(false);
+            System.out.println("Abriendo un archivo");
             JFileChooser explorador = abrirExplorador();
             archivoFuente = explorador.getSelectedFile();
             if(archivoFuente == null || archivoFuente.getName().equals("")){
                 throw new Error("Hubo un error al abrir el archivo");
             }
-            analiza();
-            btnArchivoInt.setVisible(true);
+            //analiza();
         });
         btnAbrirArchvoErr.addActionListener( actionEvent -> {
             try {
@@ -92,6 +88,7 @@ public class Principal extends JFrame{
             }
         });
     }
+
     private void analiza(){
         analizador = new Analizador(this.archivoFuente);
         errores = analizador.hayErrores();
@@ -150,12 +147,12 @@ public class Principal extends JFrame{
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de programa SIC-XE","xe");
         selector.setFileFilter(filtro);
         selector.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        selector.showOpenDialog(this);
+        selector.showOpenDialog(ventana);
         return selector;
     }
 
     private void muestraError(String mensaje, String nombreError){
-        JOptionPane.showMessageDialog(this,mensaje, nombreError, JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog(ventana,mensaje, nombreError, JOptionPane.ERROR_MESSAGE);
     }
 
 }

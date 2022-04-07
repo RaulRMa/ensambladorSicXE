@@ -1,13 +1,13 @@
 package App;
 
-import Gui.Principal;
-import Gui.SicxeEditor;
-
-import java.util.Locale;
+import Gui.Editor;
+import Gui.EditorSicxe;
+import Gui.SICXeEditor;
 
 public class App {
     public static void main(String[] args) {
         //Principal ventana = new Principal();
-        SicxeEditor ventana2 = new SicxeEditor();
+        SICXeEditor sicXeEditor = new SICXeEditor();
+        //Editor editor = new Editor();
     }
 }
