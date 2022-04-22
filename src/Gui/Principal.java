@@ -35,6 +35,7 @@ public class Principal{
         this.abrirArchivoButton = abrir;
         this.ventana = ventana;
         errores = false;
+        
         accionesBoton();
     }
 
@@ -52,7 +53,7 @@ public class Principal{
             if(archivoFuente == null || archivoFuente.getName().equals("")){
                 throw new Error("Hubo un error al abrir el archivo");
             }
-            //analiza();
+            analiza();
         });
         btnAbrirArchvoErr.addActionListener( actionEvent -> {
             try {

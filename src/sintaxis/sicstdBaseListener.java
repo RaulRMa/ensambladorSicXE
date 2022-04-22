@@ -1,8 +1,6 @@
 // Generated from /home/raulr/Documentos/UASLP/Software de sistemas/laboratorio/ensambladorSicXE/grammar/sicstd.g4 by ANTLR 4.9.2
 
     package sintaxis;
-    import java.util.*;
-
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ErrorNode;

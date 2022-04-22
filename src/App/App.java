@@ -1,13 +1,10 @@
 package App;
 
-import Gui.Editor;
-import Gui.EditorSicxe;
-import Gui.SICXeEditor;
+import Gui.*;
 
 public class App {
     public static void main(String[] args) {
         //Principal ventana = new Principal();
-        SICXeEditor sicXeEditor = new SICXeEditor();
-        //Editor editor = new Editor();
+        EnsambladorSicXe ensamblador = new EnsambladorSicXe();
     }
 }
