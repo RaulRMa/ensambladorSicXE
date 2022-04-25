@@ -7,11 +7,15 @@ public class Gui extends javax.swing.JFrame {
     public Gui() {
         initComponents();
         iniciaPaneles();
+        iniciaComponentes();
         //setVisible(true);
     }
 
     private void iniciaPaneles(){
         areaTexto.setEnabled(false);
+    }
+    private void iniciaComponentes(){
+        paso1Btn.setEnabled(false);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
@@ -253,11 +257,7 @@ public class Gui extends javax.swing.JFrame {
         jTable2.setForeground(java.awt.Color.white);
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
-                        {null, null, null, null, null},
-                        {"0000", "SIMBOLO", null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null},
-                        {null, null, null, null, null}
+
                 },
                 new String [] {
                         "Cp", "Símbolo", "Instruccion", "Operando", "Codigo objeto"

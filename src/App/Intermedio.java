@@ -13,7 +13,7 @@ public class Intermedio {
     private File aFuente, tabsimbolos;
     private final ArrayList<Instruccion> instrucciones;
     private final ArrayList<Integer> lineasErrores;
-    private final ArrayList<String> lineasArchivo;
+    public final ArrayList<String> lineasArchivo;
     private final ArrayList<String> tipoErrores;
     private final ArrayList<String> codigoObjeto;
     private int primerDir, ultimaDir;

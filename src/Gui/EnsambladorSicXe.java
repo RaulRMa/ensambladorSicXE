@@ -1,5 +1,6 @@
 package Gui;
 
+import App.Intermedio;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -9,8 +10,7 @@ import sintaxis.sicstdParser;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.View;
-import java.awt.*;
+import javax.swing.table.DefaultTableModel;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.BitSet;
@@ -24,13 +24,18 @@ public class EnsambladorSicXe {
     private final ArrayList<Integer> lineasErrores;
     private boolean hayErrores;
     private ArrayList<Instruccion> instrucciones;
+    private ArrayList<Object[]> filasTabla;
+    private File archivoIntermedio;
+    private boolean paso1;
 
     public EnsambladorSicXe(){
         listaErrores = new ArrayList<>();
         tipoErrores = new ArrayList<>();
         lineasErrores = new ArrayList<>();
         instrucciones = new ArrayList<>();
+        filasTabla = new ArrayList<Object[]>();
         hayErrores = false;
+        paso1 = false;
         ventana = new Gui();
         eventosBotonesMenu();
         eventosBotones();
@@ -42,6 +47,11 @@ public class EnsambladorSicXe {
     private void eventosBotones(){
         ventana.analisisSintBtn.addActionListener(actionEvent ->{
             analisisSintactico();
+            ventana.paso1Btn.setEnabled(true);
+            this.paso1 = true;
+        });
+        ventana.paso1Btn.addActionListener(actionEvent -> {
+            paso1();
         });
     }
 
@@ -126,6 +136,39 @@ public class EnsambladorSicXe {
             ventana.lblLineasErrores.setText(lineasE.toString());
         }
         ventana.panelDividido.setDividerLocation(120);
+    }
+
+    private void paso1(){
+        if (paso1){
+            Intermedio archInt = new Intermedio(instrucciones, archivoFuente, lineasErrores, tipoErrores);
+            archivoIntermedio = archInt.archivoIntermedio();
+            ArrayList<String> lineasPaso1 = archInt.lineasArchivo;
+            JTable tablaPaso1 = ventana.jTable2;
+            DefaultTableModel modeloTabla = (DefaultTableModel) tablaPaso1.getModel();
+            Object[] fila;
+            for (String linea : lineasPaso1) {
+                String[] elementos = linea.split("\t+");
+                if(elementos.length < 5){
+                    fila = new Object[]{elementos[0],"",elementos[1],elementos[2],"-----"};
+                    modeloTabla.addRow(fila);
+                    filasTabla.add(fila);
+                }else{
+                    fila = new Object[]{elementos[0],elementos[1],elementos[2],elementos[3],"-----"};
+                    modeloTabla.addRow(fila);
+                    filasTabla.add(fila);
+                }
+            }
+            ventana.jTabbedPane1.setSelectedIndex(1);
+        }
+       /* ArrayList<String> codigoObjeto = archInt.getCodigoObjeto();
+        ProgramaObjeto pO = new ProgramaObjeto(codigoObjeto,archivoSalida.getName());
+        if(archivoIntermedio != null){
+            btnAbrirAInt.setVisible(true);
+            btnAbrirUbInt.setVisible(true);
+        }*/
+    }
+    private void paso2(){
+
     }
     private ANTLRErrorListener errores() {
         return new ANTLRErrorListener() {
