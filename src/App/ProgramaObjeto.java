@@ -11,13 +11,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ProgramaObjeto {
-    private final HashMap<String, String> registroH;
+    public final HashMap<String, String> registroH;
     private HashMap<String, String> registroT;
-    private final ArrayList<HashMap<String, String>> registrosT;
+    public final ArrayList<HashMap<String, String>> registrosT;
     private HashMap<String, String> registroM;
-    private final HashMap<String, String> registroE;
+    public final HashMap<String, String> registroE;
     private final ArrayList<String> relocalizables;
-    private final ArrayList<HashMap<String, String>> registrosM;
+    public final ArrayList<HashMap<String, String>> registrosM;
     private String iniProg;
     private String dirPrimInst;
     private final File progObj;

@@ -8,16 +8,30 @@ import java.util.regex.Pattern;
 
 public class Instruccion {
     private final String nombre;
-    private final String direccion;
+
+    private String direccion;
     private String simbolo;
     private int bytes;
     private int codigoOp;
     private String codigoOp2;
     private String instruccion;
-    private boolean relocalizable, directiva, indexado, constante,f4;
+    private boolean relocalizable, directiva, indexado, constante,f4, expresion;
     private String tipo;
 
+    private char tipoTermino;
+
+    public Simbolo simboloObj;
+    private ArrayList<Simbolo> listaSimbolos;
+
     public Instruccion(String nombre, String direccion, String simbolo){
+        esExpresion(direccion);
+        listaSimbolos = new ArrayList<>();
+        if(nombre.equals("EQU")){
+            simboloObj = new Simbolo("EQU",direccion,true);
+        }else{
+            simboloObj = new Simbolo(nombre,direccion,false);
+        }
+        listaSimbolos.add(simboloObj);
         indexado = constante = relocalizable = directiva = false;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -25,7 +39,11 @@ public class Instruccion {
         calculaBytes(nombre,direccion);
     }
     public Instruccion(String nombre, String direccion, String simbolo, String instruccion){
+        esExpresion(direccion);
+        listaSimbolos = new ArrayList<>();
         indexado = constante = relocalizable = directiva = false;
+        simboloObj = new Simbolo(nombre,direccion,false);
+        listaSimbolos.add(simboloObj);
         this.instruccion = instruccion;
         this.nombre = nombre;
         this.direccion = direccion;
@@ -33,12 +51,24 @@ public class Instruccion {
         calculaBytes(nombre,direccion);
     }
     public Instruccion(String nombre, String direccion){
+        esExpresion(direccion);
+        listaSimbolos = new ArrayList<>();
         indexado = constante = relocalizable = directiva = false;
+        simboloObj = new Simbolo(nombre,direccion,false);
+        listaSimbolos.add(simboloObj);
         this.nombre = nombre;
         this.direccion = direccion;
         calculaBytes(nombre, direccion);
     }
-
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+    private void esExpresion(String cadena){
+        Pattern patronFormato = Pattern.compile("[*+-/()][0-9A-Za-z]+");
+        Matcher matcher = patronFormato.matcher(cadena);
+        if(matcher.find())
+            expresion = true;
+    }
     private void calculaBytes(String nombre, String direccion){
         switch (tipoInstruccion(nombre)){
             case "Start":
@@ -54,6 +84,9 @@ public class Instruccion {
             case "Byte":
                 directiva = true;
                 bytes = bytesByte(nombre,direccion);
+                break;
+            case "EQU":
+                bytes = 0;
                 break;
         }
     }
@@ -237,5 +270,17 @@ public class Instruccion {
 
     public void setF4(boolean f4) {
         this.f4 = f4;
+    }
+
+    public char getTipoTermino() {
+        return tipoTermino;
+    }
+
+    public void setTipoTermino(char tipoTermino) {
+        this.tipoTermino = tipoTermino;
+    }
+
+    public boolean isExpresion() {
+        return expresion;
     }
 }

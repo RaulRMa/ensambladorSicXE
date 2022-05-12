@@ -1,7 +1,16 @@
 package App;
 
+import org.antlr.v4.runtime.ANTLRErrorListener;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 import sintaxis.Instruccion;
+import sintaxis.Simbolo;
+import sintaxis.sicstdLexer;
+import sintaxis.sicstdParser;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 import java.io.*;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -9,19 +18,23 @@ import java.util.regex.Pattern;
 
 public class Intermedio {
     private  File aIntermedio;
-    private LinkedHashMap<String, String> tabsim;
+    public LinkedHashMap<String, String> tabsim;
     private File aFuente, tabsimbolos;
     private final ArrayList<Instruccion> instrucciones;
     private final ArrayList<Integer> lineasErrores;
     public final ArrayList<String> lineasArchivo;
     private final ArrayList<String> tipoErrores;
     private final ArrayList<String> codigoObjeto;
+    private ArrayList<Simbolo> tablaSimbolos;
     private int primerDir, ultimaDir;
     private String BASE;
+    private ArrayList<String> nombresSimbolos;
 
     public Intermedio(ArrayList<Instruccion> mapa, File archivo, ArrayList<Integer> lineasErrores, ArrayList<String> errores){
         lineasArchivo = new ArrayList<>();
         codigoObjeto = new ArrayList<>();
+        tablaSimbolos = new ArrayList<>();
+        nombresSimbolos = new ArrayList<>();
         String nombre = archivo.getName().replace(".xe", ".int");
         aFuente = archivo;
         this.instrucciones = mapa;
@@ -50,9 +63,10 @@ public class Intermedio {
             cp += instrucciones.get(0).getBytes();
             while (sc.hasNext()){
                 linea = sc.nextLine();
-                String[] elementos = linea.split("[\t]");
+                linea = linea.replaceAll("[\t\n\s]+","\t");
+                String[] elementos = linea.split("[\t\r\s]+");
                 if(elementos.length > 1){
-                    if(elementos[1].trim().equals("END")) {
+                    if(elementos[1].trim().equals("END") || elementos[0].trim().equals("END")) {
                         lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----";
                         lineasArchivo.add(lineaAEscribir);
                         ultimaDir = cp;
@@ -100,6 +114,27 @@ public class Intermedio {
                             continue;
                         }
                         else{
+                            Simbolo simbolo = new Simbolo(instruccion.getSimbolo());
+                                if(!instruccion.simboloObj.equ){
+                                    simbolo.relativo = true;
+                                    simbolo.dirOSimbolo = Integer.toHexString(cp);
+                                }else {
+                                    if(instruccion.getDireccion().equals("*")){
+                                        simbolo.relativo = true;
+                                        simbolo.dirOSimbolo = Integer.toHexString(cp);
+                                    }else if(instruccion.isExpresion()){
+                                        if(esExpresionValida(instruccion.getDireccion())){
+                                            simbolo.dirOSimbolo = Integer.toHexString(Integer.parseInt(instruccion.getDireccion(),16));
+                                        }else{
+                                            continue;
+                                        }
+                                    }else{
+                                        simbolo.dirOSimbolo = Integer.toHexString(Integer.parseInt(instruccion.getDireccion(),16));
+                                        simbolo.relativo = false;
+                                    }
+                                }
+                            nombresSimbolos.add(simbolo.nombre);
+                            tablaSimbolos.add(simbolo);
                             tabsim.put(instruccion.getSimbolo(),Integer.toHexString(cp));
                         }
                     }
@@ -121,17 +156,144 @@ public class Intermedio {
             e.printStackTrace();
         }
     }
+
+    private String agrupaSimbolos(String expresion){
+        String[] simbolos = expresion.split("[-*/+()0-9]+");
+        String expresionAux = expresion;
+        ArrayList<String> tiposTerminos = new ArrayList<>();
+        if(simbolos.length > 1){
+            for(String simbolo : simbolos){
+                if(!simbolo.isEmpty())
+                    expresionAux = expresionAux.replace(simbolo, " ");
+            }
+            String[] elementos = expresionAux.split("");
+            int cont = 0;
+            String expresionRes = expresionAux;
+            for (int i = 0; i < elementos.length; i++){
+                String elemento = elementos[i];
+                if(elemento.equals("(")){
+                    do{
+                        expresionRes = simbolosAgrupados(simbolos,elementos,expresionRes,cont,i);
+
+                        if(expresionRes.contains(" "))
+                            cont = expresion.indexOf(" ");
+                        else
+                            cont = expresionAux.indexOf(")");
+                    }while (!elementos[cont].equals(")"));
+                    return expresionRes;
+                }
+                if(elemento.matches("[0-9]+")) continue;
+                if(elemento.equals(" ")){
+                    if(!(cont+2 > elementos.length) && elementos[cont + 2].equals(" ")){
+                        expresionRes = simbolosAgrupados(simbolos,elementos,expresionRes,cont,i);
+                    }
+                    else {
+                        for(Simbolo simboloObj : tablaSimbolos){
+                            if( !simbolos[cont].isEmpty() && simboloObj.nombre.equals(simbolos[cont])){
+                                if(simboloObj.relativo) tiposTerminos.add("r");
+                                else tiposTerminos.add("a");
+                                expresionRes = expresionRes.replaceFirst(" ",simboloObj.dirOSimbolo);
+                                cont++;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+        Simbolo simbolo = null;
+        for(Simbolo simb : tablaSimbolos){
+            if(simb.nombre.equals(simbolos[0])){
+                simbolo = simb;
+                break;
+            }
+        }
+        if(simbolo != null){
+            expresionAux = expresionAux.replace(simbolos[0],simbolo.dirOSimbolo);
+            return expresionAux;
+        }
+        return "Error: símbolo no existe";
+    }
+
+    private String simbolosAgrupados(String[]simbolos, String[] elementos, String expresion, int cont, int indx ){
+        boolean bandera = false;
+        boolean bandera2 = false;
+        Simbolo simb1 = null;
+        Simbolo simb2 = null;
+        String simbolo1 = "+";
+        String simbolo2 = "+";
+        for(int i = indx; i < elementos.length; i++){
+            String elemento = elementos[i];
+            if(elemento.matches("[-+]") && !bandera){
+                simbolo1 = elemento;
+                bandera = true;
+            }
+            else if (elemento.equals(" ") && !bandera2){
+                for(String simbolo : simbolos){
+                    for(Simbolo simboloObj : tablaSimbolos){
+                        if( !simbolos[cont].isEmpty() && simboloObj.nombre.equals(simbolos[cont])){
+                            simb1 = simboloObj;
+                            bandera2 = true;
+                            bandera = true;
+                            break;
+                        }
+                    }
+                    cont++;
+                    if(bandera2) break;
+                }
+            }
+            else if( elemento.matches("[-+]") && bandera){
+                simbolo2 = elemento;
+            }
+            else if(elemento.equals(" ") && bandera2){
+                boolean band = false;
+                for(String simbolo : simbolos){
+                    for(Simbolo simboloObj : tablaSimbolos){
+                        if( !simbolos[cont].isEmpty() && simboloObj.nombre.equals(simbolos[cont])){
+                            simb2 = simboloObj;
+                            band = true;
+                            break;
+                        }
+                    }
+                    if(band) break;
+                    cont++;
+                }
+                if(!simbolo1.equals(simbolo2)){
+                    int operacion = 0;
+                    //expresion.replaceFirst(" ", simb1.dirOSimbolo);
+                    String resultado = "";
+                    if(simbolo1.equals("+") && simbolo2.equals("-")){
+                        operacion = Integer.parseInt(simb1.dirOSimbolo,16) - Integer.parseInt(simb2.dirOSimbolo,16);
+                        resultado = expresion.replaceAll(" - ",String.valueOf(operacion));
+                    }
+                    return resultado;
+                }
+                return "Error";
+            }
+
+        }
+        return "Error";
+    }
+
+    private boolean esExpresionValida(String expresion) {
+        String[] simbolos = expresion.split("[\\p{Punct}\\p{Digit}\t\n\s\r]+");
+        for (String simbolo : simbolos){
+            if(!simbolo.isEmpty() && !nombresSimbolos.contains(simbolo)) return false;
+        }
+        return true;
+    }
     private void generaCodigoObjeto(){
         int contInst = 1;
         codigoObjeto.add(lineasArchivo.get(0));
         for (int i = 1; i < lineasArchivo.size(); i++) {
             String instruccion = lineasArchivo.get(i);
-            String[] arregloInst = instruccion.split("\t+");
+            String[] arregloInst = instruccion.split("[\t\r\s]+");
             if(arregloInst[1].equals("END"))break;
 
             if(!instruccion.contains("Error: sintaxis")){
 
-                String[] arreglo = lineasArchivo.get(i+1).split("\t");
+                String[] arreglo = lineasArchivo.get(i+1).split("[\t\n\s]+");
                 int cp = Integer.parseInt(arreglo[0],16);
                 Instruccion inst = instrucciones.get(contInst++);
                 String nuevaInst;
@@ -141,7 +303,28 @@ public class Intermedio {
                     codigoObjeto.add(instruccion);
                     continue;
                 }
-                if(instruccion.contains("Error: Símbolo duplicado")){
+                if(inst.simboloObj.equ) continue;
+                if(inst.isExpresion()){
+
+                    String res = agrupaSimbolos(inst.getDireccion());
+                    int operacion = 0;
+                    if(!res.equals("Error")){
+                        operacion = evaluaValor(inst,res);
+                        if(operacion < 0) inst.setDireccion(String.valueOf(operacion));
+                        else inst.setDireccion(Integer.toHexString(operacion).toUpperCase());
+
+                        if(inst.simboloObj.relativo){
+                            inst.setConstante(true);
+                        }else{
+                            inst.setConstante(false);
+                        }
+                        codobj = codigoObjeto(inst,cp);
+                        nuevaInst = instruccion.replace("----",codobj);
+                    }else {
+                        nuevaInst = instruccion.replace("Error: Símbolo duplicado","Error: Expresión inválida");
+                    }
+                }
+                else if(instruccion.contains("Error: Símbolo duplicado")){
                     codobj = codigoObjeto(inst,cp);
                     nuevaInst = instruccion.replace("Error: Símbolo duplicado",codobj + "Error: Símbolo duplicado");
                 }else{
@@ -218,6 +401,15 @@ public class Intermedio {
 
     }
 
+    private int evaluaValor(Instruccion inst, String cadena ){
+        ANTLRInputStream input = new ANTLRInputStream(cadena);
+        sicstdLexer lexer = new sicstdLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        sicstdParser parser = new sicstdParser(tokens);
+        Object resultado = parser.expresion_ar().value;
+        return (int)resultado;
+    }
+
     public File archivoIntermedio() {return  aIntermedio;}
     private String codigoObjeto(Instruccion instruccion, int cp){
         String algo = "";
@@ -234,7 +426,7 @@ public class Intermedio {
             case "INSF1":
                 return Integer.toHexString(instruccion.getCodigoOp());
         }
-        return algo;
+        return "------";
     }
 
     private String codopDirectiva(Instruccion instruccion){
@@ -255,16 +447,21 @@ public class Intermedio {
                 return "0"+ instruccion.getDireccion();
             }
             String[] numero = instruccion.getDireccion().split("[h|H]");
-            int bytes = instruccion.getDireccion().contains("H") | instruccion.getDireccion().contains("h")
+            int bytes = instruccion.getDireccion().matches("[A-F0-9]+[H|h]?")
                     ?
                     Integer.parseInt(numero[0], 16)
                     :
                     Integer.parseInt(instruccion.getDireccion());
-            int valor = 6 - numero[0].length();
-            if(6 - valor != 0){
-                String ceros = "";
-                for(int i = 0; i < valor; i++) ceros += "0";
-                return ceros +Integer.toHexString( bytes);
+            if(bytes > 0){
+                int valor = 6 - numero[0].length();
+                if (6 - valor != 0) {
+                    String ceros = "";
+                    for (int i = 0; i < valor; i++) ceros += "0";
+                    return ceros + Integer.toHexString(bytes);
+                }
+            }else{
+                String hexadecimal = Integer.toHexString(bytes);
+                return hexadecimal.substring(2,hexadecimal.length()).toUpperCase();
             }
             return Integer.toHexString(bytes);
         }
@@ -424,7 +621,7 @@ public class Intermedio {
     }
     private String obtenOperando(String operando){
         String op = operando.split(",")[0];
-        Pattern hexadecimal = Pattern.compile("^[A-F0-9]+^[H|h]*");
+        Pattern hexadecimal = Pattern.compile("[A-F0-9]+[H|h]*");
         Pattern simbolo = Pattern.compile("^[a-zA-Z0-9]+");
         Pattern constante = Pattern.compile("^[0-9]+");
         Matcher match = constante.matcher(op);

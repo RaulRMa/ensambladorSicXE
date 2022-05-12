@@ -16,6 +16,9 @@ public class Gui extends javax.swing.JFrame {
     }
     private void iniciaComponentes(){
         paso1Btn.setEnabled(false);
+        paso2Btn.setEnabled(false);
+        cargarBtn.setEnabled(false);
+        simularBtn.setEnabled(false);
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
@@ -31,6 +34,9 @@ public class Gui extends javax.swing.JFrame {
         analisisSintBtn = new javax.swing.JButton();
         paso1Btn = new javax.swing.JButton();
         ensamblarBtn = new javax.swing.JButton();
+        cargarBtn = new javax.swing.JButton();
+        simularBtn = new javax.swing.JButton();
+
         paso2Btn = new javax.swing.JButton();
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel4 = new javax.swing.JPanel();
@@ -45,9 +51,9 @@ public class Gui extends javax.swing.JFrame {
         jTable2 = new javax.swing.JTable();
         panelResultados = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tabsim = new javax.swing.JTable();
         jScrollPane4 = new javax.swing.JScrollPane();
-        jTextArea2 = new javax.swing.JTextArea();
+        areaCodobj = new javax.swing.JTextArea();
         lblLineasErrores = new javax.swing.JLabel();
         // </editor-fold>
         panelResultados.setVisible(false);
@@ -68,21 +74,21 @@ public class Gui extends javax.swing.JFrame {
         btnGuardarArch.setBackground(new java.awt.Color(39, 39, 49));
         btnGuardarArch.setFont(new java.awt.Font("Cascadia Code PL SemiBold", 0, 36)); // NOI18N
         btnGuardarArch.setForeground(java.awt.Color.white);
-        btnGuardarArch.setIcon(new javax.swing.ImageIcon("/home/raul/Documentos/UASLP/icons/save/2x/outline_save_white_24dp.png")); // NOI18N
+        btnGuardarArch.setIcon(new javax.swing.ImageIcon("assets/icons/guardar.png")); // NOI18N
         btnGuardarArch.setToolTipText("Guardar");
         btnGuardarArch.setBorder(null);
 
         btnGuardarComo.setBackground(new java.awt.Color(39, 39, 49));
         btnGuardarComo.setFont(new java.awt.Font("Cascadia Code PL SemiBold", 0, 36)); // NOI18N
         btnGuardarComo.setForeground(java.awt.Color.white);
-        btnGuardarComo.setIcon(new javax.swing.ImageIcon("/home/raul/Documentos/UASLP/icons/saveas/2x/outline_save_as_white_24dp.png")); // NOI18N
+        btnGuardarComo.setIcon(new javax.swing.ImageIcon("assets/icons/guardarComo.png")); // NOI18N
         btnGuardarComo.setToolTipText("Guardar como...");
         btnGuardarComo.setBorder(null);
 
         btnAbrirArchivo.setBackground(new java.awt.Color(39, 39, 49));
         btnAbrirArchivo.setFont(new java.awt.Font("Cascadia Code PL SemiBold", 0, 36)); // NOI18N
         btnAbrirArchivo.setForeground(java.awt.Color.white);
-        btnAbrirArchivo.setIcon(new javax.swing.ImageIcon("/home/raul/Documentos/UASLP/icons/open/2x/outline_file_open_white_24dp.png")); // NOI18N
+        btnAbrirArchivo.setIcon(new javax.swing.ImageIcon("assets/icons/abrir.png")); // NOI18N
         btnAbrirArchivo.setToolTipText("Abrir archivo");
         btnAbrirArchivo.setBorder(null);
 
@@ -110,29 +116,41 @@ public class Gui extends javax.swing.JFrame {
 
         panelAcciones.setBackground(new java.awt.Color(33, 31, 32));
 
-        analisisSintBtn.setBackground(new java.awt.Color(144, 156, 167));
+        //analisisSintBtn.setBackground(new java.awt.Color(144, 156, 167));
+        analisisSintBtn.setBackground(null);
         analisisSintBtn.setFont(new java.awt.Font("Cascadia Code PL SemiBold", 0, 36)); // NOI18N
         analisisSintBtn.setForeground(java.awt.Color.white);
-        analisisSintBtn.setIcon(new javax.swing.ImageIcon("/home/raul/Documentos/UASLP/icons/search.png")); // NOI18N
+        analisisSintBtn.setIcon(new javax.swing.ImageIcon("assets/icons/sintaxis.png")); // NOI18N
         analisisSintBtn.setToolTipText("Analizar sintaxis");
         analisisSintBtn.setBorder(null);
 
-        paso1Btn.setBackground(new java.awt.Color(144, 156, 167));
+
+        paso1Btn.setBackground(null);
         paso1Btn.setFont(new java.awt.Font("Cascadia Code PL SemiBold", 0, 36)); // NOI18N
         paso1Btn.setForeground(java.awt.Color.white);
-        paso1Btn.setIcon(new javax.swing.ImageIcon("/home/raul/Documentos/UASLP/icons/paso1/2x/outline_bug_report_white_24dp.png")); // NOI18N
+        paso1Btn.setIcon(new javax.swing.ImageIcon("assets/icons/paso1.png")); // NOI18N
         paso1Btn.setToolTipText("Paso 1");
         paso1Btn.setBorder(null);
 
-        ensamblarBtn.setBackground(new java.awt.Color(144, 156, 167));
-        ensamblarBtn.setIcon(new javax.swing.ImageIcon("/home/raul/Documentos/UASLP/icons/ensamblar/1x/outline_grid_view_white_24dp.png")); // NOI18N
+        ensamblarBtn.setBackground(null);
+        ensamblarBtn.setIcon(new javax.swing.ImageIcon("assets/icons/ensamblar.png")); // NOI18N
         ensamblarBtn.setToolTipText("Ensamblar");
         ensamblarBtn.setBorder(null);
 
-        paso2Btn.setBackground(new java.awt.Color(144, 156, 167));
-        paso2Btn.setIcon(new javax.swing.ImageIcon("/home/raul/Documentos/UASLP/icons/paso2/1x/outline_reorder_white_24dp.png")); // NOI18N
+        paso2Btn.setBackground(null);
+        paso2Btn.setIcon(new javax.swing.ImageIcon("assets/icons/paso2.png")); // NOI18N
         paso2Btn.setToolTipText("Paso 2");
         paso2Btn.setBorder(null);
+
+        cargarBtn.setBackground(null);
+        cargarBtn.setIcon(new javax.swing.ImageIcon("assets/icons/cargar.png")); // NOI18N
+        cargarBtn.setToolTipText("Cargar");
+        cargarBtn.setBorder(null);
+
+        simularBtn.setBackground(null);
+        simularBtn.setIcon(new javax.swing.ImageIcon("assets/icons/simular.png")); // NOI18N
+        simularBtn.setToolTipText("Simular");
+        simularBtn.setBorder(null);
 
         javax.swing.GroupLayout panelAccionesLayout = new javax.swing.GroupLayout(panelAcciones);
         panelAcciones.setLayout(panelAccionesLayout);
@@ -140,12 +158,16 @@ public class Gui extends javax.swing.JFrame {
                 panelAccionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(panelAccionesLayout.createSequentialGroup()
                                 .addComponent(analisisSintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(28, 28, 28)
+                                .addGap(15, 15, 15)
                                 .addComponent(paso1Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
+                                .addGap(28, 28, 28)
                                 .addComponent(paso2Btn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(27, 27, 27)
+                                .addGap(28, 28, 28)
                                 .addComponent(ensamblarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28,28,28)
+                                .addComponent(cargarBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(28,28,28)
+                                .addComponent(simularBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelAccionesLayout.setVerticalGroup(
@@ -156,7 +178,10 @@ public class Gui extends javax.swing.JFrame {
                                         .addComponent(analisisSintBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(paso1Btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(ensamblarBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(paso2Btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(paso2Btn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(cargarBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(simularBtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)))
+
         );
 
         jTabbedPane1.setBackground(new java.awt.Color(44, 55, 64));
@@ -293,14 +318,10 @@ public class Gui extends javax.swing.JFrame {
         panelResultados.setForeground(java.awt.Color.white);
         panelResultados.setFont(new java.awt.Font("Cascadia Code", 0, 18)); // NOI18N
 
-        jTable1.setBackground(new java.awt.Color(33, 31, 32));
-        jTable1.setForeground(java.awt.Color.white);
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tabsim.setBackground(new java.awt.Color(33, 31, 32));
+        tabsim.setForeground(java.awt.Color.white);
+        tabsim.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
-                        {null, null},
-                        {null, null},
-                        {null, null},
-                        {null, null}
                 },
                 new String [] {
                         "Símbolo", "Direccion"
@@ -321,20 +342,20 @@ public class Gui extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane3.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
+        jScrollPane3.setViewportView(tabsim);
+        if (tabsim.getColumnModel().getColumnCount() > 0) {
+            tabsim.getColumnModel().getColumn(0).setResizable(false);
+            tabsim.getColumnModel().getColumn(1).setResizable(false);
         }
 
         panelResultados.addTab("Tabsim", jScrollPane3);
 
-        jTextArea2.setEditable(false);
-        jTextArea2.setBackground(new java.awt.Color(33, 31, 32));
-        jTextArea2.setColumns(20);
-        jTextArea2.setForeground(java.awt.Color.white);
-        jTextArea2.setRows(5);
-        jScrollPane4.setViewportView(jTextArea2);
+        areaCodobj.setEditable(false);
+        areaCodobj.setBackground(new java.awt.Color(33, 31, 32));
+        areaCodobj.setColumns(20);
+        areaCodobj.setForeground(java.awt.Color.white);
+        areaCodobj.setRows(5);
+        jScrollPane4.setViewportView(areaCodobj);
 
         panelResultados.addTab("Programa objeto", jScrollPane4);
 
@@ -392,6 +413,8 @@ public class Gui extends javax.swing.JFrame {
     public javax.swing.JButton analisisSintBtn;
     public javax.swing.JButton paso1Btn;
     public javax.swing.JButton ensamblarBtn;
+    public javax.swing.JButton cargarBtn;
+    public javax.swing.JButton simularBtn;
     public javax.swing.JLabel jLabel2;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel4;
@@ -402,9 +425,9 @@ public class Gui extends javax.swing.JFrame {
     public javax.swing.JSplitPane panelDividido;
     public javax.swing.JTabbedPane jTabbedPane1;
     public javax.swing.JTabbedPane panelResultados;
-    public javax.swing.JTable jTable1;
+    public javax.swing.JTable tabsim;
     public javax.swing.JTable jTable2;
-    public javax.swing.JTextArea jTextArea2;
+    public javax.swing.JTextArea areaCodobj;
     public javax.swing.JLabel lblNoErrores;
     public javax.swing.JPanel panelAcciones;
     public javax.swing.JPanel panelErrores;

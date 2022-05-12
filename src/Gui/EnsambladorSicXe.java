@@ -1,9 +1,11 @@
 package Gui;
 
 import App.Intermedio;
+import App.ProgramaObjeto;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
+import sintaxis.Analizador;
 import sintaxis.Instruccion;
 import sintaxis.sicstdLexer;
 import sintaxis.sicstdParser;
@@ -12,35 +14,38 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableModel;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.BitSet;
-import java.util.Scanner;
+import java.util.*;
 
 public class EnsambladorSicXe {
     private Gui ventana;
     private File archivoFuente;
     private final ArrayList<String> listaErrores;
-    private final ArrayList<String> tipoErrores;
-    private final ArrayList<Integer> lineasErrores;
+    private ArrayList<String> tipoErrores;
+    private ArrayList<Integer> lineasErrores;
+    private ArrayList<String> lineasArchivo;
     private boolean hayErrores;
     private ArrayList<Instruccion> instrucciones;
     private ArrayList<Object[]> filasTabla;
     private File archivoIntermedio;
+    private DefaultTableModel modeloTabla;
     private boolean paso1;
+    private Intermedio archInt;
+    private File archivoSalida;
+    private Analizador analizador;
+    private boolean alertaSobreescritura;
 
     public EnsambladorSicXe(){
         listaErrores = new ArrayList<>();
         tipoErrores = new ArrayList<>();
         lineasErrores = new ArrayList<>();
         instrucciones = new ArrayList<>();
-        filasTabla = new ArrayList<Object[]>();
+        filasTabla = new ArrayList<>();
         hayErrores = false;
         paso1 = false;
+        alertaSobreescritura = false;
         ventana = new Gui();
         eventosBotonesMenu();
         eventosBotones();
-        //ventana.panelResultados.setVisible(true);
-        //ventana.pack();
         ventana.setVisible(true);
     }
 
@@ -48,10 +53,18 @@ public class EnsambladorSicXe {
         ventana.analisisSintBtn.addActionListener(actionEvent ->{
             analisisSintactico();
             ventana.paso1Btn.setEnabled(true);
-            this.paso1 = true;
         });
         ventana.paso1Btn.addActionListener(actionEvent -> {
             paso1();
+            ventana.paso2Btn.setEnabled(true);
+        });
+        ventana.paso2Btn.addActionListener(actionEvent -> {
+            paso2();
+        });
+        ventana.ensamblarBtn.addActionListener(actionEvent -> {
+            analisisSintactico();
+            paso1();
+            paso2();
         });
     }
 
@@ -90,7 +103,6 @@ public class EnsambladorSicXe {
                 System.out.println("Error al escribir el archivo");
                 throw new RuntimeException(e);
             } catch (IOException e) {
-                System.out.println("Algo pasa xd");
                 throw new RuntimeException(e);
             }
         }else{
@@ -115,16 +127,12 @@ public class EnsambladorSicXe {
 
     private void analisisSintactico(){
         ventana.lblLineasErrores.setText("");
-        ANTLRInputStream entrada = new ANTLRInputStream(ventana.areaTexto.getText());
-        sicstdLexer lexer = new sicstdLexer(entrada);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        sicstdParser parser = new sicstdParser(tokens);
-        ANTLRErrorListener errorListener = errores();
-        parser.removeErrorListeners();
-        parser.addErrorListener(errorListener);
-        parser.programa();
-        instrucciones = parser.listaInstrucciones;
+        analizador = new Analizador(ventana.areaTexto.getText(),this.archivoFuente.getName());
+        lineasErrores = analizador.lineasErrores;
         ventana.noErrores.setText(String.valueOf(lineasErrores.size()));
+        instrucciones = analizador.listaInstrucciones();
+        this.archivoSalida = analizador.obtenArchivoSalida();
+        this.tipoErrores = analizador.getTipoErrores();
         if(lineasErrores.size() > 0){
             StringBuilder lineasE = new StringBuilder("<html><body>");
             lineasE.append("Lineas: ");
@@ -136,17 +144,30 @@ public class EnsambladorSicXe {
             ventana.lblLineasErrores.setText(lineasE.toString());
         }
         ventana.panelDividido.setDividerLocation(120);
+        this.paso1 = true;
     }
 
+    private void escribeArchivo(){
+        try {
+            PrintWriter writer = new PrintWriter(this.archivoFuente);
+            writer.write(ventana.areaTexto.getText());
+            writer.close();
+            this.archivoFuente.createNewFile();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     private void paso1(){
         if (paso1){
-            Intermedio archInt = new Intermedio(instrucciones, archivoFuente, lineasErrores, tipoErrores);
+            if(!archivoFuente.exists()) escribeArchivo();
+
+            archInt = new Intermedio(instrucciones, archivoFuente, lineasErrores, tipoErrores);
             archivoIntermedio = archInt.archivoIntermedio();
-            ArrayList<String> lineasPaso1 = archInt.lineasArchivo;
+            lineasArchivo = archInt.lineasArchivo;
             JTable tablaPaso1 = ventana.jTable2;
-            DefaultTableModel modeloTabla = (DefaultTableModel) tablaPaso1.getModel();
+            modeloTabla = (DefaultTableModel) tablaPaso1.getModel();
             Object[] fila;
-            for (String linea : lineasPaso1) {
+            for (String linea : lineasArchivo) {
                 String[] elementos = linea.split("\t+");
                 if(elementos.length < 5){
                     fila = new Object[]{elementos[0],"",elementos[1],elementos[2],"-----"};
@@ -158,50 +179,57 @@ public class EnsambladorSicXe {
                     filasTabla.add(fila);
                 }
             }
+            System.out.println("Este es el total de filas: " + modeloTabla.getRowCount());
+            LinkedHashMap<String, String> tabsim =  archInt.tabsim;
+            Iterator<String> iterador = tabsim.keySet().iterator();
+            DefaultTableModel tablaTabsim = (DefaultTableModel) ventana.tabsim.getModel();
+            while (iterador.hasNext()){
+                String simbolo = iterador.next();
+                String direccion = tabsim.get(simbolo);
+                Object[] filaTabsim = new Object[]{simbolo,direccion};
+                tablaTabsim.addRow(filaTabsim);
+            }
             ventana.jTabbedPane1.setSelectedIndex(1);
+            ventana.panelResultados.setVisible(true);
+            ventana.pack();
         }
-       /* ArrayList<String> codigoObjeto = archInt.getCodigoObjeto();
-        ProgramaObjeto pO = new ProgramaObjeto(codigoObjeto,archivoSalida.getName());
-        if(archivoIntermedio != null){
-            btnAbrirAInt.setVisible(true);
-            btnAbrirUbInt.setVisible(true);
-        }*/
     }
     private void paso2(){
+        ventana.areaCodobj.setText("");
+        System.out.println("Este es el otro total de filas: " + modeloTabla.getRowCount());
+        ProgramaObjeto pO = new ProgramaObjeto(archInt.getCodigoObjeto(),archivoSalida.getName());
 
+        while (modeloTabla.getRowCount() > 0) { modeloTabla.removeRow(0); }
+
+        int cont = 0;
+        for (String linea : lineasArchivo) {
+            String[] elementos = linea.split("\t+");
+            Object[] fila = filasTabla.get(cont++);
+            fila[fila.length - 1] = elementos[elementos.length -1];
+            modeloTabla.addRow(fila);
+        }
+        StringBuilder codobj = new StringBuilder();
+        for (String cadena : pO.registroH.values()){
+            codobj.append(cadena);
+        }
+        codobj.append("\n");
+        for (HashMap<String,String> registro : pO.registrosT){
+            for (String cadena : registro.values()){
+                codobj.append(cadena);
+            }
+            codobj.append("\n");
+        }
+        for (HashMap<String,String> registro : pO.registrosM){
+            for (String cadena : registro.values()){
+                codobj.append(cadena);
+            }
+            codobj.append("\n");
+        }
+        for (String cadena : pO.registroE.values()){
+            codobj.append(cadena);
+        }
+        ventana.areaCodobj.setText(codobj.toString());
     }
-    private ANTLRErrorListener errores() {
-        return new ANTLRErrorListener() {
-            @Override
-            public void syntaxError(Recognizer<?, ?> recognizer, Object o, int i, int i1, String s, RecognitionException e) {
-                if(s.contains("no viable alternative at input")){
-                    tipoErrores.add("Error: Símbolo no encontrado");
-                }else tipoErrores.add("Error: sintaxis");
-                String error = "Error en línea: " + i + " " + s;
-                if(!listaErrores.contains(error)){
-                    listaErrores.add(error);
-                    lineasErrores.add(i);
-                }
-                hayErrores = true;
-            }
-
-            @Override
-            public void reportAmbiguity(Parser parser, DFA dfa, int i, int i1, boolean b, BitSet bitSet, ATNConfigSet atnConfigSet) {
-                //System.out.println("Hay ambigüedad");
-            }
-
-            @Override
-            public void reportAttemptingFullContext(Parser parser, DFA dfa, int i, int i1, BitSet bitSet, ATNConfigSet atnConfigSet) {
-                //System.out.println("Algo del full context");
-            }
-
-            @Override
-            public void reportContextSensitivity(Parser parser, DFA dfa, int i, int i1, int i2, ATNConfigSet atnConfigSet) {
-                //System.out.println("Algo del context sensitivity");
-            }
-        };
-    }
-
     private JFileChooser exploradorGuardar(){
         JFileChooser selection = new JFileChooser();
         FileNameExtensionFilter filtro = new FileNameExtensionFilter("Archivo de programa SIC-XE","xe");

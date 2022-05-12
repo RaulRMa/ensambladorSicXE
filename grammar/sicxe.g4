@@ -252,7 +252,7 @@ RSUB: 'RSUB';
 FIN_INSTRUCCION: '\n';
 COMILLA: ['];
 NUMERO:[0-9]+;
-HEXADECIMAL: [A-F0-9]+(H)*;
+HEXADECIMAL: [A-F0-9]+H;
 SIMBOLO: [a-zA-Z0-9]+;
 
 EB  :   [\t\r]+ -> skip;

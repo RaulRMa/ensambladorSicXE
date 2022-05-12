@@ -1,4 +1,4 @@
-grammar sicstd;
+grammar pruebas;
 options{
     language = Java;
 }
@@ -12,7 +12,6 @@ options{
 
 @parser::members{
     public ArrayList<Instruccion> listaInstrucciones = new ArrayList<>();
-    public ArrayList<Simbolo> listaSimbolos = new ArrayList<>();
 }
 
 programa: start
@@ -113,10 +112,6 @@ directiva:
     t1 = (SIMBOLO | HEXADECIMAL)?
     (
     DIRECTIVA (expresion)
-    {
-        Instruccion inst = new Instruccion($DIRECTIVA.text,$expresion.value,$t1.text);
-        listaInstrucciones.add(inst);
-    }
     |
     BYTE
         (
@@ -131,10 +126,9 @@ directiva:
     |
     BASE SIMBOLO
     {listaInstrucciones.add(new Instruccion("BASE",$SIMBOLO.text));}
+    )
     |
     dir_equ
-    {listaInstrucciones.add(new Instruccion("EQU",$dir_equ.value,$t1.text));}
-    )
 ;
 
 direccion returns [Object value]:
@@ -145,130 +139,49 @@ direccion returns [Object value]:
 simple:
     SIMBOLO? INSF3
     (   expresion
-        {
-            Instruccion inst = new Instruccion("INSF3",(String)$expresion.value,$SIMBOLO.text,$INSF3.text);
-            inst.setF4(false);
-            inst.setTipo("simple");
-            listaInstrucciones.add(inst);
-        }
         |
         (termino) COMA X
-        {
-           Instruccion inst = new Instruccion("INSF3",$termino.value + ", X" ,$SIMBOLO.text,$INSF3.text);
-           inst.setF4(false);
-           inst.setTipo("simple");
-           listaInstrucciones.add(inst);
-        }
     )
 ;
 indirecto returns [Object value]:
     SIMBOLO? INSF3
     (
         ARROBA expresion
-        {
-          Instruccion inst = new Instruccion("INSF3",(String)$expresion.value,$SIMBOLO.text,$INSF3.text);
-          inst.setF4(false);
-          inst.setTipo("indirecto");
-          listaInstrucciones.add(inst);
-        }
     )
 ;
 inmediato returns [Object value]:
     SIMBOLO? INSF3
     (
         SHARP expresion
-        {
-          Instruccion inst = new Instruccion("INSF3",(String)$expresion.value,$SIMBOLO.text,$INSF3.text);
-          inst.setF4(false);
-          inst.setTipo("inmediato");
-          listaInstrucciones.add(inst);
-        }
     )
 ;
 
-termino returns [String value]:
-     PAR_A expresion PAR_C {$value = $PAR_A.text +  $expresion.value + $PAR_C.text;}
+termino returns [Object value]:
+     PAR_A expresion PAR_C
      |
      HEXADECIMAL {$value = $HEXADECIMAL.text;}
      | NUMERO {$value = $NUMERO.text;}
      | SIMBOLO {$value = $SIMBOLO.text;}
 ;
-dir_equ returns [String value]:
-    EQU expresion
-    { $value = (String) $expresion.value;}
+dir_equ:
+    SIMBOLO EQU direccion
     |
-    EQU POR { $value = $POR.text; }
+    SIMBOLO EQU POR
 ;
-division returns [String value]:
-    t1 = termino (ENTRE t2 = termino)* {
-        try {
-            $value = $t1.value + "/" + $t2.value;
-        }catch (NullPointerException e){
-            $value = $t1.value;
-        }
-    }
+division:
+    termino (ENTRE termino)*
 ;
-resta returns [String value]:
-    t1 = division (MENOS t2 = division)*
-    {
-        try {
-            $value = $t1.value + "-" + $t2.value;
-        }catch (NullPointerException e){
-            $value = $t1.value;
-        }
-    }
+resta:
+    division (MENOS division)*
 ;
-factor returns [String value]:
-    t1 = resta (POR t2 = resta)*
-    {
-
-        try {
-            $value = $t1.value + "*" + $t2.value;
-
-        }catch (NullPointerException e){
-                $value = $t1.value;
-        }
-    }
+factor:
+    resta (POR resta)*
 ;
-expresion returns [String value]:
-    t1 = factor (MAS t2 =factor)*
-    {
-        try {
-            $value = $t1.value + "+" + $t2.value;
-        }catch (NullPointerException e){
-            $value = $t1.value;
-        }
-    }
+expresion:
+    factor (MAS factor)*
+    |
+    factor (MENOS factor)*
 ;
-
-termino_ar returns [Object value]:
-     PAR_A expresion_ar PAR_C {$value = $expresion_ar.value;}
-     |
-     HEXADECIMAL {$value = $HEXADECIMAL.text;}
-     | NUMERO {$value = Integer.parseInt($NUMERO.text);}
-     | SIMBOLO {$value = $SIMBOLO.text;}
-;
-
-division_ar returns [Object value]:
-    t1 = termino_ar {$value = (int)$t1.value;}(ENTRE t2 = termino_ar
-    {
-        $value = (int)$t1.value  /  (int)$t2.value;
-    })*
-;
-resta_ar returns [Object value]:
-    t1 = division_ar {$value = (int)$t1.value;}(MENOS t2 = division_ar {
-    $value = (int)$t1.value  -  (int)$t2.value;})*
-;
-factor_ar returns [Object value]:
-    t1 = resta_ar {$value = $t1.value;}(POR t2 = resta_ar
-    {$value = (int)$t1.value  *  (int)$t2.value;})*
-;
-expresion_ar returns [Object value]:
-    t1 = factor_ar {$value = (int)$t1.value;}(MAS t2 =factor_ar{
-    $value = (int)$t1.value  +  (int)$t2.value;})*
-;
-
-
 //FIN_INS: '\n';
 START: 'START';
 END: 'END';

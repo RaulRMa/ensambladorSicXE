@@ -16,9 +16,11 @@ import java.util.Map;
 public class Analizador {
     private File archivoSalida;
     private ArrayList<String> listaErrores, tipoErrores;
-    private ArrayList<Integer> lineasErrores;
+    public ArrayList<Integer> lineasErrores;
     private ArrayList<Instruccion> instrucciones;
     private boolean hayErrores;
+    private String entrada;
+    private String nombreArchivo;
 
     public Analizador(File archivo){
         try {
@@ -39,8 +41,39 @@ public class Analizador {
         }
     }
 
+    public Analizador(String cadena, String nombreArchivo){
+        try {
+            listaErrores = new ArrayList<>();
+            lineasErrores = new ArrayList<>();
+            instrucciones = new ArrayList<>();
+            tipoErrores = new ArrayList<>();
+            hayErrores = false;
+            String nombre = nombreArchivo.replace(".xe", ".err");
+            archivoSalida = new File(nombre);
+            this.entrada = cadena;
+            analisis(entrada);
+            if(hayErrores){
+                escribeArchivo();
+            }
+            archivoSalida.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public File obtenArchivoSalida() {
         return archivoSalida;
+    }
+
+    private void analisis(String cadena){
+        ANTLRInputStream input = new ANTLRInputStream(cadena);
+        sicstdLexer lexer = new sicstdLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        sicstdParser parser = new sicstdParser(tokens);
+        ANTLRErrorListener errorListener = errores();
+        parser.removeErrorListeners();
+        parser.addErrorListener(errorListener);
+        parser.programa();
+        instrucciones = parser.listaInstrucciones;
     }
 
     private void inicia(File archivo) throws IOException {
