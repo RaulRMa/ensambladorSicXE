@@ -103,8 +103,20 @@ inst_f4:
         }
         |
         ARROBA(expresion)
+        {
+            Instruccion inst = new Instruccion("INSF4",(String)$expresion.value,$SIMBOLO.text,$INSF3.text);
+            inst.setF4(true);
+            inst.setTipo("indirecto");
+            listaInstrucciones.add(inst);
+        }
         |
         SHARP(expresion)
+        {
+             Instruccion inst = new Instruccion("INSF4",(String)$expresion.value,$SIMBOLO.text,$INSF3.text);
+             inst.setF4(true);
+             inst.setTipo("inmediato");
+             listaInstrucciones.add(inst);
+        }
     )
 
 ;
@@ -134,6 +146,9 @@ directiva:
     |
     dir_equ
     {listaInstrucciones.add(new Instruccion("EQU",$dir_equ.value,$t1.text));}
+    |
+    dir_org
+    {listaInstrucciones.add(new Instruccion("ORG",$dir_org.value,$t1.text));}
     )
 ;
 
@@ -199,6 +214,10 @@ dir_equ returns [String value]:
     |
     EQU POR { $value = $POR.text; }
 ;
+dir_org returns [String value]:
+    ORG t1=(NUMERO | HEXADECIMAL)
+    {$value = $t1.text; }
+;
 division returns [String value]:
     t1 = termino (ENTRE t2 = termino)* {
         try {
@@ -231,12 +250,12 @@ factor returns [String value]:
     }
 ;
 expresion returns [String value]:
-    t1 = factor (MAS t2 =factor)*
+    t3=MENOS? (t1 = factor (MAS t2 =factor)*)
     {
         try {
-            $value = $t1.value + "+" + $t2.value;
+            $value =$t3.text != null ? "-" + $t1.value : $t1.value + "+" + $t2.value;
         }catch (NullPointerException e){
-            $value = $t1.value;
+            $value = $t3.text != null ? "-" + $t1.value :  $t1.value;
         }
     }
 ;
@@ -264,8 +283,8 @@ factor_ar returns [Object value]:
     {$value = (int)$t1.value  *  (int)$t2.value;})*
 ;
 expresion_ar returns [Object value]:
-    t1 = factor_ar {$value = (int)$t1.value;}(MAS t2 =factor_ar{
-    $value = (int)$t1.value  +  (int)$t2.value;})*
+    t3 = MENOS? (t1 = factor_ar {$value = $t3.text != null ? - (int)$t1.value : (int)$t1.value;}
+    (MAS t2 =factor_ar{$value = $t3.text != null ? - (int)$t1.value  +  (int)$t2.value : (int)$t1.value  +  (int)$t2.value;})*)
 ;
 
 
@@ -285,6 +304,7 @@ PAR_C: ')';
 BYTE: 'BYTE';
 BASE: 'BASE';
 EQU: 'EQU';
+ORG: 'ORG';
 X: 'X';
 C:'C';
 CLEAR:'CLEAR';

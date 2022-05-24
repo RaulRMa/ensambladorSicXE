@@ -1,5 +1,6 @@
 package Gui;
 
+import javax.swing.*;
 import java.awt.*;
 
 public class Gui extends javax.swing.JFrame {
@@ -48,7 +49,9 @@ public class Gui extends javax.swing.JFrame {
         noErrores = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
+        jScrollPaneR = new javax.swing.JScrollPane();
         jTable2 = new javax.swing.JTable();
+        mapaMem = new JTable();
         panelResultados = new javax.swing.JTabbedPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         tabsim = new javax.swing.JTable();
@@ -278,6 +281,39 @@ public class Gui extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Archivo fuente", jPanel4);
 
+        mapaMem.setBackground(new java.awt.Color(33, 31, 32));
+        mapaMem.setForeground(java.awt.Color.white);
+        mapaMem.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                        "0","1","2","3","4","5","6","7","8","9",
+                        "A","B", "C","D","E","F",
+                }
+        ){
+            Class[] types = new Class [] {
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
+                    java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                    false, false, false, false, false,
+                    false, false, false, false, false,
+                    false, false, false, false, false,
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+
+        } );
+
+        jScrollPaneR.setViewportView(mapaMem);
+
+        panelResultados.addTab("Mapa de memoria",jScrollPaneR);
         jTable2.setBackground(new java.awt.Color(33, 31, 32));
         jTable2.setForeground(java.awt.Color.white);
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -305,11 +341,11 @@ public class Gui extends javax.swing.JFrame {
         });
         jScrollPane5.setViewportView(jTable2);
         if (jTable2.getColumnModel().getColumnCount() > 0) {
-            jTable2.getColumnModel().getColumn(0).setResizable(false);
+            jTable2.getColumnModel().getColumn(0).setResizable(true);
             jTable2.getColumnModel().getColumn(1).setResizable(false);
             jTable2.getColumnModel().getColumn(2).setResizable(false);
-            jTable2.getColumnModel().getColumn(3).setResizable(false);
-            jTable2.getColumnModel().getColumn(4).setResizable(false);
+            jTable2.getColumnModel().getColumn(3).setResizable(true);
+            jTable2.getColumnModel().getColumn(4).setResizable(true);
         }
 
         jTabbedPane1.addTab("Archivo intermedio", jScrollPane5);
@@ -324,14 +360,14 @@ public class Gui extends javax.swing.JFrame {
                 new Object [][] {
                 },
                 new String [] {
-                        "Símbolo", "Direccion"
+                        "Símbolo", "Direccion/Valor", "Tipo término"
                 }
         ) {
             Class[] types = new Class [] {
-                    java.lang.String.class, java.lang.String.class
+                    java.lang.String.class, java.lang.String.class,java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                    false, false
+                    false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -348,8 +384,8 @@ public class Gui extends javax.swing.JFrame {
             tabsim.getColumnModel().getColumn(1).setResizable(false);
         }
 
-        panelResultados.addTab("Tabsim", jScrollPane3);
-
+        //panelResultados.addTab("Tabsim", jScrollPane3);
+        jTabbedPane1.addTab("Tabsim",jScrollPane3);
         areaCodobj.setEditable(false);
         areaCodobj.setBackground(new java.awt.Color(33, 31, 32));
         areaCodobj.setColumns(20);
@@ -357,8 +393,8 @@ public class Gui extends javax.swing.JFrame {
         areaCodobj.setRows(5);
         jScrollPane4.setViewportView(areaCodobj);
 
-        panelResultados.addTab("Programa objeto", jScrollPane4);
-
+        //panelResultados.addTab("Programa objeto", jScrollPane4);
+        jTabbedPane1.addTab("Programa objeto",jScrollPane4);
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -402,8 +438,13 @@ public class Gui extends javax.swing.JFrame {
         pack();
     }// </editor-fold>
 
+    private void creaMapaMemoria(){
+
+    }
+
     // Variables declaration - do not modify
     public javax.swing.JTextArea areaTexto;
+    // <editor-fold defaultstate="collapsed" desc="Botones">
     public javax.swing.JButton btnNvoArchivo;
     public javax.swing.JButton paso2Btn;
     public javax.swing.JButton btnGuardarArch;
@@ -415,19 +456,23 @@ public class Gui extends javax.swing.JFrame {
     public javax.swing.JButton ensamblarBtn;
     public javax.swing.JButton cargarBtn;
     public javax.swing.JButton simularBtn;
+    // </editor-fold>
     public javax.swing.JLabel jLabel2;
     public javax.swing.JPanel jPanel1;
     public javax.swing.JPanel jPanel4;
-    public javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JScrollPane jScrollPane3;
+    public javax.swing.JScrollPane jScrollPane1; //Soporta el area de texto editable
+    public javax.swing.JScrollPane jScrollPane3; //Soporta la tabsim
     public javax.swing.JScrollPane jScrollPane4;
-    public javax.swing.JScrollPane jScrollPane5;
+    public javax.swing.JScrollPane jScrollPane5; // Soporta la tabla del archivo intermedio
+    public javax.swing.JScrollPane jScrollPaneR; // Soporta la tabla del mapa de memoria
+
     public javax.swing.JSplitPane panelDividido;
-    public javax.swing.JTabbedPane jTabbedPane1;
-    public javax.swing.JTabbedPane panelResultados;
-    public javax.swing.JTable tabsim;
-    public javax.swing.JTable jTable2;
-    public javax.swing.JTextArea areaCodobj;
+    public javax.swing.JTabbedPane jTabbedPane1; // Tabs de ensamblado
+    public javax.swing.JTabbedPane panelResultados; // Tabs de cargador-ligador
+    public javax.swing.JTable tabsim; //Tabla de simbolos
+    public javax.swing.JTable jTable2; // Tabla codigo objeto
+    public javax.swing.JTable mapaMem; // Tabla mapa de memoria
+    public javax.swing.JTextArea areaCodobj; //Registros objeto
     public javax.swing.JLabel lblNoErrores;
     public javax.swing.JPanel panelAcciones;
     public javax.swing.JPanel panelErrores;

@@ -59,7 +59,7 @@ public class ProgramaObjeto {
             str.append(nombreP, 0, 6);
         }
         String longitud = anexaCeros(longPrograma(codsObj),6);
-        iniProg = str.toString();
+        iniProg = str.toString().toUpperCase();
         registroH.put("H", "H");
         registroH.put("Nombre",iniProg);
         registroH.put("Direccion", dirInicio);
@@ -93,6 +93,12 @@ public class ProgramaObjeto {
                 agregaCodObj(codigoO,acumulador,codObj);
             }else if(!codigoO.equals("----") && acumulador.length() < 60){
                 agregaCodObj(codigoO,acumulador,codObj);
+                if(codsObj.indexOf(codObj) == codsObj.size() - 1){
+                    String longitud = String.valueOf(acumulador.length() / 2);
+                    registroT.put("Longitud", anexaCeros(longitud,2));
+                    registroT.put("Codigo",acumulador.toString());
+                    registrosT.add(registroT);
+                }
             }else{
                 if(acumulador.isEmpty()) continue;
                 String longitud = String.valueOf(acumulador.length() / 2);

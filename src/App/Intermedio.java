@@ -25,7 +25,7 @@ public class Intermedio {
     public final ArrayList<String> lineasArchivo;
     private final ArrayList<String> tipoErrores;
     private final ArrayList<String> codigoObjeto;
-    private ArrayList<Simbolo> tablaSimbolos;
+    public ArrayList<Simbolo> tablaSimbolos;
     private int primerDir, ultimaDir;
     private String BASE;
     private ArrayList<String> nombresSimbolos;
@@ -98,6 +98,7 @@ public class Intermedio {
                     }
                 }
                 if(!lineasErrores.contains(contador)){
+                    boolean bandera = false;
                     Instruccion instruccion = instrucciones.get(contInst++);
                     if( instruccion.getSimbolo() != null && !instruccion.getSimbolo().isBlank()){
                         if(tabsim.containsKey(instruccion.getSimbolo()) && error){
@@ -124,12 +125,27 @@ public class Intermedio {
                                         simbolo.dirOSimbolo = Integer.toHexString(cp);
                                     }else if(instruccion.isExpresion()){
                                         if(esExpresionValida(instruccion.getDireccion())){
-                                            simbolo.dirOSimbolo = Integer.toHexString(Integer.parseInt(instruccion.getDireccion(),16));
+                                            String res = agrupaSimbolos(instruccion.getDireccion(),instruccion);
+                                            int valor = evaluaValor(instruccion,res);
+
+                                            simbolo.dirOSimbolo = Integer.toHexString(valor).toUpperCase();
                                         }else{
+                                            lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\tError: expresión inválida";
+                                            lineasArchivo.add(lineaAEscribir);
+                                            simbolo.dirOSimbolo = "FFFF";
+                                            nombresSimbolos.add(simbolo.nombre);
+                                            tablaSimbolos.add(simbolo);
+                                            tabsim.put(instruccion.getSimbolo(),"FFFF");
+                                            contador++;
                                             continue;
                                         }
                                     }else{
-                                        simbolo.dirOSimbolo = Integer.toHexString(Integer.parseInt(instruccion.getDireccion(),16));
+                                        if(instruccion.getDireccion().matches("[0-9A-F]+[Hh]")){
+                                            String valor = instruccion.getDireccion().split("[Hh]")[0];
+                                            simbolo.dirOSimbolo = valor;
+                                        }else {
+                                            simbolo.dirOSimbolo = Integer.toHexString(Integer.parseInt(instruccion.getDireccion())).toUpperCase();
+                                        }
                                         simbolo.relativo = false;
                                     }
                                 }
@@ -138,9 +154,21 @@ public class Intermedio {
                             tabsim.put(instruccion.getSimbolo(),Integer.toHexString(cp));
                         }
                     }
-
+                    int bytes = instruccion.getBytes();
+                    if(instruccion.getNombre().equals("ORG")){
+                        if(instruccion.getDireccion().matches("[0-9A-F]+[Hh]")){
+                            String valor = instruccion.getDireccion().split("[Hh]")[0];
+                            bytes = Integer.parseInt(valor,16);
+                        }else {
+                            bytes = Integer.parseInt(instruccion.getDireccion());
+                        }
+                        cp = bytes;
+                        lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----" ;
+                        contador++;
+                        continue;
+                    }
                     lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----" ;
-                    cp += instruccion.getBytes();
+                    cp += bytes;
                     contador++;
                 }else{
                     lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t" + tipoErrores.get(contErrores++);
@@ -157,60 +185,35 @@ public class Intermedio {
         }
     }
 
-    private String agrupaSimbolos(String expresion){
+    private String agrupaSimbolos(String expresion, Instruccion inst){
         String[] simbolos = expresion.split("[-*/+()0-9]+");
         String expresionAux = expresion;
         ArrayList<String> tiposTerminos = new ArrayList<>();
-        if(simbolos.length > 1){
+        if(simbolos.length > 1 && !(simbolos.length == 2 && simbolos[0].isEmpty()) ){
             for(String simbolo : simbolos){
                 if(!simbolo.isEmpty())
                     expresionAux = expresionAux.replace(simbolo, " ");
             }
-            String[] elementos = expresionAux.split("");
-            int cont = 0;
-            String expresionRes = expresionAux;
-            for (int i = 0; i < elementos.length; i++){
-                String elemento = elementos[i];
-                if(elemento.equals("(")){
-                    do{
-                        expresionRes = simbolosAgrupados(simbolos,elementos,expresionRes,cont,i);
-
-                        if(expresionRes.contains(" "))
-                            cont = expresion.indexOf(" ");
-                        else
-                            cont = expresionAux.indexOf(")");
-                    }while (!elementos[cont].equals(")"));
-                    return expresionRes;
-                }
-                if(elemento.matches("[0-9]+")) continue;
-                if(elemento.equals(" ")){
-                    if(!(cont+2 > elementos.length) && elementos[cont + 2].equals(" ")){
-                        expresionRes = simbolosAgrupados(simbolos,elementos,expresionRes,cont,i);
-                    }
-                    else {
-                        for(Simbolo simboloObj : tablaSimbolos){
-                            if( !simbolos[cont].isEmpty() && simboloObj.nombre.equals(simbolos[cont])){
-                                if(simboloObj.relativo) tiposTerminos.add("r");
-                                else tiposTerminos.add("a");
-                                expresionRes = expresionRes.replaceFirst(" ",simboloObj.dirOSimbolo);
-                                cont++;
-                                break;
-                            }
-                        }
+            for(String simbolo : simbolos){
+                for(Simbolo simb : tablaSimbolos){
+                    if(simbolo.equals(simb.nombre)){
+                        expresionAux = expresionAux.replaceFirst(" ",String.valueOf(Integer.parseInt(simb.dirOSimbolo,16)));
                     }
                 }
-
             }
+            return expresionAux;
         }
         Simbolo simbolo = null;
+        int indx = simbolos[0].isEmpty() ? 1 : 0;
         for(Simbolo simb : tablaSimbolos){
-            if(simb.nombre.equals(simbolos[0])){
+            if(simb.nombre.equals(simbolos[indx])){
                 simbolo = simb;
                 break;
             }
         }
         if(simbolo != null){
-            expresionAux = expresionAux.replace(simbolos[0],simbolo.dirOSimbolo);
+            expresionAux = expresionAux.replace(simbolos[indx],String.valueOf(Integer.parseInt(simbolo.dirOSimbolo,16)));
+            inst.simboloObj.relativo = simbolo.relativo;
             return expresionAux;
         }
         return "Error: símbolo no existe";
@@ -267,6 +270,7 @@ public class Intermedio {
                         operacion = Integer.parseInt(simb1.dirOSimbolo,16) - Integer.parseInt(simb2.dirOSimbolo,16);
                         resultado = expresion.replaceAll(" - ",String.valueOf(operacion));
                     }
+
                     return resultado;
                 }
                 return "Error";
@@ -306,30 +310,30 @@ public class Intermedio {
                 if(inst.simboloObj.equ) continue;
                 if(inst.isExpresion()){
 
-                    String res = agrupaSimbolos(inst.getDireccion());
+                    String res = agrupaSimbolos(inst.getDireccion(),inst);
                     int operacion = 0;
                     if(!res.equals("Error")){
                         operacion = evaluaValor(inst,res);
                         if(operacion < 0) inst.setDireccion(String.valueOf(operacion));
-                        else inst.setDireccion(Integer.toHexString(operacion).toUpperCase());
+                        else inst.setDireccion(Integer.toHexString(operacion).toUpperCase() + "H");
 
                         if(inst.simboloObj.relativo){
-                            inst.setConstante(true);
-                        }else{
                             inst.setConstante(false);
+                        }else{
+                            inst.setConstante(true);
                         }
                         codobj = codigoObjeto(inst,cp);
-                        nuevaInst = instruccion.replace("----",codobj);
+                        nuevaInst = instruccion.replace("----",codobj.toUpperCase());
                     }else {
                         nuevaInst = instruccion.replace("Error: Símbolo duplicado","Error: Expresión inválida");
                     }
                 }
                 else if(instruccion.contains("Error: Símbolo duplicado")){
                     codobj = codigoObjeto(inst,cp);
-                    nuevaInst = instruccion.replace("Error: Símbolo duplicado",codobj + "Error: Símbolo duplicado");
+                    nuevaInst = instruccion.replace("Error: Símbolo duplicado",codobj.toUpperCase() + "Error: Símbolo duplicado");
                 }else{
                     codobj = codigoObjeto(inst,cp);
-                    nuevaInst = instruccion.replace("----",codobj);
+                    nuevaInst = instruccion.replace("----",codobj.toUpperCase());
                 }
                 lineasArchivo.remove(i);
                 lineasArchivo.add(i,nuevaInst);

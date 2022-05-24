@@ -5,10 +5,7 @@ import App.ProgramaObjeto;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATNConfigSet;
 import org.antlr.v4.runtime.dfa.DFA;
-import sintaxis.Analizador;
-import sintaxis.Instruccion;
-import sintaxis.sicstdLexer;
-import sintaxis.sicstdParser;
+import sintaxis.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -165,6 +162,7 @@ public class EnsambladorSicXe {
             archivoIntermedio = archInt.archivoIntermedio();
             lineasArchivo = archInt.lineasArchivo;
             JTable tablaPaso1 = ventana.jTable2;
+            ArrayList<Simbolo> tabsimbs = archInt.tablaSimbolos;
             modeloTabla = (DefaultTableModel) tablaPaso1.getModel();
             Object[] fila;
             for (String linea : lineasArchivo) {
@@ -174,29 +172,29 @@ public class EnsambladorSicXe {
                     modeloTabla.addRow(fila);
                     filasTabla.add(fila);
                 }else{
-                    fila = new Object[]{elementos[0],elementos[1],elementos[2],elementos[3],"-----"};
+                    if(elementos[elementos.length -1].contains("Error"))
+                        fila = new Object[]{elementos[0],elementos[1],elementos[2],elementos[3],elementos[elementos.length -1]};
+                    else
+                        fila = new Object[]{elementos[0],elementos[1],elementos[2],elementos[3],"-----"};
                     modeloTabla.addRow(fila);
                     filasTabla.add(fila);
                 }
             }
-            System.out.println("Este es el total de filas: " + modeloTabla.getRowCount());
             LinkedHashMap<String, String> tabsim =  archInt.tabsim;
             Iterator<String> iterador = tabsim.keySet().iterator();
             DefaultTableModel tablaTabsim = (DefaultTableModel) ventana.tabsim.getModel();
-            while (iterador.hasNext()){
-                String simbolo = iterador.next();
-                String direccion = tabsim.get(simbolo);
-                Object[] filaTabsim = new Object[]{simbolo,direccion};
-                tablaTabsim.addRow(filaTabsim);
+
+            for (Simbolo simb : tabsimbs) {
+                fila = new Object[]{simb.nombre,simb.dirOSimbolo,simb.relativo ? "R" : "A"};
+                tablaTabsim.addRow(fila);
             }
             ventana.jTabbedPane1.setSelectedIndex(1);
-            ventana.panelResultados.setVisible(true);
-            ventana.pack();
+            //ventana.panelResultados.setVisible(true);
+            //ventana.pack();
         }
     }
     private void paso2(){
         ventana.areaCodobj.setText("");
-        System.out.println("Este es el otro total de filas: " + modeloTabla.getRowCount());
         ProgramaObjeto pO = new ProgramaObjeto(archInt.getCodigoObjeto(),archivoSalida.getName());
 
         while (modeloTabla.getRowCount() > 0) { modeloTabla.removeRow(0); }
