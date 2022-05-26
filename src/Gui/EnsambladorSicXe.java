@@ -1,10 +1,8 @@
 package Gui;
 
+import App.CargadorLigador;
 import App.Intermedio;
 import App.ProgramaObjeto;
-import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.atn.ATNConfigSet;
-import org.antlr.v4.runtime.dfa.DFA;
 import sintaxis.*;
 
 import javax.swing.*;
@@ -30,6 +28,7 @@ public class EnsambladorSicXe {
     private File archivoSalida;
     private Analizador analizador;
     private boolean alertaSobreescritura;
+    private ArrayList<ProgramaObjeto> listaProgs;
 
     public EnsambladorSicXe(){
         listaErrores = new ArrayList<>();
@@ -62,6 +61,12 @@ public class EnsambladorSicXe {
             analisisSintactico();
             paso1();
             paso2();
+        });
+        ventana.cargarBtn.addActionListener(actionEvent -> {
+            cargarProgramas();
+        });
+        ventana.simularBtn.addActionListener(actionEvent -> {
+            ligarProgramas();
         });
     }
 
@@ -227,6 +232,67 @@ public class EnsambladorSicXe {
             codobj.append(cadena);
         }
         ventana.areaCodobj.setText(codobj.toString());
+    }
+    private void cargarProgramas(){
+        String texto = ventana.areaPObjs.getText();
+        String[] lineas = texto.split("\n");
+        listaProgs = new ArrayList<>();
+        ProgramaObjeto pO = null;
+        ArrayList<String> programas = new ArrayList<>();
+        for(String linea : lineas){
+            String[] elementos = linea.split("");
+            String primero = elementos[0];
+            switch (primero){
+                case "": continue;
+                case "R":
+                    pO.creaRR(linea);
+                    break;
+                case "D":
+                    pO.creaRD(linea);
+                    break;
+                case "H":
+                    pO = new ProgramaObjeto();
+                    pO.creaRH(linea);
+                    programas.add(pO.registroH.get("Nombre"));
+                    break;
+                case "T":
+                    assert pO != null;
+                    pO.creaRT(linea);
+                    break;
+                case "M":
+                    assert pO != null;
+                    pO.creaRM(linea);
+                    break;
+                case "E":
+                    assert pO != null;
+                    pO.creaRE(linea);
+                    listaProgs.add(pO);
+                    break;
+            }
+        }
+
+
+        ventana.opcionesProgs.setModel(new javax.swing.DefaultComboBoxModel<>(programas.toArray(String[]::new)));
+
+    }
+    private void ligarProgramas(){
+        String dirInicio = ventana.inputTamProg.getText();
+        if(dirInicio.isEmpty() || dirInicio.isBlank()){
+            JOptionPane.showMessageDialog(ventana,"Debe colocar la dirección de inicio", "Error",JOptionPane.ERROR_MESSAGE);
+        }else{
+            CargadorLigador cargador = new CargadorLigador(this.listaProgs,dirInicio);
+            LinkedHashMap<String, ArrayList<String>> tabse = cargador.getTabse();
+            int tamanos = tabse.get("SC").size();
+            DefaultTableModel modeloTabse = (DefaultTableModel) ventana.tabse.getModel();
+            ArrayList<String> fila;
+            for(int i = 0; i < tamanos; i++){
+                fila = new ArrayList<>();
+                for (ArrayList<String> columna : tabse.values()){
+                    fila.add(columna.get(i));
+                }
+                modeloTabse.addRow(fila.toArray());
+            }
+        }
     }
     private JFileChooser exploradorGuardar(){
         JFileChooser selection = new JFileChooser();

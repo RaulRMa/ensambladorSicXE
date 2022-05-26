@@ -11,25 +11,22 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ProgramaObjeto {
-    public final HashMap<String, String> registroH;
+    public HashMap<String, String> registroH;
     private HashMap<String, String> registroT;
-    public final ArrayList<HashMap<String, String>> registrosT;
+    private HashMap<String, String> registroR;
+    public HashMap<String, String> registroD;
+    public ArrayList<HashMap<String, String>> registrosT;
     private HashMap<String, String> registroM;
-    public final HashMap<String, String> registroE;
-    private final ArrayList<String> relocalizables;
-    public final ArrayList<HashMap<String, String>> registrosM;
+    public HashMap<String, String> registroE;
+    private ArrayList<String> relocalizables;
+    public ArrayList<HashMap<String, String>> registrosM;
     private String iniProg;
     private String dirPrimInst;
-    private final File progObj;
+    private File progObj;
     private ArrayList<String> codsObj;
 
     public ProgramaObjeto(ArrayList<String> codsObj, String nombreArch){
-        registroH = new LinkedHashMap<>();
-        registrosT = new ArrayList<>();
-        registrosM = new ArrayList<>();
-        registroM = new LinkedHashMap<>();
-        registroE = new LinkedHashMap<>();
-        relocalizables = new ArrayList<>();
+        iniciaLiza();
         this.codsObj = codsObj;
         String nombre = nombreArch.replace(".err",".obj");
         progObj = new File(nombre);
@@ -39,6 +36,22 @@ public class ProgramaObjeto {
         creaRegistroFin();
         escribeArchivo();
     }
+
+    public ProgramaObjeto(){
+        iniciaLiza();
+    }
+
+    private void iniciaLiza(){
+        registroH = new LinkedHashMap<>();
+        registrosT = new ArrayList<>();
+        registrosM = new ArrayList<>();
+        registroM = new LinkedHashMap<>();
+        registroE = new LinkedHashMap<>();
+        relocalizables = new ArrayList<>();
+        registroR = new LinkedHashMap<>();
+        registroD = new LinkedHashMap<>();
+    }
+
     private String anexaCeros(String cadena, int numero){
         if(cadena.length() < numero){
             StringBuilder ceros = new StringBuilder();
@@ -64,6 +77,16 @@ public class ProgramaObjeto {
         registroH.put("Nombre",iniProg);
         registroH.put("Direccion", dirInicio);
         registroH.put("Longitud",longitud);
+    }
+    public void creaRH(String linea){
+        if(linea.length() == 19){
+            this.registroH.put("H","H");
+            this.registroH.put("Nombre",linea.substring(1,7));
+            this.registroH.put("Direccion",linea.substring(7,13));
+            this.registroH.put("Longitud",linea.substring(13,19));
+        } else {
+            System.out.println("Error en el programa");
+        }
     }
     private String longPrograma(ArrayList<String> codsObj){
         String finProg = codsObj.get(codsObj.size() - 1);
@@ -109,6 +132,14 @@ public class ProgramaObjeto {
             }
         }
     }
+    public void creaRT(String linea){
+        registroT = new HashMap<>();
+        registroT.put("T","T");
+        registroT.put("Direccion",linea.substring(1,7));
+        registroT.put("Longitud",linea.substring(7,9));
+        registroT.put("Codigo",linea.substring(9));
+        registrosT.add(registroT);
+    }
     private void creaRegistrosM(){
         for (String cadena : relocalizables){
             String[] elementos = cadena.split("\t+");
@@ -121,6 +152,19 @@ public class ProgramaObjeto {
             registroM.put("Bandera","+");
             registroM.put("Simbolo",iniProg);
             registrosM.add(registroM);
+        }
+    }
+    public void creaRM(String linea){
+        if(linea.length() == 16){
+            registroM = new LinkedHashMap<>();
+            registroM.put("M","M");
+            registroM.put("Inicio",linea.substring(1,7));
+            registroM.put("Longitud",linea.substring(7,9));
+            registroM.put("Bandera",linea.substring(9,10));
+            registroM.put("Simbolo",linea.substring(10,16));
+            registrosM.add(registroM);
+        }else {
+            System.out.println("Error en el registro M");
         }
     }
     private void agregaCodObj(String cadena, StringBuilder acumulador, String inst){
@@ -145,6 +189,43 @@ public class ProgramaObjeto {
         }
         registroE.put("E","E");
         registroE.put("Direccion",dirPrimInst);
+    }
+    public void creaRE(String linea){
+        registroE.put("E","E");
+        if(linea.length() > 1){
+            registroE.put("Direccion", linea.substring(1));
+        }
+    }
+    public void creaRR(String linea){
+        registroR.put("R","R");
+        if(linea.length() > 7){
+            int fin = 7;
+            int inicio = 1;
+
+            while (fin <= linea.length()){
+                registroR.put(linea.substring(inicio,fin),linea.substring(inicio,fin));
+                inicio = fin;
+                fin += 6;
+            }
+        }else {
+            registroR.put(linea.substring(1,7),linea.substring(1,7));
+        }
+    }
+    public void creaRD(String linea){
+        registroD.put("D","D");
+        if(linea.length() > 13){
+            int cont = 0;
+            int fin = 13;
+            int inicio = 1;
+            while (fin <= linea.length()){
+                registroD.put(linea.substring(inicio, inicio + 6),linea.substring(fin -6,fin));
+                inicio = fin;
+                fin += 12;
+                cont++;
+            }
+        }else {
+            registroD.put(linea.substring(1,7),linea.substring(7,13));
+        }
     }
     private void escribeArchivo(){
         try {

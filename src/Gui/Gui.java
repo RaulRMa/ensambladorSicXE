@@ -18,8 +18,161 @@ public class Gui extends javax.swing.JFrame {
     private void iniciaComponentes(){
         paso1Btn.setEnabled(false);
         paso2Btn.setEnabled(false);
-        cargarBtn.setEnabled(false);
-        simularBtn.setEnabled(false);
+        cargarBtn.setEnabled(true);
+        simularBtn.setEnabled(true);
+    }
+
+    private JPanel areaPObjetos(){
+        JLabel labelProgs;
+        JPanel panelInputs;
+        JPanel panelTexto;
+        JScrollPane scrollTexto;
+        JPanel panelObjs; // Panel que soporta todos los componentes
+
+        panelObjs = new javax.swing.JPanel(); // Panle que soporta los componentes
+        panelInputs = new javax.swing.JPanel();
+        inputTamProg = new javax.swing.JTextField();
+        opcionesProgs = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
+        labelProgs = new javax.swing.JLabel();
+        panelTexto = new javax.swing.JPanel();
+        scrollTexto = new javax.swing.JScrollPane();
+        areaPObjs = new javax.swing.JTextArea();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        panelInputs.setBackground(new java.awt.Color(33, 31, 32));
+        panelObjs.setBackground(new java.awt.Color(33, 31, 32));
+        areaPObjs.setBackground(new java.awt.Color(44, 55, 64));
+        areaPObjs.setColumns(20);
+        areaPObjs.setForeground(java.awt.Color.white);
+        areaPObjs.setRows(5);
+        areaPObjs.setCaretColor(java.awt.Color.white);
+        areaPObjs.setCursor(new java.awt.Cursor(java.awt.Cursor.TEXT_CURSOR));
+        areaPObjs.setFont(new java.awt.Font("Cascadia Code", 0, 18));
+
+
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Inicio del programa");
+
+        labelProgs.setForeground(java.awt.Color.white);
+        labelProgs.setText("Programa de inicio");
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(panelInputs);
+        panelInputs.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(inputTamProg, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jLabel1))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 196, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(opcionesProgs, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(labelProgs))
+                                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+                jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                                .addContainerGap(14, Short.MAX_VALUE)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(labelProgs))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(inputTamProg, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(opcionesProgs, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(29, 29, 29))
+        );
+
+        panelTexto.setBackground(new java.awt.Color(33, 31, 32));
+
+        areaPObjs.setColumns(20);
+        areaPObjs.setRows(5);
+        scrollTexto.setViewportView(areaPObjs);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(panelTexto);
+        panelTexto.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(scrollTexto)
+                                .addContainerGap())
+        );
+        jPanel2Layout.setVerticalGroup(
+                jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel2Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(scrollTexto, javax.swing.GroupLayout.DEFAULT_SIZE, 413, Short.MAX_VALUE)
+                                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout panel1Layout = new javax.swing.GroupLayout(panelObjs);
+        panelObjs.setLayout(panel1Layout);
+        panel1Layout.setHorizontalGroup(
+                panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panel1Layout.createSequentialGroup()
+                                .addGroup(panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(panel1Layout.createSequentialGroup()
+                                                .addContainerGap()
+                                                .addComponent(panelInputs, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(panelTexto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
+        );
+        panel1Layout.setVerticalGroup(
+                panel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panel1Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(panelInputs, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(panelTexto, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
+        );
+
+        pack();
+
+        return panelObjs;
+    }
+
+    private JScrollPane creaTabse(){
+        JScrollPane panel = new JScrollPane();
+        JTable jTabse = new JTable();
+        jTabse.setBackground(new java.awt.Color(33, 31, 32));
+        jTabse.setForeground(java.awt.Color.white);
+        jTabse.setModel(new javax.swing.table.DefaultTableModel(
+                new Object [][] {
+                },
+                new String [] {
+                        "Sección de control", "Símbolo", "Dirección", "Longitud"
+                }
+        ) {
+            Class[] types = new Class [] {
+                    java.lang.String.class, java.lang.String.class,java.lang.String.class,java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                    false, false, false,false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        if (jTabse.getColumnModel().getColumnCount() > 0) {
+            jTabse.getColumnModel().getColumn(0).setResizable(false);
+            jTabse.getColumnModel().getColumn(1).setResizable(false);
+            jTabse.getColumnModel().getColumn(2).setResizable(false);
+            jTabse.getColumnModel().getColumn(3).setResizable(false);
+        }
+        tabse = jTabse;
+        panel.setViewportView(jTabse);
+        return panel;
     }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">
@@ -59,7 +212,7 @@ public class Gui extends javax.swing.JFrame {
         areaCodobj = new javax.swing.JTextArea();
         lblLineasErrores = new javax.swing.JLabel();
         // </editor-fold>
-        panelResultados.setVisible(false);
+        panelResultados.setVisible(true);
         setBackground(new Color(33,31,32));
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -313,6 +466,10 @@ public class Gui extends javax.swing.JFrame {
 
         jScrollPaneR.setViewportView(mapaMem);
 
+        //areaPObjs = areaPObjetos();
+        panelResultados.addTab("ProgramaObjeto",areaPObjetos());
+
+        panelResultados.addTab("Tabse",creaTabse());
         panelResultados.addTab("Mapa de memoria",jScrollPaneR);
         jTable2.setBackground(new java.awt.Color(33, 31, 32));
         jTable2.setForeground(java.awt.Color.white);
@@ -443,7 +600,8 @@ public class Gui extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify
-    public javax.swing.JTextArea areaTexto;
+    public javax.swing.JTextArea areaTexto; // Area de texto del programa sicxe
+    public JTextArea areaPObjs; // Area de texto de los programas objetos
     // <editor-fold defaultstate="collapsed" desc="Botones">
     public javax.swing.JButton btnNvoArchivo;
     public javax.swing.JButton paso2Btn;
@@ -466,17 +624,21 @@ public class Gui extends javax.swing.JFrame {
     public javax.swing.JScrollPane jScrollPane5; // Soporta la tabla del archivo intermedio
     public javax.swing.JScrollPane jScrollPaneR; // Soporta la tabla del mapa de memoria
 
-    public javax.swing.JSplitPane panelDividido;
+    public javax.swing.JSplitPane panelDividido; //Errores y programa fuente
     public javax.swing.JTabbedPane jTabbedPane1; // Tabs de ensamblado
     public javax.swing.JTabbedPane panelResultados; // Tabs de cargador-ligador
     public javax.swing.JTable tabsim; //Tabla de simbolos
     public javax.swing.JTable jTable2; // Tabla codigo objeto
     public javax.swing.JTable mapaMem; // Tabla mapa de memoria
+    public javax.swing.JTable tabse; // Tabla tabse
     public javax.swing.JTextArea areaCodobj; //Registros objeto
     public javax.swing.JLabel lblNoErrores;
     public javax.swing.JPanel panelAcciones;
     public javax.swing.JPanel panelErrores;
     public javax.swing.JPanel panelMenu;
     public javax.swing.JLabel lblLineasErrores;
+    public JComboBox<String> opcionesProgs; //Combobox con las opciones de inicio del programa
+    public JLabel jLabel1; // Contiene la direccion de inicio del programa
+    public JTextField inputTamProg;
     // End of variables declaration
 }
