@@ -439,16 +439,18 @@ public class Gui extends javax.swing.JFrame {
         mapaMem.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{},
                 new String[]{
-                        "0","1","2","3","4","5","6","7","8","9",
+                        "","0","1","2","3","4","5","6","7","8","9",
                         "A","B", "C","D","E","F",
                 }
         ){
             Class[] types = new Class [] {
+                    java.lang.String.class,java.lang.String.class,
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class,
                     java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
+                    false, false,
                     false, false, false, false, false,
                     false, false, false, false, false,
                     false, false, false, false, false,

@@ -14,6 +14,11 @@ public class CargadorLigador {
     }
 
     private LinkedHashMap<String, ArrayList<String>> tabse;
+
+    public LinkedHashMap<String, ArrayList<String>> getMapaMem() {
+        return mapaMem;
+    }
+
     private LinkedHashMap<String, ArrayList<String>> mapaMem;
     private LinkedHashMap<String, LinkedHashMap<String, ArrayList<String>>> mapaMemRel;
     private String DIRPROG;
@@ -171,7 +176,6 @@ public class CargadorLigador {
         }
     }
     private void relocalizaMapMem(){
-        System.out.println(relocalizadas);
         for(String dir : relocalizadas.keySet()){
             String valor = relocalizadas.get(dir);
             int localidad = Integer.parseInt(dir.substring(dir.length() - 1),16 ) + 1;
@@ -215,41 +219,57 @@ public class CargadorLigador {
             else{
                 String[] valores = valor.split(",");
                 for(String val : valores){
-                    boolean bandera = false;
-                    int medBytes = Integer.parseInt(val.substring(0,2));
-                    int valSimbolo = Integer.parseInt(val.substring(3),16);
-                    StringBuilder cadena = new StringBuilder();
-                    int locAux = localidad == 5 ? localidad : --localidad;
-                    for (int i = 0; i < (medBytes == 5 ? (medBytes - 1)/2 : 3); i++){
-                        if(locAux >= filaAux.size()){
-                            bit++;
-                            filaAux2 = mapaMem.get(direccion+ bit + 0);
-                            locAux = 0;
-                            bandera = true;
-                        }
-                        if(bandera){
-                            cadena.append(filaAux2.get(locAux++));
-                        }else{
-                            cadena.append(filaAux.get(locAux++));
-                        }
-                    }
-                    int suma = valSimbolo + Integer.parseInt(cadena.toString(),16);
-                    String sumaVals = Integer.toHexString(suma);
-                    int ini = 0;
-                    int fin = 2;
-                    int locaux2 = localidad++;
-                    for(int j = 0; j < sumaVals.length() / 2; j++){
-                        filaAux.set(locaux2++, sumaVals.substring(ini,fin));
-                        if(bandera){
-                            filaAux = filaAux2;
-                            localidad = 0;
-                        }
-                        ini = fin;
-                        fin += 2;
-                    }
+                    relocalizaProg(val, localidad, bit, filaAux,direccion);
                 }
             }
         }
+    }
+
+    private void relocalizaProg(String val, int localidad, int bit, ArrayList<String> filaAux, String direccion){
+        boolean bandera = false;
+        String bandSumaOResta = val.substring(2,3);
+        ArrayList<String> filaAux2 = null;
+        int medBytes = Integer.parseInt(val.substring(0,2));
+
+        int valSimbolo = Integer.parseInt(val.substring(3),16);
+        StringBuilder cadena = new StringBuilder();
+        int locAux = localidad == 5 ? localidad : --localidad;
+        for (int i = 0; i < (medBytes == 5 ? (medBytes - 1)/2 : 3); i++){
+            if(locAux >= filaAux.size()){
+                bit++;
+                filaAux2 = mapaMem.get(direccion+ bit + 0);
+                locAux = 0;
+                bandera = true;
+            }
+            if(bandera){
+                cadena.append(filaAux2.get(locAux++));
+            }else{
+                cadena.append(filaAux.get(locAux++));
+            }
+        }
+        int suma = switch (bandSumaOResta){
+            case "+" -> valSimbolo + Integer.parseInt(cadena.toString(),16);
+            case "-" -> valSimbolo - Integer.parseInt(cadena.toString(),16);
+            default -> 0;
+        };
+
+        String sumaVals = anexaCeros(Integer.toHexString(suma));
+        int ini = 0;
+        int fin = 2;
+        int locaux2 = localidad + 1;
+        for(int j = 0; j < sumaVals.length() / 2; j++){
+            filaAux.set(locaux2++, sumaVals.substring(ini,fin));
+            if(bandera){
+                filaAux = filaAux2;
+            }
+            ini = fin;
+            fin += 2;
+        }
+    }
+    private String anexaCeros(String valor){
+        if(valor.length() < 4)
+            return "0000".substring(valor.length()) + valor;
+        return valor;
     }
     private void insertaValores(String sc, String simbolo, String direccion, String longitud){
         seccionesCont.add(sc);

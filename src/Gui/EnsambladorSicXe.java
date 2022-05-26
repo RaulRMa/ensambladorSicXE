@@ -282,8 +282,10 @@ public class EnsambladorSicXe {
         }else{
             CargadorLigador cargador = new CargadorLigador(this.listaProgs,dirInicio);
             LinkedHashMap<String, ArrayList<String>> tabse = cargador.getTabse();
+            LinkedHashMap<String, ArrayList<String>> mapMem = cargador.getMapaMem();
             int tamanos = tabse.get("SC").size();
             DefaultTableModel modeloTabse = (DefaultTableModel) ventana.tabse.getModel();
+            DefaultTableModel modeloMapaMem = (DefaultTableModel) ventana.mapaMem.getModel();
             ArrayList<String> fila;
             for(int i = 0; i < tamanos; i++){
                 fila = new ArrayList<>();
@@ -291,6 +293,13 @@ public class EnsambladorSicXe {
                     fila.add(columna.get(i));
                 }
                 modeloTabse.addRow(fila.toArray());
+            }
+            for(String direccion : mapMem.keySet()){
+                ArrayList<String> lista = mapMem.get(direccion);
+                fila = new ArrayList<>();
+                fila.add(direccion);
+                fila.addAll(lista);
+                modeloMapaMem.addRow(fila.toArray());
             }
         }
     }
