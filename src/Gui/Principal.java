@@ -125,7 +125,7 @@ public class Principal{
         Intermedio archInt = new Intermedio(instrucciones, archivoFuente, lineas, tipoErrores);
         archivoIntermedio = archInt.archivoIntermedio();
         ArrayList<String> codigoObjeto = archInt.getCodigoObjeto();
-        ProgramaObjeto pO = new ProgramaObjeto(codigoObjeto,archivoSalida.getName());
+        ProgramaObjeto pO = new ProgramaObjeto(codigoObjeto,archivoSalida.getName(), archInt.tablaSimbolos);
         if(archivoIntermedio != null){
             btnAbrirAInt.setVisible(true);
             btnAbrirUbInt.setVisible(true);

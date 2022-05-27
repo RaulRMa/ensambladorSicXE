@@ -1,5 +1,7 @@
 package App;
 
+import sintaxis.Simbolo;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,9 +26,12 @@ public class ProgramaObjeto {
     private String dirPrimInst;
     private File progObj;
     private ArrayList<String> codsObj;
+    private String finProg;
+    private ArrayList<Simbolo> tabsim;
 
-    public ProgramaObjeto(ArrayList<String> codsObj, String nombreArch){
+    public ProgramaObjeto(ArrayList<String> codsObj, String nombreArch, ArrayList<Simbolo> tabsim){
         iniciaLiza();
+        this.tabsim = tabsim;
         this.codsObj = codsObj;
         String nombre = nombreArch.replace(".err",".obj");
         progObj = new File(nombre);
@@ -89,7 +94,7 @@ public class ProgramaObjeto {
         }
     }
     private String longPrograma(ArrayList<String> codsObj){
-        String finProg = codsObj.get(codsObj.size() - 1);
+        finProg = codsObj.get(codsObj.size() - 1);
         String[] primero = codsObj.get(0).split("\t+");
         String[] ultimo = finProg.split("\t+");
         String dir1 = anexaCeros(primero[0],4);
@@ -104,10 +109,11 @@ public class ProgramaObjeto {
     private void creaRegistosT(ArrayList<String> codsObj){
 
         StringBuilder acumulador = new StringBuilder();
-
         for (String codObj : codsObj){
             String[] cod = codObj.split("\t+");
             String codigoO = cod[cod.length - 1].split(" ")[0];
+            if(codObj.contains("EQU")) continue;
+
             if(acumulador.isEmpty() && !codigoO.equals("----")){
                 registroT = new LinkedHashMap<>();
                 registroT.put("T","T");
@@ -145,10 +151,11 @@ public class ProgramaObjeto {
             String[] elementos = cadena.split("\t+");
             registroM = new LinkedHashMap<>();
             registroM.put("M","M");
+            int bytes = cadena.contains("WORD") ? 6 : 5;
             int decDir = Integer.parseInt(elementos[0],16);
-            String inicio = Integer.toHexString(++decDir);
-            registroM.put("Inicio", anexaCeros(inicio,2));
-            registroM.put("Longitud","05");
+            String inicio = bytes == 6 ? elementos[0]: Integer.toHexString(++decDir);
+            registroM.put("Inicio", anexaCeros(inicio,6));
+            registroM.put("Longitud","0" + bytes);
             registroM.put("Bandera","+");
             registroM.put("Simbolo",iniProg);
             registrosM.add(registroM);
@@ -177,15 +184,29 @@ public class ProgramaObjeto {
         }
     }
     private void creaRegistroFin(){
-        Pattern expReg = Pattern.compile("WORD|BYTE|RESW|RESB|BASE");
-        for (String cod : codsObj){
-            Matcher matcher = expReg.matcher(cod);
-            if(!matcher.find()){
-                dirPrimInst = cod.split("\t+")[0];
-                dirPrimInst = anexaCeros(dirPrimInst,6);
-                break;
-            }
+        Pattern expReg = Pattern.compile("WORD|BYTE|RESW|RESB|BASE|EQU");
+        System.out.println(finProg);
+        String[] elementos = finProg.split("\t+");
+        if(elementos.length < 4){
+            for (String cod : codsObj){
+                Matcher matcher = expReg.matcher(cod);
+                if(!matcher.find()){
+                    dirPrimInst = cod.split("\t+")[0];
+                    dirPrimInst = anexaCeros(dirPrimInst,6);
+                    break;
+                }
 
+            }
+        }else{
+            String simbolo = elementos[2];
+            String direccion = "";
+            for(Simbolo s : tabsim){
+                if(s.nombre.equals(simbolo)){
+                    direccion = s.dirOSimbolo;
+                    break;
+                }
+            }
+            dirPrimInst = anexaCeros(direccion,6);
         }
         registroE.put("E","E");
         registroE.put("Direccion",dirPrimInst);

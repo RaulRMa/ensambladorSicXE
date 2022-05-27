@@ -1,5 +1,7 @@
 package App;
 
+import Evaluador.evaluadorLexer;
+import Evaluador.evaluadorParser;
 import org.antlr.v4.runtime.ANTLRErrorListener;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -127,7 +129,7 @@ public class Intermedio {
                                         if(esExpresionValida(instruccion.getDireccion())){
                                             String res = agrupaSimbolos(instruccion.getDireccion(),instruccion);
                                             int valor = evaluaValor(instruccion,res);
-
+                                            simbolo.relativo = instruccion.simboloObj.relativo;
                                             simbolo.dirOSimbolo = Integer.toHexString(valor).toUpperCase();
                                         }else{
                                             lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\tError: expresión inválida";
@@ -164,6 +166,7 @@ public class Intermedio {
                         }
                         cp = bytes;
                         lineaAEscribir = Integer.toHexString(cp).toUpperCase(Locale.ROOT) + "\t" + linea + "\t----" ;
+                        lineasArchivo.add(lineaAEscribir);
                         contador++;
                         continue;
                     }
@@ -194,13 +197,25 @@ public class Intermedio {
                 if(!simbolo.isEmpty())
                     expresionAux = expresionAux.replace(simbolo, " ");
             }
+            int abs = 0;
+            int rels = 0;
             for(String simbolo : simbolos){
                 for(Simbolo simb : tablaSimbolos){
                     if(simbolo.equals(simb.nombre)){
+                        if(simb.relativo) rels++;
+                        else abs++;
+                        if(rels >= 2) {
+                            abs+=2;
+                            rels -=2;
+                        }
                         expresionAux = expresionAux.replaceFirst(" ",String.valueOf(Integer.parseInt(simb.dirOSimbolo,16)));
                     }
                 }
             }
+            if(rels > 0 && rels %2 == 1 && abs > 0 && abs % 2 == 0)
+                inst.simboloObj.relativo = true;
+            else if(rels == 0 && abs > 0 && abs % 2 == 0)
+                inst.simboloObj.relativo = false;
             return expresionAux;
         }
         Simbolo simbolo = null;
@@ -307,10 +322,15 @@ public class Intermedio {
                     codigoObjeto.add(instruccion);
                     continue;
                 }
-                if(inst.simboloObj.equ) continue;
+                if(inst.simboloObj.equ || inst.simboloObj.nombre.equals("ORG")) {
+                    codigoObjeto.add(instruccion);
+                    continue;
+                }
                 if(inst.isExpresion()){
 
                     String res = agrupaSimbolos(inst.getDireccion(),inst);
+                    if(inst.getNombre().equals("WORD") && inst.simboloObj.relativo)
+                        inst.setRelocalizable(true);
                     int operacion = 0;
                     if(!res.equals("Error")){
                         operacion = evaluaValor(inst,res);
@@ -411,7 +431,18 @@ public class Intermedio {
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         sicstdParser parser = new sicstdParser(tokens);
         Object resultado = parser.expresion_ar().value;
-        return (int)resultado;
+
+        return evalua(inst, cadena);
+        //return (int)resultado;
+    }
+
+    private int evalua(Instruccion inst, String caddena){
+        ANTLRInputStream input = new ANTLRInputStream(caddena);
+        evaluadorLexer lexer = new evaluadorLexer(input);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        evaluadorParser parser = new evaluadorParser(tokens);
+        Object resultado = parser.expresion().value;
+        return (int) resultado;
     }
 
     public File archivoIntermedio() {return  aIntermedio;}
@@ -456,18 +487,19 @@ public class Intermedio {
                     Integer.parseInt(numero[0], 16)
                     :
                     Integer.parseInt(instruccion.getDireccion());
+            String asterisco = instruccion.isRelocalizable() ? "*" : "";
             if(bytes > 0){
                 int valor = 6 - numero[0].length();
                 if (6 - valor != 0) {
                     String ceros = "";
                     for (int i = 0; i < valor; i++) ceros += "0";
-                    return ceros + Integer.toHexString(bytes);
+                    return ceros + Integer.toHexString(bytes) + asterisco;
                 }
             }else{
                 String hexadecimal = Integer.toHexString(bytes);
-                return hexadecimal.substring(2,hexadecimal.length()).toUpperCase();
+                return hexadecimal.substring(2,hexadecimal.length()).toUpperCase() + asterisco;
             }
-            return Integer.toHexString(bytes);
+            return Integer.toHexString(bytes) + asterisco;
         }
         return "\t----";
     }
@@ -520,7 +552,7 @@ public class Intermedio {
             String binario = op;
             for(int j = 0; j < banderas.length; j++) binario += banderas[j];
             int bin = Integer.parseInt(binario,2);
-            String hexadecimal = Integer.toHexString(bin);
+            String hexadecimal = Integer.toHexString(bin).toUpperCase();
             return  anexaCeros(3,hexadecimal)+ (inst.isF4() ? "FFFFF " : "FFF ") + operando;
         }
         if(inst.isConstante()){
@@ -625,7 +657,7 @@ public class Intermedio {
     }
     private String obtenOperando(String operando){
         String op = operando.split(",")[0];
-        Pattern hexadecimal = Pattern.compile("[A-F0-9]+[H|h]*");
+        Pattern hexadecimal = Pattern.compile("^[A-F0-9]+[H|h]");
         Pattern simbolo = Pattern.compile("^[a-zA-Z0-9]+");
         Pattern constante = Pattern.compile("^[0-9]+");
         Matcher match = constante.matcher(op);

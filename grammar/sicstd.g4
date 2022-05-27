@@ -172,6 +172,7 @@ simple:
            Instruccion inst = new Instruccion("INSF3",$termino.value + ", X" ,$SIMBOLO.text,$INSF3.text);
            inst.setF4(false);
            inst.setTipo("simple");
+           inst.setIndexado(true);
            listaInstrucciones.add(inst);
         }
     )

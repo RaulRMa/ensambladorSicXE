@@ -1085,6 +1085,7 @@ public class sicstdParser extends Parser {
 				           Instruccion inst = new Instruccion("INSF3",((SimpleContext)_localctx).termino.value + ", X" ,(((SimpleContext)_localctx).SIMBOLO!=null?((SimpleContext)_localctx).SIMBOLO.getText():null),(((SimpleContext)_localctx).INSF3!=null?((SimpleContext)_localctx).INSF3.getText():null));
 				           inst.setF4(false);
 				           inst.setTipo("simple");
+				           inst.setIndexado(true);
 				           listaInstrucciones.add(inst);
 				        
 				}

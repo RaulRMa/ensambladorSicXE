@@ -200,7 +200,7 @@ public class EnsambladorSicXe {
     }
     private void paso2(){
         ventana.areaCodobj.setText("");
-        ProgramaObjeto pO = new ProgramaObjeto(archInt.getCodigoObjeto(),archivoSalida.getName());
+        ProgramaObjeto pO = new ProgramaObjeto(archInt.getCodigoObjeto(),archivoSalida.getName(), archInt.tablaSimbolos);
 
         while (modeloTabla.getRowCount() > 0) { modeloTabla.removeRow(0); }
 
@@ -232,6 +232,8 @@ public class EnsambladorSicXe {
             codobj.append(cadena);
         }
         ventana.areaCodobj.setText(codobj.toString());
+        ventana.areaPObjs.setText(codobj.toString());
+        ventana.areaPObjs.setEnabled(false);
     }
     private void cargarProgramas(){
         String texto = ventana.areaPObjs.getText();

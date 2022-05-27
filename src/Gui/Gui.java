@@ -20,6 +20,8 @@ public class Gui extends javax.swing.JFrame {
         paso2Btn.setEnabled(false);
         cargarBtn.setEnabled(true);
         simularBtn.setEnabled(true);
+        opcionesProgs.setVisible(false);
+
     }
 
     private JPanel areaPObjetos(){
@@ -29,7 +31,7 @@ public class Gui extends javax.swing.JFrame {
         JScrollPane scrollTexto;
         JPanel panelObjs; // Panel que soporta todos los componentes
 
-        panelObjs = new javax.swing.JPanel(); // Panle que soporta los componentes
+        panelObjs = new javax.swing.JPanel(); // Panel que soporta los componentes
         panelInputs = new javax.swing.JPanel();
         inputTamProg = new javax.swing.JTextField();
         opcionesProgs = new javax.swing.JComboBox<>();
@@ -38,7 +40,7 @@ public class Gui extends javax.swing.JFrame {
         panelTexto = new javax.swing.JPanel();
         scrollTexto = new javax.swing.JScrollPane();
         areaPObjs = new javax.swing.JTextArea();
-
+        labelProgs.setVisible(false);
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         panelInputs.setBackground(new java.awt.Color(33, 31, 32));
